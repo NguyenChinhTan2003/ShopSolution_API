@@ -14,5 +14,13 @@ namespace ShopSolution.Data.Entities
         public string Description { get; set; }
         public DateTime Created { get; set; }
         public decimal Price { get; set; }
+
+        public int ViewCount { get; set; }
+
+        public List<ProductInCategory> ProductInCategories { get; set; }
+
+        public List<OrderDetail> OrderDetails { get; set; }
+        public List<Cart> Carts { get; set; }
+
     }
 }
