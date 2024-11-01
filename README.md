@@ -1,1 +1,1 @@
-https://tedu.com.vn/video/bai-8-cau-hinh-entity-voi-fluent-api-860.html
+https://tedu.com.vn/video/bai-13-xay-dung-phuong-thuc-phan-trang-865.html
