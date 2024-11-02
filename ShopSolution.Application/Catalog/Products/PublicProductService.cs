@@ -30,7 +30,7 @@ namespace ShopSolution.Application.Catalog.Products
                         select new { p, pt, pic };
 
             //2. Filter
-            
+
             if (request.CategoryId.HasValue && request.CategoryId.Value > 0)
             {
                 query = query.Where(p => p.pic.CategoryId == request.CategoryId);
