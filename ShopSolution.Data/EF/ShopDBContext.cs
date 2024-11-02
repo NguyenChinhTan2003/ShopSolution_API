@@ -35,6 +35,14 @@ namespace ShopSolution.Data.EF
 
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
 
+            modelBuilder.ApplyConfiguration(new CategoryTranslationConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ProductTranslationConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+
+            modelBuilder.ApplyConfiguration(new LanguageConfiguration());
+
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
@@ -58,6 +66,14 @@ namespace ShopSolution.Data.EF
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
+
+        public DbSet<Language> Languages { get; set; }
+
+        public DbSet<ProductTranslation> ProductTranslations { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+
     }
 
 }

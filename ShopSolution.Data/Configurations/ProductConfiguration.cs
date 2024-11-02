@@ -19,14 +19,14 @@ namespace ShopSolution.Data.Configurations
 
             builder.Property(x => x.Id).UseIdentityColumn();
 
-            builder.Property(x => x.Name).IsRequired();
-
-            builder.Property(x=>x.Description).IsRequired();
-
             builder.Property(x => x.Price).IsRequired();
 
+            builder.Property(x => x.OriginalPrice).IsRequired();
+
+            builder.Property(x => x.Stock).IsRequired().HasDefaultValue(0);
+
             builder.Property(x => x.ViewCount).IsRequired().HasDefaultValue(0);
-            
+
         }
     }
 }

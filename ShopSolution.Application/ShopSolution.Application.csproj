@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ShopSolution.Data\ShopSolution.Data.csproj" />
+    <ProjectReference Include="..\ShopSolution.Utilities\ShopSolution.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,15 +13,13 @@ namespace ShopSolution.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.ToTable("Category");
+            builder.ToTable("Categories");
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Name).IsRequired();
-
-            builder.Property(x=>x.Description).IsRequired();
-
             builder.Property(x => x.Id).UseIdentityColumn();
+
+
         }
     }
 }

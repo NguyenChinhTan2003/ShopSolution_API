@@ -8,11 +8,15 @@ namespace ShopSolution.Data.Entities
 {
     public class Category
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int Id { set; get; }
+        public int SortOrder { set; get; }
+        public bool IsShowOnHome { set; get; }
+        public int? ParentId { set; get; }
+      
 
         public List<ProductInCategory> ProductInCategories { get; set; }
+
+        public List<CategoryTranslation> CategoryTranslations { get; set; }
 
     }
 }
