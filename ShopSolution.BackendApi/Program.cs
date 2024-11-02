@@ -1,14 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using ShopSolution.Application.Catalog.Products;
 using Microsoft.OpenApi.Models;
+using ShopSolution.Application.Service.Products;
+using ShopSolution.Data.EF;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<DbContext>(options => {
+builder.Services.AddDbContext<ShopDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaltConnection"));
 });
+
+
+
+builder.Services.AddTransient<IManageProductService, ManageProductService>();
+
+
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -16,7 +25,6 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Shop", Version = "v1" });
 });
 
-builder.Services.AddControllers();
 
 var app = builder.Build();
 
