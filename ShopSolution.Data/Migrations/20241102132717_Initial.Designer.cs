@@ -12,7 +12,7 @@ using ShopSolution.Data.EF;
 namespace ShopSolution.Data.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    [Migration("20241102113342_Initial")]
+    [Migration("20241102132717_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
