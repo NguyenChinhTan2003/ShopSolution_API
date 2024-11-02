@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopSolution.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,8 @@ namespace ShopSolution.Data.Entities
         public string ShipEmail { set; get; }
         public string ShipPhoneNumber { set; get; }
         public List<OrderDetail> OrderDetails { get; set; }
+        public OrderStatus Status { set; get; }
+
 
         public AppUser AppUser { get; set; }
 
