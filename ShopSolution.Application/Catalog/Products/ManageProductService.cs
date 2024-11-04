@@ -9,7 +9,6 @@ using ShopSolution.Data.EF;
 using ShopSolution.Data.Entities;
 using ShopSolution.Utilities.Exceptions;
 using ShopSolution.ViewModels.Catalog.Products;
-using ShopSolution.ViewModels.Catalog.Products.Manage;
 using ShopSolution.ViewModels.Common;
 using System;
 using System.Collections.Generic;
@@ -137,7 +136,7 @@ namespace ShopSolution.Application.Catalog.Products
         }
 
 
-        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
+        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request)
         {
             //1. Select join
             var query = from p in _context.Products

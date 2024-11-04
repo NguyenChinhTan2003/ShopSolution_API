@@ -3,17 +3,19 @@ using ShopSolution.Application.Catalog.Products;
 using Microsoft.OpenApi.Models;
 using ShopSolution.Application.Service.Products;
 using ShopSolution.Data.EF;
+using ShopSolution.Application.Common;
+using ShopSolution.Utilities.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ShopDBContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaltConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(SystemConstants.MainConnectionString));
 });
 
-
-
+builder.Services.AddTransient<IStorageService,FileStorageService >();
+builder.Services.AddTransient<IPublicProductService, PublicProductService>();
 builder.Services.AddTransient<IManageProductService, ManageProductService>();
 
 

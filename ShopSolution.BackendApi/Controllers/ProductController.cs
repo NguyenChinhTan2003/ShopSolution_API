@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopSolution.Application.Catalog.Products;
 
 namespace ShopSolution.BackendApi.Controllers
 {
@@ -7,10 +8,16 @@ namespace ShopSolution.BackendApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-       [HttpGet]
-       public async Task<IActionResult> Get()
+        private readonly IPublicProductService _publicProductService;
+        public ProductController(IPublicProductService publicProductService)
         {
-            return Ok("Test ok!");
+            _publicProductService = publicProductService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var products = await _publicProductService.GetAll();
+            return Ok(products);
         }
     }
 }
