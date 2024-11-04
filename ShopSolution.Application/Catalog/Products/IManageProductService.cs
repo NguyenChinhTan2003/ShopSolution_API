@@ -1,11 +1,10 @@
-﻿using ShopSolution.Application.Catalog.Products.DTO;
-using ShopSolution.Application.Dtos;
-using ShopSolution.Application.Service.Products.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Microsoft.AspNetCore.Http;
+using ShopSolution.Data.Entities;
+using ShopSolution.ViewModels.Catalog.Products;
+using ShopSolution.ViewModels.Catalog.Products.Manage;
+
+using ShopSolution.ViewModels.Common;
 
 namespace ShopSolution.Application.Service.Products
 {
@@ -13,12 +12,23 @@ namespace ShopSolution.Application.Service.Products
     {
         Task<int> Create(ProductCreateRequest request);
 
-        Task<int> Update(ProductEditRequest request);
+        Task<int> Update(ProductUpdateRequest request);
 
         Task<int> Delete(int productId);
 
-        Task<List<ProductViewModel>> GetAll();
+        Task<bool> updatePrice(int productId, decimal newPrice);
 
-        Task<PagedViewModel<ProductViewModel>> GetAllPaging(string keyword, int pageIndex, int pageSize);
+        Task<bool> updateStock(int productId, int addedQuantity);
+
+        Task AddViewCount(int productId);
+
+        Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
+
+        Task<int> AddImages(int productId, List<IFormFile> files);
+        Task<int> UpdateImages(int imageId, string caption, bool isDefault);
+        Task<int> DeleteImages(int imageId);
+
+        Task<List<ProductImageViewModel>> GetListImage(int productId);
+
     }
 }
