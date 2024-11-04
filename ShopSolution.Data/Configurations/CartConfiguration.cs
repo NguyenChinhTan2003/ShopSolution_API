@@ -18,6 +18,7 @@ namespace ShopSolution.Data.Configurations
 
             builder.Property(x => x.Id).UseIdentityColumn();
 
+            builder.Property(c => c.Price).HasColumnType("decimal(18,2)");
 
             builder.HasOne(x => x.Product).WithMany(x => x.Carts).HasForeignKey(x => x.ProductId);
 

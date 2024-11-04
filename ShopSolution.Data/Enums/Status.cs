@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopSolution.Application.Catalog.Products.DTO
+namespace ShopSolution.Data.Enums
 {
-    public class ProductEditRequest
+    public enum Status
     {
+        InActive,
+        Active
     }
 }

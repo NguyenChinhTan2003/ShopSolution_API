@@ -17,6 +17,7 @@ namespace ShopSolution.Data.Configurations
 
             builder.ToTable("ProductInCategories");
 
+
             builder.HasOne(t => t.Product).WithMany(pc => pc.ProductInCategories).HasForeignKey(pc => pc.ProductId);
 
             builder.HasOne(t => t.Category).WithMany(pc => pc.ProductInCategories).HasForeignKey(pc => pc.CategoryId);
