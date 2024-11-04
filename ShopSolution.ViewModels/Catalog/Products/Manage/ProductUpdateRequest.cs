@@ -1,11 +1,12 @@
-﻿using ShopSolution.Data.Entities;
+﻿
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopSolution.Application.Catalog.Products.DTO.Manage
+namespace ShopSolution.ViewModels.Catalog.Products.Manage
 {
     public class ProductUpdateRequest
     {
@@ -18,6 +19,6 @@ namespace ShopSolution.Application.Catalog.Products.DTO.Manage
 
         public string SeoAlias { get; set; }
         public string LanguageId { set; get; }
-
+        public IFormFile ThumbnailImage { set; get; }
     }
 }

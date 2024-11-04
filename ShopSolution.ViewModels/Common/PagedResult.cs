@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopSolution.Application.Dtos
+namespace ShopSolution.ViewModels.Common
 {
     public class PagedResult<T>
     {
-        public List<T> Items {  get; set; }    
+        public List<T> Items { get; set; }
 
-        public int TotalRecord {  get; set; }
+        public int TotalRecord { get; set; }
     }
 }

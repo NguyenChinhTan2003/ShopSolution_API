@@ -1,6 +1,7 @@
-﻿using ShopSolution.Application.Catalog.Products.DTO;
-using ShopSolution.Application.Catalog.Products.DTO.Public;
-using ShopSolution.Application.Dtos;
+﻿
+using ShopSolution.ViewModels.Catalog.Products;
+using ShopSolution.ViewModels.Catalog.Products.Public;
+using ShopSolution.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

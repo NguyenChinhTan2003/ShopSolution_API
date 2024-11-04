@@ -12,11 +12,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+	  <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ShopSolution.Data\ShopSolution.Data.csproj" />
     <ProjectReference Include="..\ShopSolution.Utilities\ShopSolution.Utilities.csproj" />
+    <ProjectReference Include="..\ShopSolution.ViewModels\ShopSolution.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
