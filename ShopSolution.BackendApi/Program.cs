@@ -5,6 +5,10 @@ using ShopSolution.Application.Service.Products;
 using ShopSolution.Data.EF;
 using ShopSolution.Application.Common;
 using ShopSolution.Utilities.Constants;
+using Microsoft.AspNetCore.Identity;
+using ShopSolution.Application.System.Users;
+using ShopSolution.Application.System;
+using ShopSolution.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +21,10 @@ builder.Services.AddDbContext<ShopDBContext>(options => {
 builder.Services.AddTransient<IStorageService,FileStorageService >();
 builder.Services.AddTransient<IPublicProductService, PublicProductService>();
 builder.Services.AddTransient<IManageProductService, ManageProductService>();
-
+builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+builder.Services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddControllersWithViews();
 
@@ -26,7 +33,9 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Shop", Version = "v1" });
 });
-
+builder.Services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<ShopDBContext>()
+                .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
