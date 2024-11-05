@@ -19,4 +19,8 @@
     <ProjectReference Include="..\ShopSolution.ViewModels\ShopSolution.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\user-content\" />
+  </ItemGroup>
+
 </Project>
