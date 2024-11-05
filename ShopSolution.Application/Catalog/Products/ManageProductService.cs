@@ -49,6 +49,7 @@ namespace ShopSolution.Application.Catalog.Products
                 _context.ProductImages.Add(productImage);
             }
             return await _context.SaveChangesAsync();
+
         }
 
 
@@ -99,7 +100,8 @@ namespace ShopSolution.Application.Catalog.Products
 
             }
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return product.Id;
         }
 
         public async Task<int> Delete(int productId)
@@ -108,14 +110,14 @@ namespace ShopSolution.Application.Catalog.Products
             if (product == null) throw new ShopException($"Cannot find a product: {productId}");
 
             var images = _context.ProductImages.Where(i => i.ProductId == productId);
-            foreach (var image in images) 
+            foreach (var image in images)
             {
                 await _storageService.DeleteFileAsync(image.ImagePath);
             }
 
             _context.Products.Remove(product);
 
-            
+
             return await _context.SaveChangesAsync();
         }
 
@@ -183,6 +185,10 @@ namespace ShopSolution.Application.Catalog.Products
             return pageResult;
         }
 
+        public Task<ProductViewModel> GetById(int productId)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task<List<ProductImageViewModel>> GetListImage(int productId)
         {
