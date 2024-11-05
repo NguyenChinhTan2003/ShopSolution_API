@@ -16,6 +16,8 @@ namespace ShopSolution.Application.Service.Products
 
         Task<int> Delete(int productId);
 
+        Task<ProductViewModel> GetById(int productId);
+
         Task<bool> updatePrice(int productId, decimal newPrice);
 
         Task<bool> updateStock(int productId, int addedQuantity);
