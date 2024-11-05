@@ -23,7 +23,7 @@ namespace ShopSolution.BackendApi.Controllers
             _publicProductService = publicProductService;
             _manageProductService = manageProductService;
         }
-
+            
         //http://localhost:port/products?pageIndex=1&pageSize=10&CategoryId=
         [HttpGet("{languageId}")]
         public async Task<IActionResult> GetAllPaging(string languageId, [FromQuery] GetPublicProductPagingRequest request)
