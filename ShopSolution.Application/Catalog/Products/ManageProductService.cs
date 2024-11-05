@@ -8,6 +8,7 @@ using ShopSolution.Application.Service.Products;
 using ShopSolution.Data.EF;
 using ShopSolution.Data.Entities;
 using ShopSolution.Utilities.Exceptions;
+using ShopSolution.ViewModels.Catalog.ProductImages;
 using ShopSolution.ViewModels.Catalog.Products;
 using ShopSolution.ViewModels.Common;
 using System;
@@ -23,35 +24,12 @@ namespace ShopSolution.Application.Catalog.Products
     {
         private readonly ShopDBContext _context;
         private readonly IStorageService _storageService;
+
         public ManageProductService(ShopDBContext context, IStorageService storageService)
         {
             _context = context;
             _storageService = storageService;
         }
-
-        public async Task<int> AddImages(int productId, List<IFormFile> files)
-        {
-            var product = await _context.Products.FindAsync(productId);
-            if (product == null) throw new ShopException($"Cannot find a product with id: {productId}");
-
-            foreach (var file in files)
-            {
-                var productImage = new ProductImage()
-                {
-                    ProductId = productId,
-                    Caption = file.FileName,
-                    DateCreated = DateTime.Now,
-                    FileSize = file.Length,
-                    ImagePath = await SaveFile(file),
-                    IsDefault = false,
-                    SortOrder = 1
-                };
-                _context.ProductImages.Add(productImage);
-            }
-            return await _context.SaveChangesAsync();
-
-        }
-
 
         public async Task AddViewCount(int productId)
         {
@@ -97,7 +75,6 @@ namespace ShopSolution.Application.Catalog.Products
                         SortOrder = 1,
                     }
                 };
-
             }
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -117,26 +94,13 @@ namespace ShopSolution.Application.Catalog.Products
 
             _context.Products.Remove(product);
 
-
             return await _context.SaveChangesAsync();
         }
-
-        public async Task<int> DeleteImages(int imageId)
-        {
-            var image = await _context.ProductImages.FindAsync(imageId);
-            if (image == null) throw new ShopException($"Cannot find an image with id: {imageId}");
-
-            _context.ProductImages.Remove(image);
-            await _storageService.DeleteFileAsync(image.ImagePath);
-            return await _context.SaveChangesAsync();
-        }
-
 
         public async Task<List<ProductViewModel>> GetAll()
         {
             throw new NotImplementedException();
         }
-
 
         public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request)
         {
@@ -210,11 +174,6 @@ namespace ShopSolution.Application.Catalog.Products
             return productViewModel;
         }
 
-        public Task<List<ProductImageViewModel>> GetListImage(int productId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var product = await _context.Products.FindAsync(request.Id);
@@ -242,18 +201,86 @@ namespace ShopSolution.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateImages(int imageId, string caption, bool isDefault)
+        public async Task<int> AddImages(int productId, ProductImageCreateRequest request)
+        {
+            var productImage = new ProductImage()
+            {
+                Caption = request.Caption,
+                DateCreated = DateTime.Now,
+                IsDefault = request.IsDefault,
+                ProductId = productId,
+                SortOrder = request.SortOrder
+            };
+
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+            _context.ProductImages.Add(productImage);
+            await _context.SaveChangesAsync();
+            return productImage.Id;
+        }
+
+        public async Task<int> UpdateImages(int imageId, ProductImageUpdateRequest request)
         {
             var productImage = await _context.ProductImages.FindAsync(imageId);
-            if (productImage == null) throw new ShopException($"Cannot find an image with id: {imageId}");
+            if (productImage == null)
+                throw new ShopException($"Cannot find an image with id {imageId}");
 
-            productImage.Caption = caption;
-            productImage.IsDefault = isDefault;
-
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
             _context.ProductImages.Update(productImage);
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<int> RemoveImage(int imageId)
+        {
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+            if (productImage == null)
+                throw new ShopException($"Cannot find an image with id {imageId}");
+            _context.ProductImages.Remove(productImage);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<ProductImageViewModel> GetImageById(int imageId)
+        {
+            var image = await _context.ProductImages.FindAsync(imageId);
+            if (image == null)
+                throw new ShopException($"Cannot find an image with id {imageId}");
+
+            var viewModel = new ProductImageViewModel()
+            {
+                Caption = image.Caption,
+                DateCreated = image.DateCreated,
+                FileSize = image.FileSize,
+                Id = image.Id,
+                ImagePath = image.ImagePath,
+                IsDefault = image.IsDefault,
+                ProductId = image.ProductId,
+                SortOrder = image.SortOrder
+            };
+            return viewModel;
+        }
+
+        public async Task<List<ProductImageViewModel>> GetListImage(int productId)
+        {
+            return await _context.ProductImages.Where(x => x.ProductId == productId)
+                .Select(i => new ProductImageViewModel()
+                {
+                    Caption = i.Caption,
+                    DateCreated = i.DateCreated,
+                    FileSize = i.FileSize,
+                    Id = i.Id,
+                    ImagePath = i.ImagePath,
+                    IsDefault = i.IsDefault,
+                    ProductId = i.ProductId,
+                    SortOrder = i.SortOrder
+                }).ToListAsync();
+        }
 
         public async Task<bool> updatePrice(int productId, decimal newPrice)
         {
@@ -261,7 +288,6 @@ namespace ShopSolution.Application.Catalog.Products
             if (product == null) throw new ShopException($"Cannot find a product with id: {productId}");
             product.Price = newPrice;
             return await _context.SaveChangesAsync() > 0;
-
         }
 
         public async Task<bool> updateStock(int productId, int addedQuantity)
