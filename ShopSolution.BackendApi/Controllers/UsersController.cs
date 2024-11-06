@@ -28,7 +28,7 @@ namespace ShopSolution.BackendApi.Controllers
             {
                 return BadRequest("Username or password is incorrect.");
             }
-            return Ok(new { token = resultToken });
+            return Ok(resultToken);
         }
 
         [HttpPost("register")]

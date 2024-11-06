@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using ShopSolution.Admin.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,12 @@ if (builder.Environment.IsDevelopment())
 }
 #endif
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/User/Login/";
+                    options.AccessDeniedPath = "/User/Forbidden/";
+                });
 // Sau khi c?u hình d?ch v? xong, ti?n hành build ?ng d?ng
 var app = builder.Build();
 
@@ -32,6 +39,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 app.UseRouting();
 
 app.UseAuthorization();
