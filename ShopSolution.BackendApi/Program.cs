@@ -11,16 +11,26 @@ using ShopSolution.Application.System.Users;
 using ShopSolution.Data.EF;
 using ShopSolution.Data.Entities;
 using ShopSolution.Utilities.Constants;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using ShopSolution.ViewModels.System.Users;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Add services to the container.
 builder.Services.AddControllers()
     .AddMvcOptions(options =>
     {
         // T?t AutoValidateAntiforgeryToken n?u b?n không c?n
         options.Filters.Clear();
     });
+
+
+builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
+
+//builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
+//builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
 
 // Thêm CORS n?u c?n
 builder.Services.AddCors(options =>
