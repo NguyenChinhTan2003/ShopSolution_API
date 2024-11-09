@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace ShopSolution.ViewModels.Common
 {
-    public class PagedResult<T>
+    public class RequestBase
     {
-        public List<T>? Items { get; set; }
-
-        public int TotalRecord { get; set; }
+        public string? BearerToken { get; set; }
     }
 }

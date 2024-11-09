@@ -6,6 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Thêm d?ch v? vào container
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+
 builder.Services.AddHttpClient();
 
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
@@ -43,7 +48,7 @@ app.UseAuthentication();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseSession();
 // ??nh tuy?n cho Razor Pages và Controllers
 app.MapRazorPages();
 

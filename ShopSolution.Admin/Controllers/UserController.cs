@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Logging;
@@ -23,9 +22,18 @@ namespace ShopSolution.Admin.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            return View();
+            var sessions = HttpContext.Session.GetString("Token");
+            var request = new GetUserPagingRequest()
+            {
+                BearerToken = sessions,
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var data = await _userApiClient.GetUsersPagings(request);
+            return View(data);
         }
 
         [HttpGet]
@@ -34,7 +42,6 @@ namespace ShopSolution.Admin.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest request)
@@ -50,6 +57,7 @@ namespace ShopSolution.Admin.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
+            HttpContext.Session.SetString("Token", token);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
@@ -58,11 +66,11 @@ namespace ShopSolution.Admin.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
         }
 
@@ -85,4 +93,3 @@ namespace ShopSolution.Admin.Controllers
         }
     }
 }
-
