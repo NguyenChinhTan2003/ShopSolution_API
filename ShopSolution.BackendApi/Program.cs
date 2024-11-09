@@ -15,7 +15,6 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using ShopSolution.ViewModels.System.Users;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 //Add services to the container.
@@ -25,7 +24,6 @@ builder.Services.AddControllers()
         // T?t AutoValidateAntiforgeryToken n?u b?n không c?n
         options.Filters.Clear();
     });
-
 
 builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
@@ -57,8 +55,7 @@ builder.Services.AddIdentity<AppUser, AppRole>()
 
 // DI Registration
 builder.Services.AddTransient<IStorageService, FileStorageService>();
-builder.Services.AddTransient<IPublicProductService, PublicProductService>();
-builder.Services.AddTransient<IManageProductService, ManageProductService>();
+builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();

@@ -1,10 +1,10 @@
-﻿
+﻿using ShopSolution.ViewModels.Common;
 using ShopSolution.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;    
+using System.Threading.Tasks;
 
 namespace ShopSolution.Application.System.Users
 {
@@ -13,5 +13,7 @@ namespace ShopSolution.Application.System.Users
         Task<string> Authencate(LoginRequest request);
 
         Task<bool> Register(RegisterRequest request);
+
+        Task<PagedResult<UserVm>> GetUsersPaging(GetUserPagingRequest request);
     }
 }
