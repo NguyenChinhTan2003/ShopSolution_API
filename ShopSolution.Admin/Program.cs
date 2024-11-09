@@ -28,7 +28,7 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/User/Login/";
+                    options.LoginPath = "/Login/Index/";
                     options.AccessDeniedPath = "/User/Forbidden/";
                 });
 // Sau khi c?u hình d?ch v? xong, ti?n hành build ?ng d?ng
