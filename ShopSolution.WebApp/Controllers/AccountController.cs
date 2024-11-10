@@ -1,23 +1,31 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using ShopSolution.ApiIntegration;
+using ShopSolution.Utilities.Constants;
+using ShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using ShopSolution.ViewModels.System.Users;
-using ShopSolution.ApiIntegration;
-using ShopSolution.Utilities.Constants;
 
-namespace ShopSolution.Admin.Controllers
+
+
+namespace ShopSolution.WebApp.Controllers
 {
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
 
-        public LoginController(IUserApiClient userApiClient,
+        public AccountController(IUserApiClient userApiClient,
             IConfiguration configuration)
         {
             _userApiClient = userApiClient;
@@ -25,39 +33,40 @@ namespace ShopSolution.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Login()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return View(ModelState);
 
-            var result = await _userApiClient.Authenticate(request);
-            if (result.ResultObj == null)
-            {
-                ModelState.AddModelError("", result.Message);
-                return View();
-            }
+            var token = await _userApiClient.Authenticate(request);
 
-            var userPrincipal = this.ValidateToken(result.ResultObj);
+            var userPrincipal = this.ValidateToken(token);
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
-            HttpContext.Session.SetString(SystemConstants.AppSettings.DefaultLanguageId, _configuration[SystemConstants.AppSettings.DefaultLanguageId]);
-            HttpContext.Session.SetString(SystemConstants.AppSettings.Token, result.ResultObj);
+            HttpContext.Session.SetString("Token", token);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
                         authProperties);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
+            return RedirectToAction("Index", "Home"); 
         }
 
         private ClaimsPrincipal ValidateToken(string jwtToken)

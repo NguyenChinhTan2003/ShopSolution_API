@@ -1,7 +1,7 @@
 ﻿using ShopSolution.ViewModels.Common;
 using ShopSolution.ViewModels.System.Users;
 
-namespace ShopSolution.Admin.Services
+namespace ShopSolution.ApiIntegration
 {
     public interface IUserApiClient
     {
