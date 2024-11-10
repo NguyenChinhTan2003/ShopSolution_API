@@ -142,8 +142,21 @@
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="" class="nav-item nav-link">Login</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="clearfix">
+                                    <div class="float-start">Welcome! <strong>@User.Identity.Name</strong></div>
+                                    <form method="post" asp-controller="Account" asp-action="Logout" class="float-end m-0">
+                                        <button type="submit" class="btn btn-link nav-link p-0">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
+                                
+                            }else {
+                            <a href="/Account/Login" class="nav-item nav-link">Login</a>
                             <a href="" class="nav-item nav-link">Register</a>
+                            }
                         </div>
                     </div>
                 </nav>

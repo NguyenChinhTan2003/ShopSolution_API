@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using ShopSolution.Admin.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ShopSolution.ViewModels.System.Users;
+using ShopSolution.ApiIntegration;
 
 namespace ShopSolution.Admin.Controllers
 {
