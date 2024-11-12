@@ -40,15 +40,27 @@ namespace ShopSolution.Admin.Services
         public async Task<ApiResult<UserVm>> GetById(Guid id)
         {
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            if (string.IsNullOrEmpty(sessions))
+            {
+                return new ApiErrorResult<UserVm>("Token is null or empty");
+            }
+
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var response = await client.GetAsync($"/api/users/{id}");
             var body = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<ApiSuccessResult<UserVm>>(body);
 
-            return JsonConvert.DeserializeObject<ApiErrorResult<UserVm>>(body);
+            if (response.IsSuccessStatusCode)
+            {
+                var user = JsonConvert.DeserializeObject<ApiSuccessResult<UserVm>>(body);
+                return user;
+            }
+            else
+            {
+                var error = JsonConvert.DeserializeObject<ApiErrorResult<UserVm>>(body);
+                return error;
+            }
         }
 
         public async Task<ApiResult<PagedResult<UserVm>>> GetUsersPagings(GetUserPagingRequest request)

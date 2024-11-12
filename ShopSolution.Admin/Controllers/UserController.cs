@@ -63,12 +63,12 @@ namespace ShopSolution.Admin.Controllers
                 var user = result.ResultObj;
                 var updateRequest = new UserUpdateRequest()
                 {
+                    Id = id,
                     Dob = user.Dob,
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    PhoneNumber = user.PhoneNumber,
-                    Id = id
+                    PhoneNumber = user.PhoneNumber
                 };
                 return View(updateRequest);
             }
@@ -79,7 +79,7 @@ namespace ShopSolution.Admin.Controllers
         public async Task<IActionResult> Edit(UserUpdateRequest request)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(request);
 
             var result = await _userApiClient.UpdateUser(request.Id, request);
             if (result.IsSuccessed)
