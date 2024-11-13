@@ -143,8 +143,10 @@ namespace ShopSolution.Application.Catalog.Products
             //4. Select and projection
             var pageResult = new PagedResult<ProductViewModel>()
             {
-                TotalRecord = totalRow,
-                Items = data,
+                TotalRecords = totalRow,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
+                Items = data
             };
             return pageResult;
         }
@@ -347,8 +349,10 @@ namespace ShopSolution.Application.Catalog.Products
             //4. Select and projection
             var pageResult = new PagedResult<ProductViewModel>()
             {
-                TotalRecord = totalRow,
-                Items = data,
+                TotalRecords = totalRow,
+                PageSize = request.PageSize,
+                PageIndex = request.PageIndex,
+                Items = data
             };
             return pageResult;
         }

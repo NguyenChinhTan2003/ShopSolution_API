@@ -1,26 +1,26 @@
-﻿@model ShopSolution.ViewModels.System.Users.RegisterRequest
+﻿@model ShopSolution.ViewModels.System.Users.UserUpdateRequest
 
 @{
-    ViewData["Title"] = "Tạo mới người dùng";
+    ViewData["Title"] = "Cập nhật người dùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container">
-    <h1 class="my-4">Tạo mới người dùng</h1>
+    <h1 class="my-4">Cập nhật người dùng</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Tạo mới người dùng</li>
+        <li class="breadcrumb-item active">Cập nhật người dùng</li>
     </ol>
     <div class="card shadow-sm mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Tạo mới người dùng</span>
+            <span>Cập nhật người dùng</span>
             <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="User">Về danh sách</a>
         </div>
 
         <div class="card-body">
             <div class="col-md-8 offset-md-2">
-                <form asp-action="Create" class="needs-validation" novalidate>
-                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+                <form asp-action="Edit" class="needs-validation" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                     <div class="form-group">
                         <label asp-for="FirstName" class="form-label"></label>
                         <input asp-for="FirstName" class="form-control" placeholder="Nhập tên" required />
@@ -45,21 +45,6 @@
                         <label asp-for="PhoneNumber" class="form-label"></label>
                         <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại" required />
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserName" class="form-label"></label>
-                        <input asp-for="UserName" class="form-control" placeholder="Nhập tên đăng nhập" required />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu" required />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword" class="form-label"></label>
-                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Nhập lại mật khẩu" required />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
                     <div class="form-group text-center">
                         <input type="submit" value="Lưu lại" class="btn btn-primary mt-3" />

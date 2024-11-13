@@ -41,7 +41,7 @@ namespace ShopSolution.BackendApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
+        public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +59,7 @@ namespace ShopSolution.BackendApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
+        public async Task<IActionResult> Update([FromBody] ProductUpdateRequest request)
         {
             if (ModelState.IsValid)
             {
