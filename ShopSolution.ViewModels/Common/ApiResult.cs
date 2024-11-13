@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ShopSolution.ViewModels.Common
-{
+    {
     public class ApiResult<T>
     {
         public bool IsSuccessed { get; set; }

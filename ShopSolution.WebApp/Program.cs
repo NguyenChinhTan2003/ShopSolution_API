@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ShopSolution.ApiIntegration;
+using ShopSolution.Data.EF;
+using ShopSolution.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +18,28 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
                     options.AccessDeniedPath = "/User/Forbidden/";
                 });
 
+builder.Services.AddIdentity<AppUser, AppRole>()
+    .AddEntityFrameworkStores<ShopDBContext>()
+    .AddDefaultTokenProviders();
+
+
+builder.Services.AddScoped<SignInManager<AppUser>>();
+builder.Services.AddScoped<UserManager<AppUser>>();
+
 builder.Services.AddScoped<IUserApiClient,UserApiClient>();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+builder.Services.AddDbContext<ShopDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Auth:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"];
+    });
 // Thêm c?u hình session tr??c khi g?i builder.Build()
 builder.Services.AddSession(options =>
 {
