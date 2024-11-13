@@ -48,6 +48,7 @@ namespace ShopSolution.WebApp.Controllers
             {
                 Schemes = await _signInManager.GetExternalAuthenticationSchemesAsync()
             };
+            
             return View(loginRequest);
         }
 
@@ -74,13 +75,23 @@ namespace ShopSolution.WebApp.Controllers
             if (result.Succeeded)
             {
                 // Thực hiện API authentication để lấy token nếu cần
-                var token = await _userApiClient.Authenticate(request);
-                if (!string.IsNullOrEmpty(token.ResultObj))
-                {
-                    HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
-                }
+                //var token = await _userApiClient.Authenticate(request);
+                //if (!string.IsNullOrEmpty(token.ResultObj))
+                //{
+                //    HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
+                //}
+                var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim("FirstName", user.FirstName ?? ""),
+                        new Claim("LastName", user.LastName ?? "")
+                    };
 
-            return RedirectToAction("Index", "Home");
+                // Add the claims to the identity
+                await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
+
+                return RedirectToAction("Index", "Home");
         }
             else
             {
@@ -151,7 +162,6 @@ namespace ShopSolution.WebApp.Controllers
                 ModelState.AddModelError("", $"Error from extranal login provide: {remoteError}");
                 return View(loginRequest);
             }
-            var name = info.Principal.Identity.Name;
 
             var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
@@ -163,6 +173,7 @@ namespace ShopSolution.WebApp.Controllers
                 if (!string.IsNullOrEmpty(userEmail))
                 {
                     var user = await _userManager.FindByEmailAsync(userEmail);
+                    var name = info.Principal.Identity.Name;
 
                     if (user == null)
                     {
@@ -173,7 +184,7 @@ namespace ShopSolution.WebApp.Controllers
                             EmailConfirmed = true,
                             Dob = DateTime.Now,
                             FirstName = "",
-                            LastName = "",
+                            LastName = name,
 
                         };
 
@@ -181,7 +192,17 @@ namespace ShopSolution.WebApp.Controllers
 
                     }
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim("FirstName", user.FirstName ?? ""),
+                        new Claim("LastName", user.LastName ?? "")
+                    };
+
+                    // Add the claims to the identity
+                    await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
+
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -191,5 +212,6 @@ namespace ShopSolution.WebApp.Controllers
             ModelState.AddModelError("", $"Something went wrong");
             return View(loginRequest);
         }
+
     }
 }
