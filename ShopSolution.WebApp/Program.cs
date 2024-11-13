@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopSolution.ApiIntegration;
@@ -35,10 +36,15 @@ builder.Services.AddDbContext<ShopDBContext>(options =>
 
 
 builder.Services.AddAuthentication()
-    .AddGoogle(options =>
+    .AddGoogle(googleOptions =>
     {
-        options.ClientId = builder.Configuration["Auth:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"];
+        googleOptions.ClientId = builder.Configuration["Auth:Google:ClientId"];
+        googleOptions.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"];
+    })
+    .AddFacebook(facebookOptions => {
+        facebookOptions.ClientId = builder.Configuration["Auth:Facebook:AppId"];
+        facebookOptions.ClientSecret = builder.Configuration["Auth:Facebook:AppSecret"];
+        facebookOptions.Scope.Add("email");
     });
 // Thêm c?u hình session tr??c khi g?i builder.Build()
 builder.Services.AddSession(options =>

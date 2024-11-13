@@ -18,6 +18,13 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Identity;
 using ShopSolution.Data.Entities;
 using System.Data;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+
+
+
 
 
 
@@ -30,6 +37,9 @@ namespace ShopSolution.WebApp.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
 
+        string appid = string.Empty;
+        string appsecret = string.Empty;
+
         public AccountController(IUserApiClient userApiClient,
             IConfiguration configuration, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
         {
@@ -37,6 +47,12 @@ namespace ShopSolution.WebApp.Controllers
             _configuration = configuration;
             _signInManager = signInManager;
             _userManager = userManager;
+
+          
+            appid = configuration.GetSection("AppID").Value;
+            appsecret = configuration.GetSection("AppSecret").Value;
+            
+
         }
 
         [HttpGet]
@@ -88,7 +104,7 @@ namespace ShopSolution.WebApp.Controllers
                         new Claim("LastName", user.LastName ?? "")
                     };
 
-                // Add the claims to the identity
+             
                 await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
 
                 return RedirectToAction("Index", "Home");
@@ -135,11 +151,22 @@ namespace ShopSolution.WebApp.Controllers
 
         public IActionResult ExternalLogin(string provider, string returnUrl = "")
         {
-            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            if (provider == "Google")
+            {
+                var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
 
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+                var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 
-            return new ChallengeResult(provider, properties);
+                return new ChallengeResult(provider, properties);
+            }
+            else if (provider == "Facebook")
+            {
+                return FacebookLogin(returnUrl); // Chuyển đến hàm FacebookLogin
+            }
+
+            ModelState.AddModelError("", "Provider không được hỗ trợ.");
+            return RedirectToAction("Login");
+           
         }
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = "", string remoteError = "")
         {
@@ -155,7 +182,6 @@ namespace ShopSolution.WebApp.Controllers
                 return View(loginRequest);
             }
 
-            //Get login info
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
@@ -200,7 +226,6 @@ namespace ShopSolution.WebApp.Controllers
                         new Claim("LastName", user.LastName ?? "")
                     };
 
-                    // Add the claims to the identity
                     await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
 
 
@@ -212,6 +237,68 @@ namespace ShopSolution.WebApp.Controllers
             ModelState.AddModelError("", $"Something went wrong");
             return View(loginRequest);
         }
+
+
+        public IActionResult FacebookLogin( string returnUrl = "")
+        {
+            var redirectUrl = Url.Action("FacebookLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Facebook", redirectUrl);
+            return new ChallengeResult("Facebook", properties);
+        }
+
+
+
+        public async Task<IActionResult> FacebookLoginCallback(string returnUrl = "", string remoteError = "")
+        {
+            var loginRequest = new LoginRequest()
+            {
+                Schemes = await _signInManager.GetExternalAuthenticationSchemesAsync()
+            };
+
+            if (!string.IsNullOrEmpty(remoteError))
+            {
+                ModelState.AddModelError("", $"Error from external login provider: {remoteError}");
+                return View(loginRequest);
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState.AddModelError("", "Error loading external login information.");
+                return View(loginRequest);
+            }
+
+            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+
+           
+
+            if (user == null)
+            {
+
+                user = new AppUser
+                {
+                    UserName = info.ProviderKey,
+                   
+                    Dob = DateTime.Now,
+                    FirstName = info.Principal.Identity.Name.Split(' ')[0],
+                    LastName = info.Principal.Identity.Name.Split(' ')[1]
+                };
+
+                await _userManager.CreateAsync(user);
+                await _userManager.AddLoginAsync(user, info);
+            }
+            var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim("FirstName", user.FirstName ?? ""),
+                        new Claim("LastName", user.LastName ?? "")
+                    };
+
+            await _signInManager.SignInWithClaimsAsync(user, isPersistent: false,claims);
+            return RedirectToAction("Index", "Home");
+        }
+
 
     }
 }
