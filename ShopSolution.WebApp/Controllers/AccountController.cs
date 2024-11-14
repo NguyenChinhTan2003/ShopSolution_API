@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using Azure.Core;
 
 
 
@@ -299,6 +300,56 @@ namespace ShopSolution.WebApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterRequest registerRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(registerRequest);
+            }
+            var user = await _userManager.FindByNameAsync(registerRequest.UserName);
+            if (user != null)
+            {
+                ModelState.AddModelError("UserName", "Tài khoản đã tồn tại.");
+                return View(ModelState);
+            }
+
+            // Tạo đối tượng người dùng mới từ thông tin đăng ký
+            var newUser = new AppUser
+            {
+                UserName = registerRequest.UserName,
+                Email = registerRequest.Email,
+                FirstName = registerRequest.FirstName,
+                LastName = registerRequest.LastName,
+                Dob = registerRequest.Dob,
+            };
+
+            // Tạo tài khoản người dùng với mật khẩu
+            var result = await _userManager.CreateAsync(newUser, registerRequest.Password);
+            if (result.Succeeded)
+            {
+                // Gán vai trò mặc định (nếu có)
+                //await _userManager.AddToRoleAsync(newUser, "User");
+
+                // đăng ký thành công
+                // trả về trang login   
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(registerRequest);
+            }
+        }
 
     }
 }
