@@ -285,6 +285,7 @@ namespace ShopSolution.WebApp.Controllers
                     LastName = info.Principal.Identity.Name.Split(' ')[1]
                 };
 
+                user.Id = Guid.NewGuid();
                 await _userManager.CreateAsync(user);
                 await _userManager.AddLoginAsync(user, info);
             }
