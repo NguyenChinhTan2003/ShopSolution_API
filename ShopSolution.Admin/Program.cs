@@ -17,6 +17,7 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 builder.Services.AddTransient<ILanguageApiClient, LanguageApiClient>();
+builder.Services.AddTransient<IProductApiClient, ProductApiClient>();
 
 var mvcBuilder = builder.Services.AddRazorPages();
 

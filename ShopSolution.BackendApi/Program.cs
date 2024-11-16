@@ -153,6 +153,7 @@ app.UseStaticFiles();
 app.UseCors("AllowAll");
 
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
