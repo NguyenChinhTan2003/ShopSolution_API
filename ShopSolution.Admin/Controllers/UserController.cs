@@ -31,6 +31,7 @@ namespace ShopSolution.Admin.Controllers
                 PageSize = pageSize
             };
             var data = await _userApiClient.GetUsersPagings(request);
+            ViewBag.Keyword = keyword;
             return View(data.ResultObj);
         }
 
@@ -101,7 +102,7 @@ namespace ShopSolution.Admin.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("Token");
-            return RedirectToAction("Login", "User");
+            return RedirectToAction("Index", "Login");
         }
 
         [HttpGet]

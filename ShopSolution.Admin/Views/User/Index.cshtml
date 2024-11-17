@@ -13,9 +13,23 @@
         <li class="breadcrumb-item active">Danh sách người dùng</li>
     </ol>
     <div class="card shadow-sm mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Danh sách người dùng</span>
-            <a class="btn btn-success btn-sm" asp-action="Create" asp-controller="User">Tạo mới</a>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="User">Tạo mới</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="input-group">
+                            <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" placeholder="Tìm kiếm..." />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">Tìm</button>
+                                <button class="btn btn-dark" type="button" onclick="window.location.href='/User/Index'">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <div class="card-body">
@@ -40,7 +54,7 @@
                                 <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
                                 <td>@Html.DisplayFor(modelItem => item.UserName)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                                <td>
+                                <td class="text-nowrap">
                                     <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                                     <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
                                     <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -77,5 +91,17 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-success, .btn-primary, .btn-dark {
+        margin-bottom: 10px;
+    }
+
+    .text-nowrap {
+        white-space: nowrap;
+    }
+
+    .input-group-append .btn {
+        margin-left: 5px;
     }
 </style>
