@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using ShopSolution.ViewModels.Common;
 using ShopSolution.ViewModels.System.Users;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace ShopSolution.ApiIntegration
+namespace ShopSolution.Admin.Services
 {
     public class UserApiClient : IUserApiClient
     {

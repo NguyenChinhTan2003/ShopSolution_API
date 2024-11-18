@@ -20,7 +20,7 @@ namespace ShopSolution.Data.Entities
         public OrderStatus Status { set; get; }
 
 
-        public AppUser? AppUser { get; set; }
+        public AppUser AppUser { get; set; }
 
 
     }
