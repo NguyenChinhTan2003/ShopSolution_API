@@ -7,6 +7,7 @@ using ShopSolution.Application.Common;
 using ShopSolution.Application.Service.Products;
 using ShopSolution.Data.EF;
 using ShopSolution.Data.Entities;
+using ShopSolution.Utilities.Constants;
 using ShopSolution.Utilities.Exceptions;
 using ShopSolution.ViewModels.Catalog.ProductImages;
 using ShopSolution.ViewModels.Catalog.Products;
@@ -51,13 +52,13 @@ namespace ShopSolution.Application.Catalog.Products
                 {
                     new ProductTranslation()
                     {
-                        Name = request.Name,
+                        Name =  request.Name,
                         Description = request.Description,
                         Details = request.Details,
                         SeoDescription = request.SeoDescription,
                         SeoAlias = request.SeoAlias,
                         SeoTitle = request.SeoTitle,
-                        LanguageId = request.LanguageId,
+                        LanguageId = request.LanguageId
                     }
                 }
             };
@@ -66,13 +67,14 @@ namespace ShopSolution.Application.Catalog.Products
             {
                 product.ProductImages = new List<ProductImage>()
                 {
-                    new ProductImage() {
-                        Caption = "Thumbnail Image",
+                    new ProductImage()
+                    {
+                        Caption = "Thumbnail image",
                         DateCreated = DateTime.Now,
                         FileSize = request.ThumbnailImage.Length,
                         ImagePath = await this.SaveFile(request.ThumbnailImage),
                         IsDefault = true,
-                        SortOrder = 1,
+                        SortOrder = 1
                     }
                 };
             }
@@ -80,6 +82,7 @@ namespace ShopSolution.Application.Catalog.Products
             await _context.SaveChangesAsync();
             return product.Id;
         }
+
 
         public async Task<int> Delete(int productId)
         {
@@ -102,19 +105,19 @@ namespace ShopSolution.Application.Catalog.Products
             //1. Select join
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.Id
+                        //join pic in _context.ProductInCategories on p.Id equals pic.ProductId
+                        //join c in _context.Categories on pic.CategoryId equals c.Id
                         where pt.LanguageId == request.LanguageId
-                        select new { p, pt, pic };
+                        select new { p, pt };
 
             //2. Filter
             if (!string.IsNullOrEmpty(request.Keyword))
                 query = query.Where(x => x.pt.Name.Contains(request.Keyword));
 
-            if (request.CategoryIds != null && request.CategoryIds.Count > 0)
-            {
-                query = query.Where(p => request.CategoryIds.Contains(p.pic.CategoryId));
-            }
+            //if (request.CategoryIds != null && request.CategoryIds.Count > 0)
+            //{
+            //    query = query.Where(p => request.CategoryIds.Contains(p.pic.CategoryId));
+            //}
 
             //3. Paging
             int totalRow = await query.CountAsync();

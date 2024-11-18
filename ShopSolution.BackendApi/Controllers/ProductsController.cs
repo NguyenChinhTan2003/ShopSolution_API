@@ -41,9 +41,10 @@ namespace ShopSolution.BackendApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult>Create([FromForm]ProductCreateRequest request)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -59,7 +60,7 @@ namespace ShopSolution.BackendApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] ProductUpdateRequest request)
+        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
         {
             if (ModelState.IsValid)
             {
