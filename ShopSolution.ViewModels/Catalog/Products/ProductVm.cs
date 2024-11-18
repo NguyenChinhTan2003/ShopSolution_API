@@ -11,8 +11,8 @@ namespace ShopSolution.ViewModels.Catalog.Products
         public int Id { set; get; }
         public decimal Price { set; get; }
         public decimal OriginalPrice { set; get; }
-        public int Stock { set; get; }
-        public int ViewCount { set; get; }
+        public int? Stock { set; get; }
+        public int? ViewCount { set; get; }
         public DateTime DateCreated { set; get; }
         public string? Name { set; get; }
         public string? Description { set; get; }
@@ -22,5 +22,7 @@ namespace ShopSolution.ViewModels.Catalog.Products
 
         public string? SeoAlias { get; set; }
         public string LanguageId { set; get; }
+
+        public List<string>? Categories { get; set; } = new List<string>();
     }
 }
