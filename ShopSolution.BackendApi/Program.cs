@@ -15,6 +15,7 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using ShopSolution.ViewModels.System.Users;
 using ShopSolution.Application.System.Languages;
+using ShopSolution.Application.Catalog.Categories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +63,7 @@ builder.Services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ILanguageService, LanguageService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 
 // JWT Configuration
 string? issuer = builder.Configuration["Tokens:Issuer"];
