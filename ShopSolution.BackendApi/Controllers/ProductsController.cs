@@ -60,7 +60,7 @@ namespace ShopSolution.BackendApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] ProductUpdateRequest request)
+        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
         {
             if (ModelState.IsValid)
             {

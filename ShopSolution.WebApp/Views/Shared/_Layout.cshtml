@@ -142,29 +142,8 @@
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                var firstName = User.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
-                                var lastName = User.Claims.FirstOrDefault(c => c.Type == "LastName")?.Value;
-                                var displayName = !string.IsNullOrEmpty(firstName) || !string.IsNullOrEmpty(lastName)
-                                ? $"{firstName} {lastName}"
-                                : User.Identity.Name;
-
-                                <div class="clearfix">
-                                    <div class="float-start">Welcome! <strong> @displayName </strong></div>
-                                    <form method="post" asp-controller="Account" asp-action="Logout" class="float-end m-0">
-                                        <button type="submit" class="btn btn-link nav-link p-0">
-                                            <i class="fas fa-sign-out-alt"></i> Logout
-                                        </button>
-                                    </form>
-                                </div>
-                            }
-                            else
-                            {
-                                <a href="/Account/Login" class="nav-item nav-link">Login</a>
-                                <a href="/Account/Register" class="nav-item nav-link">Register</a>
-                            }
-
+                            <a href="" class="nav-item nav-link">Login</a>
+                            <a href="" class="nav-item nav-link">Register</a>
                         </div>
                     </div>
                 </nav>
