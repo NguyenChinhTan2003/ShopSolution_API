@@ -19,6 +19,7 @@
     <ProjectReference Include="..\ShopSolution.Data\ShopSolution.Data.csproj" />
     <ProjectReference Include="..\ShopSolution.Utilities\ShopSolution.Utilities.csproj" />
     <ProjectReference Include="..\ShopSolution.ViewModels\ShopSolution.ViewModels.csproj" />
+    <ProjectReference Include="..\Solution.ApiIntegration\ShopSolution.ApiIntegration.csproj" />
   </ItemGroup>
 
   <ItemGroup>
