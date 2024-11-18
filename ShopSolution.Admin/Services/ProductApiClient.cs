@@ -1,7 +1,9 @@
-﻿using ShopSolution.Utilities.Constants;
+﻿using Newtonsoft.Json;
+using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Catalog.Products;
 using ShopSolution.ViewModels.Common;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace ShopSolution.Admin.Services
 {
@@ -60,6 +62,26 @@ namespace ShopSolution.Admin.Services
                 $"&pageSize={request.PageSize}" +
                $"&keyword={request.Keyword}&languageId={request.LanguageId}&categoryId={request.CategoryId}");
 
+            return data;
+        }
+
+        public async Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync($"/api/products/{id}/categories", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+        public async Task<ProductVm> GetById(int id, string languageId)
+        {
+            var data = await GetAsync<ProductVm>($"/api/products/{id}/{languageId}");
             return data;
         }
     }
