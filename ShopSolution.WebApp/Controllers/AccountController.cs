@@ -24,11 +24,6 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using Azure.Core;
 
-
-
-
-
-
 namespace ShopSolution.WebApp.Controllers
 {
     public class AccountController : Controller
