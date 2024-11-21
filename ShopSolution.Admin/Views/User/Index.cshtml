@@ -71,9 +71,11 @@
                                 <td>@Html.DisplayFor(modelItem => item.UserName)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
                                 <td class="text-nowrap">
-                                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    
+                                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
+                                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">Xem chi tiết</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                                    <a class="btn btn-dark btn-sm" asp-action="RoleAssign" asp-route-id="@item.Id">Gán quyền</a>
                                 </td>
                             </tr>
                         }
