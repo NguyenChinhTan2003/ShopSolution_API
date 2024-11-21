@@ -19,8 +19,8 @@ namespace ShopSolution.Data.Extensions
                new AppConfig() { Key = "HomeDescription", Value = "This is description of Shop" }
                );
             modelBuilder.Entity<Language>().HasData(
-                new Language() { Id = "vi-VN", Name = "Tiếng Việt", IsDefault = true },
-                new Language() { Id = "en-US", Name = "English", IsDefault = false });
+                new Language() { Id = "vi", Name = "Tiếng Việt", IsDefault = true },
+                new Language() { Id = "en", Name = "English", IsDefault = false });
 
             modelBuilder.Entity<Category>().HasData(
                 new Category()
@@ -41,10 +41,10 @@ namespace ShopSolution.Data.Extensions
                  });
 
             modelBuilder.Entity<CategoryTranslation>().HasData(
-                  new CategoryTranslation() { Id = 1, CategoryId = 1, Name = "Điện thoại và máy tính bảng", LanguageId = "vi-VN", SeoAlias = "dien-thoai-va-may-tinh-bang", SeoDescription = "Sản phẩm điện thoại thông minh và máy tính bảng", SeoTitle = "Sản phẩm điện thoại thông minh và máy tính bảng" },
-                  new CategoryTranslation() { Id = 2, CategoryId = 1, Name = "Mobile Phones & Tablets", LanguageId = "en-US", SeoAlias = "mobile-phone-&-tablets", SeoDescription = "Smartphone and tablet products", SeoTitle = "Smartphone and tablet products" },
-                  new CategoryTranslation() { Id = 3, CategoryId = 2, Name = "Thiết bị chơi game", LanguageId = "vi-VN", SeoAlias = "Thiet-bi-choi-game", SeoDescription = "Sản phẩm chơi game", SeoTitle = "Sản phẩm chơi game" },
-                  new CategoryTranslation() { Id = 4, CategoryId = 2, Name = "Gaming Gear", LanguageId = "en-US", SeoAlias = "gaming-gear", SeoDescription = "Gaming products", SeoTitle = "Gaming products" }
+                  new CategoryTranslation() { Id = 1, CategoryId = 1, Name = "Điện thoại và máy tính bảng", LanguageId = "vi", SeoAlias = "dien-thoai-va-may-tinh-bang", SeoDescription = "Sản phẩm điện thoại thông minh và máy tính bảng", SeoTitle = "Sản phẩm điện thoại thông minh và máy tính bảng" },
+                  new CategoryTranslation() { Id = 2, CategoryId = 1, Name = "Mobile Phones & Tablets", LanguageId = "en", SeoAlias = "mobile-phone-&-tablets", SeoDescription = "Smartphone and tablet products", SeoTitle = "Smartphone and tablet products" },
+                  new CategoryTranslation() { Id = 3, CategoryId = 2, Name = "Thiết bị chơi game", LanguageId = "vi", SeoAlias = "Thiet-bi-choi-game", SeoDescription = "Sản phẩm chơi game", SeoTitle = "Sản phẩm chơi game" },
+                  new CategoryTranslation() { Id = 4, CategoryId = 2, Name = "Gaming Gear", LanguageId = "en", SeoAlias = "gaming-gear", SeoDescription = "Gaming products", SeoTitle = "Gaming products" }
                     );
 
             modelBuilder.Entity<Product>().HasData(
@@ -63,7 +63,7 @@ namespace ShopSolution.Data.Extensions
                      Id = 1,
                      ProductId = 1,
                      Name = "Tay cầm chơi game",
-                     LanguageId = "vi-VN",
+                     LanguageId = "vi",
                      SeoAlias = "tay-cam-choi-game",
                      SeoDescription = "Tay cầm chơi game",
                      SeoTitle = "Tay cầm chơi game",
@@ -75,7 +75,7 @@ namespace ShopSolution.Data.Extensions
                         Id = 2,
                         ProductId = 1,
                         Name = "Game Controllers",
-                        LanguageId = "en-US",
+                        LanguageId = "en",
                         SeoAlias = "game-controllers",
                         SeoDescription = "Game Controllers",
                         SeoTitle = "Game Controllers",
