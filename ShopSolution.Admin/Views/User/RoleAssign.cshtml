@@ -1,0 +1,60 @@
+﻿@model ShopSolution.ViewModels.System.Users.RoleAssignRequest
+
+@{
+    ViewData["Title"] = "Gán quyền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h1 class="my-4">Gán quyền</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Gán quyền</li>
+    </ol>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Gán quyền</span>
+            <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="User">Về danh sách</a>
+        </div>
+        <div class="card-body">
+            <form asp-action="RoleAssign" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="Id" />
+                @for (var i = 0; i < Model.Roles.Count; i++)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input role-checkbox" type="checkbox" asp-for="Roles[i].Selected" />
+                        <label class="form-check-label" for="Roles[i].Selected">
+                            @Model.Roles[i].Name
+                        </label>
+                        <input type="hidden" asp-for="Roles[i].Id" />
+                        <input type="hidden" asp-for="Roles[i].Name" />
+                    </div>
+                }
+                <div class="form-group mt-4 text-center">
+                    <input type="submit" value="Lưu lại" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chỉ cho phép chọn 1 ô checkbox
+            const checkboxes = document.querySelectorAll('.role-checkbox');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        // Bỏ chọn tất cả các checkbox khác
+                        checkboxes.forEach(cb => cb.checked = false);
+                        // Đánh dấu lại checkbox hiện tại
+                        this.checked = true;
+                    }
+                });
+            });
+        });
+    </script>
+}

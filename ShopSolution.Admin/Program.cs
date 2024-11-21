@@ -17,6 +17,8 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 
+builder.Services.AddTransient<IRoleApiClient, RoleApiClient>();
+
 var mvcBuilder = builder.Services.AddRazorPages();
 
 #if DEBUG

@@ -14,6 +14,7 @@ using ShopSolution.Utilities.Constants;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using ShopSolution.ViewModels.System.Users;
+using ShopSolution.Application.System.Roles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,7 @@ builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IRoleService, RoleService>();
 
 // JWT Configuration
 string? issuer = builder.Configuration["Tokens:Issuer"];
