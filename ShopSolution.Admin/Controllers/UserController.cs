@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using ShopSolution.ApiIntegration;
 using ShopSolution.ViewModels.Common;
+using ShopSolution.Admin.Services;
 
 namespace ShopSolution.Admin.Controllers
 {
@@ -141,15 +142,12 @@ namespace ShopSolution.Admin.Controllers
 
             var result = await _userApiClient.UpdateUser(request.Id, request);
             if (result.IsSuccessed)
-            {     
+            {
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", result.Message);
             return View(request);
-
-        
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Logout()
