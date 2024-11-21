@@ -1,7 +1,7 @@
 ﻿using ShopSolution.ViewModels.Common;
 using ShopSolution.ViewModels.System.Users;
 
-namespace ShopSolution.Admin.Services
+namespace ShopSolution.ApiIntegration
 {
     public interface IUserApiClient
     {
@@ -16,5 +16,7 @@ namespace ShopSolution.Admin.Services
         Task<ApiResult<UserVm>> GetById(Guid id);
 
         Task<ApiResult<bool>> Delete(Guid id);
+
+        Task<ApiResult<bool>> RoleAssign(Guid id, RoleAssignRequest request);
     }
 }

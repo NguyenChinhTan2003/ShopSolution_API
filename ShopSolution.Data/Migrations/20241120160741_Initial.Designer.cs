@@ -12,8 +12,8 @@ using ShopSolution.Data.EF;
 namespace ShopSolution.Data.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    [Migration("20241104135018_Sendata")]
-    partial class Sendata
+    [Migration("20241120160741_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,7 +194,8 @@ namespace ShopSolution.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Dob")
+                    b.Property<DateTime?>("Dob")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -349,12 +350,10 @@ namespace ShopSolution.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("SeoDescription")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("SeoTitle")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -371,7 +370,7 @@ namespace ShopSolution.Data.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            LanguageId = "vi-VN",
+                            LanguageId = "vi",
                             Name = "Điện thoại và máy tính bảng",
                             SeoAlias = "dien-thoai-va-may-tinh-bang",
                             SeoDescription = "Sản phẩm điện thoại thông minh và máy tính bảng",
@@ -381,7 +380,7 @@ namespace ShopSolution.Data.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            LanguageId = "en-US",
+                            LanguageId = "en",
                             Name = "Mobile Phones & Tablets",
                             SeoAlias = "mobile-phone-&-tablets",
                             SeoDescription = "Smartphone and tablet products",
@@ -391,7 +390,7 @@ namespace ShopSolution.Data.Migrations
                         {
                             Id = 3,
                             CategoryId = 2,
-                            LanguageId = "vi-VN",
+                            LanguageId = "vi",
                             Name = "Thiết bị chơi game",
                             SeoAlias = "Thiet-bi-choi-game",
                             SeoDescription = "Sản phẩm chơi game",
@@ -401,7 +400,7 @@ namespace ShopSolution.Data.Migrations
                         {
                             Id = 4,
                             CategoryId = 2,
-                            LanguageId = "en-US",
+                            LanguageId = "en",
                             Name = "Gaming Gear",
                             SeoAlias = "gaming-gear",
                             SeoDescription = "Gaming products",
@@ -436,7 +435,7 @@ namespace ShopSolution.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -466,13 +465,13 @@ namespace ShopSolution.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "vi-VN",
+                            Id = "vi",
                             IsDefault = true,
                             Name = "Tiếng Việt"
                         },
                         new
                         {
-                            Id = "en-US",
+                            Id = "en",
                             IsDefault = false,
                             Name = "English"
                         });
@@ -579,7 +578,7 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 11, 4, 20, 50, 17, 669, DateTimeKind.Local).AddTicks(8038),
+                            DateCreated = new DateTime(2024, 11, 20, 23, 7, 40, 646, DateTimeKind.Local).AddTicks(1464),
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
@@ -707,7 +706,7 @@ namespace ShopSolution.Data.Migrations
                             Id = 1,
                             Description = "Tay cầm chơi game",
                             Details = "Tay cầm chơi game",
-                            LanguageId = "vi-VN",
+                            LanguageId = "vi",
                             Name = "Tay cầm chơi game",
                             ProductId = 1,
                             SeoAlias = "tay-cam-choi-game",
@@ -719,7 +718,7 @@ namespace ShopSolution.Data.Migrations
                             Id = 2,
                             Description = "Game Controllers",
                             Details = "Game Controllers",
-                            LanguageId = "en-US",
+                            LanguageId = "en",
                             Name = "Game Controllers",
                             ProductId = 1,
                             SeoAlias = "game-controllers",

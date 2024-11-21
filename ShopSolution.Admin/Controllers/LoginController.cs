@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using ShopSolution.Admin.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ShopSolution.ViewModels.System.Users;
+using ShopSolution.ApiIntegration;
 using ShopSolution.Utilities.Constants;
 
 namespace ShopSolution.Admin.Controllers
@@ -35,7 +35,7 @@ namespace ShopSolution.Admin.Controllers
         public async Task<IActionResult> Index(LoginRequest request)
         {
             if (!ModelState.IsValid)
-                return View(ModelState);
+                return View(request);
 
             var result = await _userApiClient.Authenticate(request);
             if (result.ResultObj == null)

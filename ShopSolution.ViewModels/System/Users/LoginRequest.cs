@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,8 @@ namespace ShopSolution.ViewModels.System.Users
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
+
+     
+        public IEnumerable<AuthenticationScheme>? Schemes { get; set; }
     }
 }
