@@ -120,6 +120,10 @@
   <data name="20% off the all order" xml:space="preserve">
     <value>Giảm giá 20% cho tất cả đơn hàng</value>
   </data>
+  <data name="Account" xml:space="preserve">
+    <value>Tài khoản</value>
+    <comment>Login</comment>
+  </data>
   <data name="Checkout" xml:space="preserve">
     <value>Thanh toán</value>
     <comment>Layouts</comment>
@@ -128,12 +132,28 @@
     <value>Liên hệ</value>
     <comment>Layouts</comment>
   </data>
+  <data name="Continue with Facebook" xml:space="preserve">
+    <value>Đăng nhập bằng tài khoản Facebook</value>
+    <comment>Login</comment>
+  </data>
+  <data name="Continue with Google" xml:space="preserve">
+    <value>Đăng nhập bằng tài khoản Google</value>
+    <comment>Login</comment>
+  </data>
+  <data name="Don't have an account?" xml:space="preserve">
+    <value>Bạn chưa có tài khoản?</value>
+    <comment>Login</comment>
+  </data>
   <data name="Featured equipment" xml:space="preserve">
     <value>Thiết bị nổi bật</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Trang chủ</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Đăng nhập</value>
+    <comment>Login</comment>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Đăng nhập</value>
@@ -143,9 +163,17 @@
     <value>Đăng xuất</value>
     <comment>Layouts</comment>
   </data>
+  <data name="or" xml:space="preserve">
+    <value>Hoặc</value>
+    <comment>Login</comment>
+  </data>
   <data name="Pages" xml:space="preserve">
     <value>Trang</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mật khẩu</value>
+    <comment>Login</comment>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Sản phẩm</value>
@@ -153,6 +181,10 @@
   <data name="Register" xml:space="preserve">
     <value>Đăng ký</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value>Ghi nhớ</value>
+    <comment>Login</comment>
   </data>
   <data name="Search for products" xml:space="preserve">
     <value>Tìm kiếm sản phẩm</value>
@@ -172,5 +204,13 @@
   <data name="Shopping Cart" xml:space="preserve">
     <value>Giỏ hàng</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Sign in" xml:space="preserve">
+    <value>Đăng nhập</value>
+    <comment>Login</comment>
+  </data>
+  <data name="Sign up" xml:space="preserve">
+    <value>Đăng ký</value>
+    <comment>Login</comment>
   </data>
 </root>

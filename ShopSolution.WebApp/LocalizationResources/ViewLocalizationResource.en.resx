@@ -120,6 +120,10 @@
   <data name="20% off the all order" xml:space="preserve">
     <value>20% off the all order</value>
   </data>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+    <comment>Login</comment>
+  </data>
   <data name="Checkout" xml:space="preserve">
     <value>Checkout</value>
     <comment>Layouts</comment>
@@ -128,12 +132,28 @@
     <value>Contact</value>
     <comment>Layouts</comment>
   </data>
+  <data name="Continue with Facebook" xml:space="preserve">
+    <value>Continue with Facebook</value>
+    <comment>Login</comment>
+  </data>
+  <data name="Continue with Google account" xml:space="preserve">
+    <value>Continue with Google</value>
+    <comment>Login</comment>
+  </data>
+  <data name="Don't have an account?" xml:space="preserve">
+    <value>Don't have an account?</value>
+    <comment>Login</comment>
+  </data>
   <data name="Featured equipment" xml:space="preserve">
     <value>Featured equipment</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Log in</value>
+    <comment>Login</comment>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
@@ -143,9 +163,17 @@
     <value>Logout</value>
     <comment>Layouts</comment>
   </data>
+  <data name="or" xml:space="preserve">
+    <value>or</value>
+    <comment>Login</comment>
+  </data>
   <data name="Pages" xml:space="preserve">
     <value>Pages</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Login</comment>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>
@@ -153,6 +181,10 @@
   <data name="Register" xml:space="preserve">
     <value>Register</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value>Remember me</value>
+    <comment>Login</comment>
   </data>
   <data name="Search for products" xml:space="preserve">
     <value>Search for products</value>
@@ -172,5 +204,13 @@
   <data name="Shopping Cart" xml:space="preserve">
     <value>Shopping Cart</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Sign in" xml:space="preserve">
+    <value>Sign in</value>
+    <comment>Login</comment>
+  </data>
+  <data name="Sign up" xml:space="preserve">
+    <value>Sign up</value>
+    <comment>Login</comment>
   </data>
 </root>
