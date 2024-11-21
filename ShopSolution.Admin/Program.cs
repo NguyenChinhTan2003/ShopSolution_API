@@ -23,6 +23,8 @@ builder.Services.AddTransient<ICategoryApiClient, CategoryApiClient>();
 
 builder.Services.AddTransient<IRoleApiClient, RoleApiClient>();
 
+builder.Services.AddTransient<IRoleApiClient, RoleApiClient>();
+
 var mvcBuilder = builder.Services.AddRazorPages();
 
 #if DEBUG
