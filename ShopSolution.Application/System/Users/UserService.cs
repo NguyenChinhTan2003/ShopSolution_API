@@ -196,7 +196,7 @@ namespace ShopSolution.Application.System
                 return new ApiErrorResult<bool>("Emai đã tồn tại");
             }
             var user = await _userManager.FindByIdAsync(id.ToString());
-            user.Dob = request.Dob;
+            user.Dob = (DateTime)request.Dob;
             user.Email = request.Email;
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
