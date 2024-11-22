@@ -19,15 +19,15 @@
 
         <div class="card-body">
             <div class="col-md-8 offset-md-2">
-                <dl class="row">
+    <dl class="row">
                     <dt class="col-sm-4">
-                        @Html.DisplayNameFor(model => model.Id)
-                    </dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
                     <dd class="col-sm-8">
-                        @Html.DisplayFor(model => model.Id)
-                    </dd>
-                </dl>
-
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+    </dl>
+    
                 <form asp-action="Delete" class="needs-validation" novalidate>
                     <input asp-for="Id" type="hidden" />
                     <div class="alert alert-warning" role="alert">
@@ -37,8 +37,8 @@
                         <input type="submit" value="Xóa" class="btn btn-danger" />
                         <a class="btn btn-secondary" asp-action="Index" asp-controller="Product">Hủy bỏ</a>
                     </div>
-                </form>
-            </div>
+    </form>
+</div>
         </div>
     </div>
 </div>
