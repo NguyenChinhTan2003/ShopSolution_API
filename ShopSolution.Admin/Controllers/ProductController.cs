@@ -172,6 +172,7 @@ namespace ShopSolution.Admin.Controllers
             {
                 Id = id
                 
+                
             });
         }
 
