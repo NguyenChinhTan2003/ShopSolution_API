@@ -208,7 +208,7 @@ namespace ShopSolution.Application.Catalog.Products
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var product = await _context.Products.FindAsync(request.Id);
-            var productTranslations = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == request.Id);
+            var productTranslations = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == request.Id && x.LanguageId == request.LanguageId);
             if (product == null || productTranslations == null) throw new ShopException($"Cannot find a product with id: {request.Id}");
 
             productTranslations.Name = request.Name;
