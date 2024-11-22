@@ -4,6 +4,7 @@ using ShopSolution.Admin.Services;
 using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Catalog.Products;
 using ShopSolution.ViewModels.Common;
+using ShopSolution.ViewModels.System.Users;
 
 namespace ShopSolution.Admin.Controllers
 {
@@ -147,6 +148,47 @@ namespace ShopSolution.Admin.Controllers
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", "Cập nhật sản phẩm thất bại");
+            return View(request);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+            var product = await _productApiClient.GetById(id, languageId); // Đảm bảo id và languageId hợp lệ
+           
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            return View(new ProductDeleteRequest()
+            {
+                Id = id
+                
+                
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _productApiClient.Delete(request.Id);
+            if (result==null)
+            {
+                TempData["result"] = "Xóa sản phẩm dùng thành công";
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError("", result.Message);
             return View(request);
         }
     }
