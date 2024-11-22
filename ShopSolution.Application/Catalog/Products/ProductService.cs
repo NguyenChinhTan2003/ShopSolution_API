@@ -15,6 +15,7 @@ using ShopSolution.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,38 @@ namespace ShopSolution.Application.Catalog.Products
 
         public async Task<int> Create(ProductCreateRequest request)
         {
+            var languages = _context.Languages;
+            var translations = new List<ProductTranslation>();
+            foreach (var language in languages)
+            {
+                if (language.Id == request.LanguageId)
+                {
+                    translations.Add(new ProductTranslation()
+                    {
+                        Name = request.Name,
+                        Description = request.Description ?? string.Empty,
+                        Details = request.Details ?? string.Empty,
+                        SeoDescription = request.SeoDescription ?? string.Empty,
+                        SeoAlias = request.SeoAlias ?? string.Empty,
+                        SeoTitle = request.SeoTitle ?? "Default Title", // Cung cấp giá trị mặc định
+                        LanguageId = request.LanguageId
+                    });
+                }
+                else
+                {
+                    translations.Add(new ProductTranslation()
+                    {
+                        Name = SystemConstants.ProductConstants.NA,
+                        Description = SystemConstants.ProductConstants.NA,
+                        Details = SystemConstants.ProductConstants.NA,
+                        SeoAlias = SystemConstants.ProductConstants.NA,
+                        SeoDescription = SystemConstants.ProductConstants.NA,
+                        SeoTitle = SystemConstants.ProductConstants.NA, // Đảm bảo không để null
+                        LanguageId = language.Id
+                    });
+                }
+            }
+
             var product = new Product()
             {
                 Price = request.Price,
@@ -48,19 +81,7 @@ namespace ShopSolution.Application.Catalog.Products
                 Stock = request.Stock,
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
-                ProductTranslations = new List<ProductTranslation>()
-                {
-                    new ProductTranslation()
-                    {
-                        Name =  request.Name,
-                        Description = request.Description,
-                        Details = request.Details,
-                        SeoDescription = request.SeoDescription,
-                        SeoAlias = request.SeoAlias,
-                        SeoTitle = request.SeoTitle,
-                        LanguageId = request.LanguageId
-                    }
-                }
+                ProductTranslations = translations
             };
             //Save image
             if (request.ThumbnailImage != null)
@@ -82,8 +103,6 @@ namespace ShopSolution.Application.Catalog.Products
             await _context.SaveChangesAsync();
             return product.Id;
         }
-
-
         public async Task<int> Delete(int productId)
         {
             var product = await _context.Products.FindAsync(productId);
@@ -196,8 +215,11 @@ namespace ShopSolution.Application.Catalog.Products
             productTranslations.SeoAlias = request.SeoAlias;
             productTranslations.SeoDescription = request.SeoDescription;
             productTranslations.SeoTitle = request.SeoTitle;
-            productTranslations.Description = request.SeoDescription;
+            productTranslations.Description = request.Description;
             productTranslations.Details = request.Details;
+            product.Stock = (int)request.Stock;
+            product.Price = request.Price;
+            product.OriginalPrice = request.OriginalPrice;
 
             //Save image
             if (request.ThumbnailImage != null)
