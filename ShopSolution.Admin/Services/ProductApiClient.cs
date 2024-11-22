@@ -2,6 +2,7 @@
 using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Catalog.Products;
 using ShopSolution.ViewModels.Common;
+using ShopSolution.ViewModels.System.Users;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -116,10 +117,19 @@ namespace ShopSolution.Admin.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
+        //public async Task<ProductVm> GetById(int id, string languageId)
+        //{
+        //    var data = await GetAsync<ProductVm>($"/api/products/{id}/{languageId}");
+        //    return data;
+        //}
         public async Task<ProductVm> GetById(int id, string languageId)
         {
-            var data = await GetAsync<ProductVm>($"/api/products/{id}/{languageId}");
-            return data;
+            var url = $"/api/products/{id}/{languageId}"; 
+           
+            return await GetAsync<ProductVm>(url);
         }
+
+
+
     }
 }

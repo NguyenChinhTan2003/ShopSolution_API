@@ -1,0 +1,63 @@
+﻿@using ShopSolution.ViewModels.Catalog.Products
+@model ProductVm
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h1 class="text-center">Chi tiết sản phẩm</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Tên sản phẩm -->
+                    <h2 class="text-primary">@Model.Name</h2>
+                    <p><strong>Giá:</strong> <span class="text-danger">@Model.Price.ToString("C")</span></p>
+                    <p><strong>Số lượng tồn kho:</strong> <span class="badge bg-warning text-dark">@Model.Stock</span></p>
+                </div>
+                <div class="col-md-6">
+                    <!-- Mô tả -->
+                    <h5>Mô tả sản phẩm:</h5>
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+
+            <!-- Danh mục -->
+            <div class="mt-3">
+                <h5>Danh mục:</h5>
+                <ul class="list-group list-group-flush">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li class="list-group-item">@category</li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="card-footer text-center">
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại danh sách sản phẩm
+            </a>
+        </div>
+    </div>
+</div>
+<style>
+    .card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.card-body h2 {
+    font-size: 1.75rem;
+}
+
+.card-body p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.list-group-item {
+    font-size: 1rem;
+}
+
+</style>
