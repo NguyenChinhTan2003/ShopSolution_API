@@ -149,5 +149,19 @@ namespace ShopSolution.Admin.Controllers
             ModelState.AddModelError("", "Cập nhật sản phẩm thất bại");
             return View(request);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+            var product = await _productApiClient.GetById(id, languageId); // Đảm bảo id và languageId hợp lệ
+           
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
     }
 }
