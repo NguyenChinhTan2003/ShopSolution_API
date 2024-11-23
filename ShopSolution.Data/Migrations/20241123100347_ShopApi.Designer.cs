@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopSolution.Data.EF;
 
@@ -11,9 +12,11 @@ using ShopSolution.Data.EF;
 namespace ShopSolution.Data.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    partial class ShopDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241123100347_ShopApi")]
+    partial class ShopApi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -578,7 +581,7 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 11, 23, 17, 24, 39, 560, DateTimeKind.Local).AddTicks(976),
+                            DateCreated = new DateTime(2024, 11, 23, 17, 3, 47, 420, DateTimeKind.Local).AddTicks(4405),
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
@@ -812,9 +815,9 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "20% off the all order",
-                            Image = "img/offer-1.png",
-                            Name = "Spring Collection",
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/1.png",
+                            Name = "Second Thumbnail label",
                             SortOrder = 1,
                             Status = 1,
                             Url = "#"

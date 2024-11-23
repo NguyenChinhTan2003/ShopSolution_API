@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace ShopSolution.Data.Entities
 {
-    public class Contact
+    public class Slide
     {
         public int Id { set; get; }
         public string? Name { set; get; }
-        public string? Email { set; get; }
-        public string? PhoneNumber { set; get; }
-        public string? Message { set; get; }
-        public Status? Status { set; get; }
+        public string? Description { set; get; }
+        public string? Url { set; get; }
+        public string? Image { get; set; }
+        public int SortOrder { get; set; }
+        public Status Status { set; get; }
     }
 }
