@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using ShopSolution.Admin.Services;
+using ShopSolution.ApiIntegration;
+
 using ShopSolution.ApiIntegration;
 
 var builder = WebApplication.CreateBuilder(args);

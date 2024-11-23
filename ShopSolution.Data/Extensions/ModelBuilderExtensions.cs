@@ -85,8 +85,13 @@ namespace ShopSolution.Data.Extensions
             modelBuilder.Entity<ProductInCategory>().HasData(
                 new ProductInCategory() { ProductId = 1, CategoryId = 1 }
                 );
+            modelBuilder.Entity<Slide>().HasData(
+              new Slide() { Id = 1, Name = "Spring Collection", Description = "20% off the all order", SortOrder = 1, Url = "#", Image = "img/offer-1.png", Status = Status.Active },
+              new Slide() { Id = 2, Name = "Spring Collection2", Description = "20% off the all order", SortOrder = 2, Url = "#", Image = "img/offer-2.png", Status = Status.Active },
+              new Slide() { Id = 3, Name = "Spring Collection3", Description = "20% off the all order", SortOrder = 3, Url = "#", Image = "img/offer-1.png", Status = Status.Active },
+              new Slide() { Id = 4, Name = "Spring Collection4", Description = "20% off the all order", SortOrder = 4, Url = "#", Image = "img/offer-2.png", Status = Status.Active }
+
+              );
         }
-
-
     }
 }

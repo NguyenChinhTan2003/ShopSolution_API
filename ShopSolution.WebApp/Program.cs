@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<ShopDBContext>()
     .AddDefaultTokenProviders();
-
+builder.Services.AddHttpClient();
 var cultures = new[]
            {
                 new CultureInfo("en"),
@@ -62,18 +62,24 @@ builder.Services.AddControllersWithViews()
             o.SupportedUICultures = cultures;
             o.DefaultRequestCulture = new RequestCulture("vi");
         };
-    }); ;
+    });
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<ISlideApiClient, SlideApiClient>();
+builder.Services.AddTransient<IProductApiClient, ProductApiClient>(); ;
 
 builder.Services.AddScoped<SignInManager<AppUser>>();
 builder.Services.AddScoped<UserManager<AppUser>>();
 
-builder.Services.AddScoped<IUserApiClient,UserApiClient>();
+builder.Services.AddScoped<IUserApiClient, UserApiClient>();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddDbContext<ShopDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 builder.Services.AddAuthentication()
     .AddGoogle(googleOptions =>
@@ -81,7 +87,8 @@ builder.Services.AddAuthentication()
         googleOptions.ClientId = builder.Configuration["Auth:Google:ClientId"];
         googleOptions.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"];
     })
-    .AddFacebook(facebookOptions => {
+    .AddFacebook(facebookOptions =>
+    {
         facebookOptions.ClientId = builder.Configuration["Auth:Facebook:AppId"];
         facebookOptions.ClientSecret = builder.Configuration["Auth:Facebook:AppSecret"];
         facebookOptions.Scope.Add("email");
@@ -114,9 +121,10 @@ app.UseSession();
 app.UseAuthentication();
 app.UseRequestLocalization();
 app.UseAuthorization();
+app.UseSession();
 
- app.MapControllerRoute(
-    name: "default",
-    pattern: "{culture=vi}/{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+   name: "default",
+   pattern: "{culture=vi}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

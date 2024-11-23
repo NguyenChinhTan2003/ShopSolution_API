@@ -1,6 +1,8 @@
-﻿using ShopSolution.ViewModels.Catalog.Categories;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using ShopSolution.ViewModels.Catalog.Categories;
 
-namespace ShopSolution.Admin.Services
+namespace ShopSolution.ApiIntegration
 {
     public class CategoryApiClient : BaseApiClient, ICategoryApiClient
     {
@@ -10,6 +12,7 @@ namespace ShopSolution.Admin.Services
             : base(httpClientFactory, httpContextAccessor, configuration)
         {
         }
+
         public async Task<List<CategoryVm>> GetAll(string languageId)
         {
             return await GetListAsync<CategoryVm>("/api/categories?languageId=" + languageId);

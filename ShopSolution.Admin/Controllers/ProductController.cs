@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ShopSolution.Admin.Services;
+using ShopSolution.ApiIntegration;
+
+using ShopSolution.ApiIntegration;
+
 using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Catalog.Products;
 using ShopSolution.ViewModels.Common;
@@ -82,6 +85,7 @@ namespace ShopSolution.Admin.Controllers
             var roleAssignRequest = await GetCategoryAssignRequest(id);
             return View(roleAssignRequest);
         }
+
         [HttpPost]
         public async Task<IActionResult> CategoryAssign(CategoryAssignRequest request)
         {
@@ -97,6 +101,7 @@ namespace ShopSolution.Admin.Controllers
             var roleAssignRequest = await GetCategoryAssignRequest(request.Id);
             return View(roleAssignRequest);
         }
+
         private async Task<CategoryAssignRequest> GetCategoryAssignRequest(int id)
         {
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
@@ -135,6 +140,7 @@ namespace ShopSolution.Admin.Controllers
             };
             return View(editVm);
         }
+
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Edit([FromForm] ProductUpdateRequest request)
@@ -156,7 +162,7 @@ namespace ShopSolution.Admin.Controllers
         {
             var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
             var product = await _productApiClient.GetById(id, languageId); // Đảm bảo id và languageId hợp lệ
-           
+
             if (product == null)
             {
                 return NotFound();
@@ -164,15 +170,12 @@ namespace ShopSolution.Admin.Controllers
             return View(product);
         }
 
-
         [HttpGet]
         public IActionResult Delete(int id)
         {
             return View(new ProductDeleteRequest()
             {
                 Id = id
-                
-                
             });
         }
 
@@ -183,7 +186,7 @@ namespace ShopSolution.Admin.Controllers
                 return View();
 
             var result = await _productApiClient.Delete(request.Id);
-            if (result==null)
+            if (result == null)
             {
                 TempData["result"] = "Xóa sản phẩm dùng thành công";
                 return RedirectToAction("Index");

@@ -25,6 +25,7 @@ namespace ShopSolution.ViewModels.Catalog.Products
 
         [Required(ErrorMessage = "Ngôn ngữ sản phẩm là bắt buộc")]
         public required string LanguageId { set; get; }
+        public bool? IsFeatured { get; set; }
 
         public IFormFile? ThumbnailImage { set; get; }
     }

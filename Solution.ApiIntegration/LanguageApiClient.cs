@@ -1,7 +1,10 @@
-﻿using ShopSolution.ViewModels.Common;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using ShopSolution.ApiIntegration;
+using ShopSolution.ViewModels.Common;
 using ShopSolution.ViewModels.System.Languages;
 
-namespace ShopSolution.Admin.Services
+namespace ShopSolution.ApiIntegration
 {
     public class LanguageApiClient : BaseApiClient, ILanguageApiClient
     {

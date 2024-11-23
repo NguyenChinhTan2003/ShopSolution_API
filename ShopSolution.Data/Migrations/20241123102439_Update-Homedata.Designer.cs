@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopSolution.Data.EF;
 
@@ -11,9 +12,11 @@ using ShopSolution.Data.EF;
 namespace ShopSolution.Data.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    partial class ShopDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241123102439_Update-Homedata")]
+    partial class UpdateHomedata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -578,7 +581,7 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 11, 23, 18, 52, 39, 134, DateTimeKind.Local).AddTicks(9700),
+                            DateCreated = new DateTime(2024, 11, 23, 17, 24, 39, 560, DateTimeKind.Local).AddTicks(976),
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
@@ -822,9 +825,9 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "20% off the all order",
-                            Image = "img/offer-2.png",
-                            Name = "Spring Collection2",
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/2.png",
+                            Name = "Second Thumbnail label",
                             SortOrder = 2,
                             Status = 1,
                             Url = "#"
@@ -832,9 +835,9 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 3,
-                            Description = "20% off the all order",
-                            Image = "img/offer-1.png",
-                            Name = "Spring Collection3",
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/3.png",
+                            Name = "Second Thumbnail label",
                             SortOrder = 3,
                             Status = 1,
                             Url = "#"
@@ -842,10 +845,30 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 4,
-                            Description = "20% off the all order",
-                            Image = "img/offer-2.png",
-                            Name = "Spring Collection4",
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/4.png",
+                            Name = "Second Thumbnail label",
                             SortOrder = 4,
+                            Status = 1,
+                            Url = "#"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/5.png",
+                            Name = "Second Thumbnail label",
+                            SortOrder = 5,
+                            Status = 1,
+                            Url = "#"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.",
+                            Image = "/themes/images/carousel/6.png",
+                            Name = "Second Thumbnail label",
+                            SortOrder = 6,
                             Status = 1,
                             Url = "#"
                         });
