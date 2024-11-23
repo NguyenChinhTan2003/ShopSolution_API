@@ -24,7 +24,7 @@ namespace ShopSolution.BackendApi.Controllers
 
         //http://localhost:port/products?pageIndex=1&pageSize=10&CategoryId=
         [HttpGet("paging")]
-        public async Task<IActionResult> GetAllPaging([FromQuery]GetManageProductPagingRequest request)
+        public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest request)
         {
             var products = await _productService.GetAllPaging(request);
             return Ok(products);
@@ -40,9 +40,17 @@ namespace ShopSolution.BackendApi.Controllers
             return Ok(product);
         }
 
+        [HttpGet("featured/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFeaturedProducts(int take, string languageId)
+        {
+            var products = await _productService.GetFeaturedProducts(languageId, take);
+            return Ok(products);
+        }
+
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult>Create([FromForm]ProductCreateRequest request)
+        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -154,7 +162,7 @@ namespace ShopSolution.BackendApi.Controllers
         }
 
         [HttpPut("{id}/categories")]
-        public async Task<IActionResult> CategoryAssign(int id,[FromBody] CategoryAssignRequest request)
+        public async Task<IActionResult> CategoryAssign(int id, [FromBody] CategoryAssignRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

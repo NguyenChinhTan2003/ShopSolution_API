@@ -11,12 +11,12 @@ using ShopSolution.Application.System.Users;
 using ShopSolution.Data.EF;
 using ShopSolution.Data.Entities;
 using ShopSolution.Utilities.Constants;
-using FluentValidation.AspNetCore;
 using FluentValidation;
 using ShopSolution.ViewModels.System.Users;
 using ShopSolution.Application.System.Roles;
 using ShopSolution.Application.System.Languages;
 using ShopSolution.Application.Catalog.Categories;
+using ShopSolution.Application.Utilities.Slide;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +66,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<ILanguageService, LanguageService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<ISlideService, SlideService>();
 
 // JWT Configuration
 string? issuer = builder.Configuration["Tokens:Issuer"];

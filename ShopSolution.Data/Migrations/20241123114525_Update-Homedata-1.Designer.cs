@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopSolution.Data.EF;
 
@@ -11,9 +12,11 @@ using ShopSolution.Data.EF;
 namespace ShopSolution.Data.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    partial class ShopDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241123114525_Update-Homedata-1")]
+    partial class UpdateHomedata1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -578,7 +581,7 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 11, 23, 18, 52, 39, 134, DateTimeKind.Local).AddTicks(9700),
+                            DateCreated = new DateTime(2024, 11, 23, 18, 45, 24, 678, DateTimeKind.Local).AddTicks(886),
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
@@ -824,7 +827,7 @@ namespace ShopSolution.Data.Migrations
                             Id = 2,
                             Description = "20% off the all order",
                             Image = "img/offer-2.png",
-                            Name = "Spring Collection2",
+                            Name = "Spring Collection",
                             SortOrder = 2,
                             Status = 1,
                             Url = "#"
@@ -834,7 +837,7 @@ namespace ShopSolution.Data.Migrations
                             Id = 3,
                             Description = "20% off the all order",
                             Image = "img/offer-1.png",
-                            Name = "Spring Collection3",
+                            Name = "Spring Collection",
                             SortOrder = 3,
                             Status = 1,
                             Url = "#"
@@ -844,8 +847,8 @@ namespace ShopSolution.Data.Migrations
                             Id = 4,
                             Description = "20% off the all order",
                             Image = "img/offer-2.png",
-                            Name = "Spring Collection4",
-                            SortOrder = 4,
+                            Name = "Spring Collection",
+                            SortOrder = 3,
                             Status = 1,
                             Url = "#"
                         });

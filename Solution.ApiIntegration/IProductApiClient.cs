@@ -15,6 +15,8 @@ namespace ShopSolution.ApiIntegration
 
         Task<ProductVm> GetById(int id, string languageId);
 
+        Task<List<ProductVm>> GetFeaturedProducts(string languageId, int take);
+
         Task<ApiResult<bool>> Delete(int id);
     }
 }

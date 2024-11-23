@@ -20,6 +20,8 @@ namespace ShopSolution.ViewModels.Catalog.Products
         public string? SeoDescription { set; get; }
         public string? SeoTitle { set; get; }
 
+        public string ThumbnailImage { get; set; }
+
         public string? SeoAlias { get; set; }
         public string LanguageId { set; get; }
 
