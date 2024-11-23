@@ -1,6 +1,6 @@
 ﻿using ShopSolution.ViewModels.Catalog.Categories;
 
-namespace ShopSolution.Admin.Services
+namespace ShopSolution.ApiIntegration
 {
     public interface ICategoryApiClient
     {

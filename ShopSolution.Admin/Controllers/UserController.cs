@@ -9,7 +9,8 @@ using System.Security.Claims;
 using System.Text;
 using ShopSolution.ApiIntegration;
 using ShopSolution.ViewModels.Common;
-using ShopSolution.Admin.Services;
+
+using ShopSolution.ApiIntegration;
 
 namespace ShopSolution.Admin.Controllers
 {

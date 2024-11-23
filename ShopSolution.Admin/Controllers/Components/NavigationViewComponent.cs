@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShopSolution.Admin.Models;
-using ShopSolution.Admin.Services;
+using ShopSolution.ApiIntegration;
 using ShopSolution.Utilities.Constants;
 
 namespace ShopSolution.Admin.Controllers.Components

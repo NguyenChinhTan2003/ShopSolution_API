@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using ShopSolution.Utilities.Constants;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace ShopSolution.Admin.Services
+namespace ShopSolution.ApiIntegration
 {
     public class BaseApiClient
     {
@@ -70,6 +72,5 @@ namespace ShopSolution.Admin.Services
             }
             throw new Exception(body);
         }
-
     }
 }

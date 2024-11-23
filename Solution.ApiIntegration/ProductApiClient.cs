@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using ShopSolution.ApiIntegration;
 using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Catalog.Products;
 using ShopSolution.ViewModels.Common;
@@ -6,13 +9,14 @@ using ShopSolution.ViewModels.System.Users;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace ShopSolution.Admin.Services
+namespace ShopSolution.ApiIntegration
 {
     public class ProductApiClient : BaseApiClient, IProductApiClient
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+
         public ProductApiClient(IHttpClientFactory httpClientFactory,
                    IHttpContextAccessor httpContextAccessor,
                     IConfiguration configuration)
@@ -39,9 +43,8 @@ namespace ShopSolution.Admin.Services
                     data = br.ReadBytes((int)request.ThumbnailImage.OpenReadStream().Length);
                 }
                 ByteArrayContent bytes = new ByteArrayContent(data);
-               
-                requestContent.Add(bytes, "thumbnailImage", request.ThumbnailImage.FileName);
 
+                requestContent.Add(bytes, "thumbnailImage", request.ThumbnailImage.FileName);
             }
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.OriginalPrice.ToString()), "originalPrice");
@@ -93,8 +96,8 @@ namespace ShopSolution.Admin.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<PagedResult<ProductVm>>GetPagings(GetManageProductPagingRequest request)
-            {
+        public async Task<PagedResult<ProductVm>> GetPagings(GetManageProductPagingRequest request)
+        {
             var data = await GetAsync<PagedResult<ProductVm>>(
                 $"/api/products/paging?pageIndex={request.PageIndex}" +
                 $"&pageSize={request.PageSize}" +
@@ -117,6 +120,7 @@ namespace ShopSolution.Admin.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
         }
+
         //public async Task<ProductVm> GetById(int id, string languageId)
         //{
         //    var data = await GetAsync<ProductVm>($"/api/products/{id}/{languageId}");
@@ -124,8 +128,8 @@ namespace ShopSolution.Admin.Services
         //}
         public async Task<ProductVm> GetById(int id, string languageId)
         {
-            var url = $"/api/products/{id}/{languageId}"; 
-           
+            var url = $"/api/products/{id}/{languageId}";
+
             return await GetAsync<ProductVm>(url);
         }
 
@@ -142,7 +146,5 @@ namespace ShopSolution.Admin.Services
 
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
-
-
     }
 }

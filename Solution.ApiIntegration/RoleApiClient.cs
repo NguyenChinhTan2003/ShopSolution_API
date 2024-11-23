@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using ShopSolution.ViewModels.Common;
 using ShopSolution.ViewModels.System.Roles;
 using System.Net.Http.Headers;
 
-namespace ShopSolution.Admin.Services
+namespace ShopSolution.ApiIntegration
 {
     public class RoleApiClient : IRoleApiClient
     {
