@@ -178,6 +178,10 @@
   <data name="Products" xml:space="preserve">
     <value>Products</value>
   </data>
+  <data name="productUrl" xml:space="preserve">
+    <value>products</value>
+    <comment>index</comment>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
     <comment>Layouts</comment>

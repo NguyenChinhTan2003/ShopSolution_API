@@ -87,11 +87,12 @@ namespace ShopSolution.WebApp.Controllers
             if (result.Succeeded)
             {
                 // Thực hiện API authentication để lấy token nếu cần
-                //var token = await _userApiClient.Authenticate(request);
-                //if (!string.IsNullOrEmpty(token.ResultObj))
-                //{
-                //    HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
-                //}
+                var token = await _userApiClient.Authenticate(request);
+                if (!string.IsNullOrEmpty(token.ResultObj))
+                {
+                    HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
+                }
+
                 var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -187,8 +188,21 @@ namespace ShopSolution.WebApp.Controllers
 
             var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
-            if (signInResult.Succeeded)
+            if (signInResult.Succeeded) {
+                var tokenRequest = new LoginRequest
+                {
+                    UserName = info.Principal.FindFirstValue(ClaimTypes.Email) ?? info.Principal.FindFirstValue(ClaimTypes.Name),
+                    Password = string.Empty // Password không cần thiết với login external
+                };
+
+                var token = await _userApiClient.Authenticate(tokenRequest);
+                if (!string.IsNullOrEmpty(token.ResultObj))
+                {
+                    HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
+                }
                 return RedirectToAction("Index", "Home");
+            }
+               
             else
             {
                 var userEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
@@ -222,6 +236,17 @@ namespace ShopSolution.WebApp.Controllers
                         new Claim("LastName", user.LastName ?? "")
                     };
 
+                    var tokenRequest = new LoginRequest
+                    {
+                        UserName = userEmail,
+                        Password = string.Empty // Password không cần thiết với login external
+                    };
+
+                    var token = await _userApiClient.Authenticate(tokenRequest);
+                    if (!string.IsNullOrEmpty(token.ResultObj))
+                    {
+                        HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
+                    }
                     await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
 
 
@@ -291,6 +316,11 @@ namespace ShopSolution.WebApp.Controllers
                         new Claim("FirstName", user.FirstName ?? ""),
                         new Claim("LastName", user.LastName ?? "")
                     };
+            var token = await _userApiClient.Authenticate(loginRequest);
+            if (!string.IsNullOrEmpty(token.ResultObj))
+            {
+                HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
+            }
 
             await _signInManager.SignInWithClaimsAsync(user, isPersistent: false,claims);
             return RedirectToAction("Index", "Home");

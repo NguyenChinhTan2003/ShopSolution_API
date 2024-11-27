@@ -178,6 +178,10 @@
   <data name="Products" xml:space="preserve">
     <value>Sản phẩm</value>
   </data>
+  <data name="productUrl" xml:space="preserve">
+    <value>san-pham</value>
+    <comment>index</comment>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>Đăng ký</value>
     <comment>Layouts</comment>
