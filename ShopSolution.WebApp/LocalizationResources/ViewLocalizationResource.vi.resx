@@ -136,9 +136,9 @@
     <value>Đăng nhập bằng tài khoản Facebook</value>
     <comment>Login</comment>
   </data>
-  <data name="Continue with Google" xml:space="preserve">
-    <value>Đăng nhập bằng tài khoản Google</value>
-    <comment>Login</comment>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Continue with Google account" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="Don't have an account?" xml:space="preserve">
     <value>Bạn chưa có tài khoản?</value>
@@ -212,5 +212,15 @@
   <data name="Sign up" xml:space="preserve">
     <value>Đăng ký</value>
     <comment>Login</comment>
+  </data>
+  <data name="Continue with Google" xml:space="preserve">
+    <value>Đăng nhập bằng tài khoản Google</value>
+    <comment>Login</comment>
+  </data>
+  <data name="View Detail" xml:space="preserve">
+    <value> Xem chi tiết</value>
+  </data>
+  <data name="Add To Cart" xml:space="preserve">
+    <value>Thêm vào giỏ hàng </value>
   </data>
 </root>

@@ -117,4 +117,88 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="20% off the all order" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Checkout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Continue with Facebook" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Continue with Google account" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Don't have an account?" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Featured equipment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value />
+  </data>
+  <data name="or" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Search for products" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Shop" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Shop Detail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Shop Now" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Shopping Cart" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sign in" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sign up" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Continue with Google" xml:space="preserve">
+    <value />
+  </data>
+  <data name="View Detail" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add To Cart" xml:space="preserve">
+    <value />
+  </data>
 </root>

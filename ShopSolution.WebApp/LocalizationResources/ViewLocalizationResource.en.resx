@@ -213,4 +213,10 @@
     <value>Sign up</value>
     <comment>Login</comment>
   </data>
+  <data name="View Detail" xml:space="preserve">
+    <value>View Detail</value>
+  </data>
+  <data name="Add To Cart" xml:space="preserve">
+    <value>Add To Cart</value>
+  </data>
 </root>
