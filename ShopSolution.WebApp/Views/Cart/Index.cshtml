@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts {
+    <script src="~/js/cart.js"></script>
+    <script>
+        var cartController = new CartController();
+        cartController.initialize();
+    </script>
+}
+
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        
+        <div class="col-lg-8 table-responsive mb-5">
+            <h3>
+                SHOPPING CART [ <small><span id="lbl_number_of_items">0</span> Item </small>]
+                <a href="/" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a>
+            </h3>
+            <table class="table table-bordered text-center mb-0" id="tbl_cart">
+                <thead class="bg-secondary text-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="cart_body">
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <div class="card border-secondary mb-5">
+                <div class="card-header bg-secondary border-0">
+                    <h4 class="font-weight-semi-bold m-0">Cart</h4>
+                </div>
+                
+                <div class="card-footer border-secondary bg-transparent">
+                    <div class="d-flex justify-content-between mt-2">
+                        <h5 class="font-weight-bold">Total</h5>
+                        <h5 class="font-weight-bold" id="lbl_total">0</h5>
+                    </div>
+                    <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
