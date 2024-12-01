@@ -175,8 +175,8 @@
     <value>Mật khẩu</value>
     <comment>Login</comment>
   </data>
-  <data name="Products" xml:space="preserve">
-    <value>Sản phẩm</value>
+  <data name="Featured Products" xml:space="preserve">
+    <value>Sản phẩm nổi bật</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Đăng ký</value>
