@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ShopSolution.ApiIntegration;
+using ShopSolution.Data.Entities;
 using ShopSolution.Utilities.Constants;
+using ShopSolution.ViewModels.Sales;
 using ShopSolution.WebApp.Models;
 
 namespace ShopSolution.WebApp.Controllers
@@ -19,6 +21,38 @@ namespace ShopSolution.WebApp.Controllers
             return View();
         }
 
+        public IActionResult Checkout()
+        {
+            ViewData["ShowSideComponent"] = false;
+            return View(GetCheckoutViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Checkout(CheckoutViewModel request)
+        {
+            var model = GetCheckoutViewModel();
+            var orderDetails = new List<OrderDetailVm>();
+            foreach (var item in model.CartItems)
+            {
+                orderDetails.Add(new OrderDetailVm()
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity
+                });
+            }
+            var checkoutRequest = new CheckoutRequest()
+            {
+                Address = request.CheckoutModel.Address,
+                Name = request.CheckoutModel.Name,
+                Email = request.CheckoutModel.Email,
+                PhoneNumber = request.CheckoutModel.PhoneNumber,
+                OrderDetails = orderDetails
+            };
+            //TODO: Add to API
+            TempData["SuccessMsg"] = "Order puschased successful";
+            return View(model);
+        }
+
         [HttpGet]
         public IActionResult GetListItems()
         {
@@ -29,31 +63,54 @@ namespace ShopSolution.WebApp.Controllers
             return Ok(currentCart);
         }
 
+        private CheckoutViewModel GetCheckoutViewModel()
+        {
+            var session = HttpContext.Session.GetString(SystemConstants.CartSession);
+            List<CartItemViewModel> currentCart = new List<CartItemViewModel>();
+            if (session != null)
+                currentCart = JsonConvert.DeserializeObject<List<CartItemViewModel>>(session);
+            var checkoutVm = new CheckoutViewModel()
+            {
+                CartItems = currentCart,
+                CheckoutModel = new CheckoutRequest()
+            };
+            return checkoutVm;
+        }
+
+        [HttpPost]
         public async Task<IActionResult> AddToCart(int id, string languageId)
         {
             var product = await _productApiClient.GetById(id, languageId);
             var session = HttpContext.Session.GetString(SystemConstants.CartSession);
             List<CartItemViewModel> currentCart = new List<CartItemViewModel>();
+
             if (session != null)
+            {
                 currentCart = JsonConvert.DeserializeObject<List<CartItemViewModel>>(session);
-            int quantity = 1;
-            if (currentCart.Any(x => x.ProductId == id))
-            {
-                quantity = currentCart.First(x => x.ProductId == id).Quantity + 1;
             }
-            var cartItem = new CartItemViewModel()
+
+            var existingItem = currentCart.FirstOrDefault(x => x.ProductId == id);
+            if (existingItem != null)
             {
-                ProductId = id,
-                Description = product.Description,
-                Image = product.ThumbnailImage,
-                Name = product.Name,
-                Price = product.Price,
-                Quantity = quantity
-            };
-            currentCart.Add(cartItem);
+                existingItem.Quantity += 1;
+            }
+            else
+            {
+                currentCart.Add(new CartItemViewModel
+                {
+                    ProductId = id,
+                    Description = product.Description,
+                    Image = product.ThumbnailImage,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Quantity = 1
+                });
+            }
+
             HttpContext.Session.SetString(SystemConstants.CartSession, JsonConvert.SerializeObject(currentCart));
             return Ok(currentCart);
         }
+
 
         public IActionResult UpdateCart(int id, int quantity)
         {

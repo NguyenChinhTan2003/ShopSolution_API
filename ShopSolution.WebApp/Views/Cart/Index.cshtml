@@ -3,6 +3,9 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
 @section scripts {
     <script src="~/js/cart.js"></script>
     <script>
@@ -10,6 +13,7 @@
         cartController.initialize();
     </script>
 }
+
 
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
@@ -45,7 +49,7 @@
                         <h5 class="font-weight-bold">Total</h5>
                         <h5 class="font-weight-bold" id="lbl_total">0</h5>
                     </div>
-                    <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                    <a href="/@culture/Cart/Checkout" class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</a>
                 </div>
             </div>
         </div>
