@@ -37,9 +37,7 @@
     <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row bg-secondary py-2 px-xl-5">
-           
             <div class="col-lg-6 text-center text-lg-right">
-             
                 </div>
             </div>
         </div>
@@ -120,14 +118,13 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a asp-route-culture="@culture" localize-content class="nav-item nav-link active">Home</a>
-                        <a asp-route-culture="@culture" localize-content class="nav-item nav-link">Shop</a>
-                        <a asp-route-culture="@culture" localize-content class="nav-item nav-link">Shop Detail</a>
+                            <a href="/" localize-content class="nav-item nav-link active">Home</a>
+                            <a href="/@culture/cart" localize-content class="nav-item nav-link">Shop</a>
                         <div class="nav-item dropdown">
                             <a asp-route-culture="@culture" localize-content class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a asp-route-culture="@culture" localize-content class="dropdown-item">Shopping Cart</a>
-                                <a asp-route-culture="@culture" localize-content class="dropdown-item">Checkout</a>
+                                    <a href="/@culture/cart" localize-content class="dropdown-item">Shopping Cart</a>
+                                    <a href="/@culture/cart/checkout" localize-content class="dropdown-item">Checkout</a>
                             </div>
                         </div>
                         <a asp-route-culture="@culture" localize-content class="nav-item nav-link">Contact</a>
