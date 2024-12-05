@@ -10,6 +10,7 @@ using ShopSolution.Data.EF;
 using ShopSolution.Data.Entities;
 using ShopSolution.WebApp.LocalizationResources;
 using System.Globalization;
+using ShopSolution.ApiIntegration.VnPay;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +54,8 @@ builder.Services.AddTransient<ICategoryApiClient, CategoryApiClient>();
 builder.Services.AddScoped<SignInManager<AppUser>>();
 builder.Services.AddScoped<UserManager<AppUser>>();
 builder.Services.AddScoped<IUserApiClient, UserApiClient>();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
+
 
 builder.Services.AddDbContext<ShopDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
