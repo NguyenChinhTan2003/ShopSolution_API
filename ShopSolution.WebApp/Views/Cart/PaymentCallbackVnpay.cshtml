@@ -1,0 +1,13 @@
+﻿@model PaymentResponseModel
+@{
+    ViewData["title"] = "Kết quả thông tin giao dịch thanh toán Vnpay thành công";
+}
+
+<h5>Thanh toán Vnpay thành công với :</h5>
+<h6>OderId : @Model.OrderId</h6>
+<h6>Nội dung : @Model.OrderDescription</h6>
+<h6>Tổng tiền : @Model.TotalAmount</h6>
+<h6>Phương thức : @Model.PaymentMethod</h6>
+<h6>Mã giao dịch : @Model.TransactionId</h6>
+<h6>Mã thanh toán : @Model.PaymentId</h6>
+

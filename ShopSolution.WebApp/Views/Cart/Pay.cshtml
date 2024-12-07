@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Thông báo đơn hàng";
+}
+@if (TempData["success"] != null)
+{
+    <span class="alert alert-success">@TempData["success"]</span>
+}
+else
+{
+    <span class="alert alert-success">@TempData["error"]</span>
+}

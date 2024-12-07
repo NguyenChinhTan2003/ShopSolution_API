@@ -1,42 +1,16 @@
-﻿
-@model CheckoutViewModel
+﻿@model CheckoutViewModel
 @{
     ViewData["Title"] = "Checkout";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+   
 }
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
 @{
     var culture = CultureInfo.CurrentCulture.Name;
 }
-@if (TempData["SuccessMsg"] != null)
-{
-    <span class="alert alert-success">@TempData["SuccessMsg"]</span>
-}
-else
-{
+
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
-        <div class="col-lg-8">
-            <div class="mb-4">
-                <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
-                <div class="row">
-                    <div class="col-md-6 form-group">
-                        <label>E-mail</label>
-                        <input class="form-control" type="text" placeholder="example@email.com">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Mobile No</label>
-                        <input class="form-control" type="text" placeholder="+123 456 789">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Address</label>
-                        <input class="form-control" type="text" placeholder="123 Street">
-                    </div>
-                  
-                </div>
-            </div>
-          
-        </div>
+        
         <div class="col-lg-4">
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-secondary border-0">
@@ -80,9 +54,11 @@ else
                 <div class="card-header bg-secondary border-0">
                     <h4 class="font-weight-semi-bold m-0">Payment</h4>
                 </div>
+                    <div class ="card-body"> <a class="btn btn-lg btn-block btn-primary py-3" asp-action="Pay" asp-controller="Cart" type="submit">COD</a></div>
+                   
                 <div class="card-body">
                   <div>
-                            <form method="POST" asp-action="CreatePaymentUrlVnpay" asp-controller="Payment">
+                            <form method="POST" asp-action="CreatePaymentUrlVnpay" asp-controller="Cart">
                                 <input type="hidden" name="Name" value="@User.Identity.Name" />
                                 <input type="hidden" name="Amount" value="@Model.CartItems.Sum(x => x.Quantity * x.Price)"/>
                                 <input type="hidden" name="OrderDescription" value="Thanh toán hóa đơn" />
@@ -97,4 +73,3 @@ else
         </div>
     </div>
 </div>
-}
