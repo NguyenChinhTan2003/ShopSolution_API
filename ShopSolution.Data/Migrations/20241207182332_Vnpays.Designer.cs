@@ -12,8 +12,8 @@ using ShopSolution.Data.EF;
 namespace ShopSolution.Data.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    [Migration("20241123114525_Update-Homedata-1")]
-    partial class UpdateHomedata1
+    [Migration("20241207182332_Vnpays")]
+    partial class Vnpays
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -479,55 +479,56 @@ namespace ShopSolution.Data.Migrations
 
             modelBuilder.Entity("ShopSolution.Data.Entities.Order", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid?>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ShipAddress")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("ShipEmail")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("ShipName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ShipPhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrderId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ShopSolution.Data.Entities.OrderDetail", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -581,7 +582,7 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 11, 23, 18, 45, 24, 678, DateTimeKind.Local).AddTicks(886),
+                            DateCreated = new DateTime(2024, 12, 8, 1, 23, 31, 627, DateTimeKind.Local).AddTicks(8389),
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
@@ -827,7 +828,7 @@ namespace ShopSolution.Data.Migrations
                             Id = 2,
                             Description = "20% off the all order",
                             Image = "img/offer-2.png",
-                            Name = "Spring Collection",
+                            Name = "Spring Collection2",
                             SortOrder = 2,
                             Status = 1,
                             Url = "#"
@@ -837,7 +838,7 @@ namespace ShopSolution.Data.Migrations
                             Id = 3,
                             Description = "20% off the all order",
                             Image = "img/offer-1.png",
-                            Name = "Spring Collection",
+                            Name = "Spring Collection3",
                             SortOrder = 3,
                             Status = 1,
                             Url = "#"
@@ -847,8 +848,8 @@ namespace ShopSolution.Data.Migrations
                             Id = 4,
                             Description = "20% off the all order",
                             Image = "img/offer-2.png",
-                            Name = "Spring Collection",
-                            SortOrder = 3,
+                            Name = "Spring Collection4",
+                            SortOrder = 4,
                             Status = 1,
                             Url = "#"
                         });
@@ -900,6 +901,45 @@ namespace ShopSolution.Data.Migrations
                     b.ToTable("Transactions", (string)null);
                 });
 
+            modelBuilder.Entity("ShopSolution.Data.Entities.Vnpay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vnpays");
+                });
+
             modelBuilder.Entity("ShopSolution.Data.Entities.Cart", b =>
                 {
                     b.HasOne("ShopSolution.Data.Entities.Product", "Product")
@@ -940,13 +980,9 @@ namespace ShopSolution.Data.Migrations
 
             modelBuilder.Entity("ShopSolution.Data.Entities.Order", b =>
                 {
-                    b.HasOne("ShopSolution.Data.Entities.AppUser", "AppUser")
+                    b.HasOne("ShopSolution.Data.Entities.AppUser", null)
                         .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("ShopSolution.Data.Entities.OrderDetail", b =>

@@ -30,6 +30,7 @@ namespace ShopSolution.WebApp.Library
             var vnpSecureHash =
                 collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value; //hash của dữ liệu trả về
             var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
+            var totalAmount = Convert.ToInt64(vnPay.GetResponseData("vnp_Amount"));
 
             var checkSignature =
                 vnPay.ValidateSignature(vnpSecureHash, hashSecret); //check Signature
@@ -48,6 +49,7 @@ namespace ShopSolution.WebApp.Library
                 OrderId = orderId.ToString(),
                 PaymentId = vnPayTranId.ToString(),
                 TransactionId = vnPayTranId.ToString(),
+                TotalAmount = Convert.ToInt64(totalAmount.ToString())/100,
                 Token = vnpSecureHash,
                 VnPayResponseCode = vnpResponseCode
             };
