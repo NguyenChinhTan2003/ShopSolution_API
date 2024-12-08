@@ -11,6 +11,7 @@ using ShopSolution.Data.Entities;
 using ShopSolution.WebApp.LocalizationResources;
 using System.Globalization;
 using ShopSolution.ApiIntegration.VnPay;
+using ShopSolution.WebApp.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +34,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         facebookOptions.ClientId = builder.Configuration["Auth:Facebook:AppId"];
         facebookOptions.ClientSecret = builder.Configuration["Auth:Facebook:AppSecret"];
-        facebookOptions.Scope.Add("email");
+        //facebookOptions.Scope.Add("email");
     });
 
 builder.Services.AddIdentity<AppUser, AppRole>()
@@ -55,6 +56,7 @@ builder.Services.AddScoped<SignInManager<AppUser>>();
 builder.Services.AddScoped<UserManager<AppUser>>();
 builder.Services.AddScoped<IUserApiClient, UserApiClient>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 
 builder.Services.AddDbContext<ShopDBContext>(options =>

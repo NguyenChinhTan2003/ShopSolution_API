@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
+
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ShopSolution.ApiIntegration;
@@ -11,6 +12,7 @@ using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Sales;
 using ShopSolution.WebApp.Models;
 using ShopSolution.WebApp.Models.VnPay;
+using ShopSolution.WebApp.Service;
 using System.Net;
 using System.Numerics;
 
@@ -21,11 +23,13 @@ namespace ShopSolution.WebApp.Controllers
         private readonly IProductApiClient _productApiClient;
         private readonly ShopDBContext _shopDBContext;
         private readonly IVnPayService _vnPayService;
-        public CartController(IProductApiClient productApiClient,ShopDBContext shopDBContext,IVnPayService vnPayService)
+        private readonly IEmailSender _emailSender;
+        public CartController(IProductApiClient productApiClient,ShopDBContext shopDBContext,IVnPayService vnPayService, IEmailSender emailSender)
         {
             _productApiClient = productApiClient;
             _shopDBContext = shopDBContext;
             _vnPayService = vnPayService;
+            _emailSender = emailSender;
         }
         public IActionResult Index()
         {
@@ -36,7 +40,8 @@ namespace ShopSolution.WebApp.Controllers
         public IActionResult Checkout()
         {
             ViewData["ShowSideComponent"] = false;
-            if (User.Identity.IsAuthenticated){
+            if (User.Identity.IsAuthenticated)
+            {
                 return View(GetCheckoutViewModel());
             }
 
@@ -44,7 +49,7 @@ namespace ShopSolution.WebApp.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public async Task<IActionResult> Pay(string PaymentMethod,string PaymentId )
+        public async Task<IActionResult> Pay(string PaymentMethod, string PaymentId)
         {
             ViewData["ShowSideComponent"] = false;
             // Lấy giỏ hàng từ Session
@@ -72,24 +77,24 @@ namespace ShopSolution.WebApp.Controllers
             orderItem.Phone = "";
             orderItem.Address = "";
             orderItem.Status = 0; // 0 = Đang xử lý
-            
 
-           
-           
+
+
+
             _shopDBContext.Orders.Add(orderItem);
             _shopDBContext.SaveChanges();
 
-           
+
 
             var cartItems = JsonConvert.DeserializeObject<List<CartItemViewModel>>(session);
 
-           
+
             var orderDetails = cartItems.Select(item => new OrderDetail()
             {
                 OrderId = orderId,
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
-                Price = item.Price, 
+                Price = item.Price,
             }).ToList();
 
             _shopDBContext.OrderDetails.AddRange(orderDetails);
@@ -97,6 +102,12 @@ namespace ShopSolution.WebApp.Controllers
 
             // Xóa giỏ hàng sau khi đặt hàng thành công
             HttpContext.Session.Remove(SystemConstants.CartSession);
+
+            var receiver = User.Identity.Name;
+            var subject = "Đặt đơn hàng thành công!";
+            var message = "Đơn hàng đã được thanh toán, cảm ơn quý khách!";
+
+            await _emailSender.SendEmailAsync(receiver, subject, message);
 
             TempData["success"] = "Đơn hàng đã được tạo thành công!";
             return View(TempData);

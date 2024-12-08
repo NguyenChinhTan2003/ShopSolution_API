@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using Azure.Core;
+using ShopSolution.WebApp.Service;
 
 namespace ShopSolution.WebApp.Controllers
 {
@@ -32,17 +33,19 @@ namespace ShopSolution.WebApp.Controllers
         private readonly IConfiguration _configuration;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
         string appid = string.Empty;
         string appsecret = string.Empty;
 
         public AccountController(IUserApiClient userApiClient,
-            IConfiguration configuration, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+            IConfiguration configuration, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IEmailSender emailSender)
         {
             _userApiClient = userApiClient;
             _configuration = configuration;
             _signInManager = signInManager;
             _userManager = userManager;
+            _emailSender = emailSender;
 
           
             appid = configuration.GetSection("AppID").Value;
@@ -236,6 +239,11 @@ namespace ShopSolution.WebApp.Controllers
                         new Claim("LastName", user.LastName ?? "")
                     };
 
+                    var receiver = user.Email;
+                    var subject = "Tạo tài khoản thành công!";
+                    var message = "Tài khoản của quý khác đã được tạo, chúc quý khác sử dụng dịch vụ vui vẻ!";
+                    await _emailSender.SendEmailAsync(receiver, subject, message);
+
                     var tokenRequest = new LoginRequest
                     {
                         UserName = userEmail,
@@ -351,6 +359,7 @@ namespace ShopSolution.WebApp.Controllers
             {
                 UserName = registerRequest.UserName,
                 Email = registerRequest.Email,
+                EmailConfirmed = true,
                 FirstName = registerRequest.FirstName,
                 LastName = registerRequest.LastName,
                 Dob = registerRequest.Dob,
@@ -358,15 +367,25 @@ namespace ShopSolution.WebApp.Controllers
 
             // Tạo tài khoản người dùng với mật khẩu
             var result = await _userManager.CreateAsync(newUser, registerRequest.Password);
+           
             if (result.Succeeded)
             {
+
                 // Gán vai trò mặc định (nếu có)
                 //await _userManager.AddToRoleAsync(newUser, "User");
 
                 // đăng ký thành công
                 // trả về trang login   
+                var receiver = registerRequest.Email;
+                var subject = "Tạo tài khoản thành công!";
+                var message = "Tài khoản của quý khác đã được tạo, chúc quý khác sử dụng dịch vụ vui vẻ!";
+
+                await _emailSender.SendEmailAsync(receiver, subject, message);
+
                 return RedirectToAction("Login", "Account");
+
             }
+
             else
             {
                 foreach (var error in result.Errors)
