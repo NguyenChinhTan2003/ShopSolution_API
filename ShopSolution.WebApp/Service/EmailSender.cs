@@ -27,7 +27,16 @@ namespace ShopSolution.WebApp.Service
                 Credentials = new NetworkCredential(senderEmail, senderPassword)
             };
 
-            var mailMessage = new MailMessage(senderEmail, email, subject, message);
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(senderEmail),
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true // Đặt thành true để hỗ trợ nội dung HTML
+            };
+
+            mailMessage.To.Add(email);
 
             try
             {

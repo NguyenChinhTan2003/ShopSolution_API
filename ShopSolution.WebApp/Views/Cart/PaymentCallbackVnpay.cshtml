@@ -1,13 +1,62 @@
 ﻿@model PaymentResponseModel
 @{
-    ViewData["title"] = "Kết quả thông tin giao dịch thanh toán Vnpay thành công";
+    ViewData["Title"] = "Kết quả thông tin giao dịch thanh toán Vnpay thành công";
 }
 
-<h5>Thanh toán Vnpay thành công với :</h5>
-<h6>OderId : @Model.OrderId</h6>
-<h6>Nội dung : @Model.OrderDescription</h6>
-<h6>Tổng tiền : @Model.TotalAmount</h6>
-<h6>Phương thức : @Model.PaymentMethod</h6>
-<h6>Mã giao dịch : @Model.TransactionId</h6>
-<h6>Mã thanh toán : @Model.PaymentId</h6>
+<div class="container mt-5">
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Thành công!</strong> @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Chi tiết giao dịch thanh toán</h4>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <h5 class="text-success">Thanh toán Vnpay thành công!</h5>
+                <p class="text-muted">Dưới đây là thông tin chi tiết về giao dịch của bạn:</p>
+            </div>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row" style="width: 30%;">Mã đơn hàng (OrderId)</th>
+                        <td>@Model.OrderId</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Nội dung giao dịch</th>
+                        <td>@Model.OrderDescription</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tổng tiền</th>
+                        <td>@Model.TotalAmount VNĐ</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Phương thức thanh toán</th>
+                        <td>@Model.PaymentMethod</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Mã giao dịch</th>
+                        <td>@Model.TransactionId</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Mã thanh toán</th>
+                        <td>@Model.PaymentId</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-center">
+            <a href="/" class="btn btn-primary">
+                Quay lại trang chủ
+            </a>
+            <a href="/orders/history" class="btn btn-outline-success">
+                Xem lịch sử đơn hàng
+            </a>
+        </div>
+    </div>
+</div>
