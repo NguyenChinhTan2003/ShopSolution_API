@@ -124,13 +124,25 @@
     <value>Tài khoản</value>
     <comment>Login</comment>
   </data>
+  <data name="Add To Cart" xml:space="preserve">
+    <value>Thêm vào giỏ </value>
+  </data>
+  <data name="Cart" xml:space="preserve">
+    <value>Chi tiết</value>
+  </data>
   <data name="Checkout" xml:space="preserve">
     <value>Thanh toán</value>
     <comment>Layouts</comment>
   </data>
+  <data name="Choose your preferred payment method" xml:space="preserve">
+    <value>Chọn phương thức thanh toán bạn muốn</value>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>Liên hệ</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Continue Shopping" xml:space="preserve">
+    <value>Tiếp tục mua sắm</value>
   </data>
   <data name="Continue with Facebook" xml:space="preserve">
     <value>Đăng nhập bằng tài khoản Facebook</value>
@@ -139,6 +151,9 @@
   <data name="Continue with Google" xml:space="preserve">
     <value>Đăng nhập bằng tài khoản Google</value>
     <comment>Login</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Mô tả</value>
   </data>
   <data name="Don't have an account?" xml:space="preserve">
     <value>Bạn chưa có tài khoản?</value>
@@ -150,6 +165,9 @@
   <data name="Home" xml:space="preserve">
     <value>Trang chủ</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Mặt hàng</value>
   </data>
   <data name="Log in" xml:space="preserve">
     <value>Đăng nhập</value>
@@ -167,6 +185,12 @@
     <value>Hoặc</value>
     <comment>Login</comment>
   </data>
+  <data name="Order Summary" xml:space="preserve">
+    <value>Tóm tắt đơn hàng</value>
+  </data>
+  <data name="Order Total" xml:space="preserve">
+    <value>Tổng đơn hàng</value>
+  </data>
   <data name="Pages" xml:space="preserve">
     <value>Trang</value>
     <comment>Layouts</comment>
@@ -175,12 +199,33 @@
     <value>Mật khẩu</value>
     <comment>Login</comment>
   </data>
+  <data name="Pay on Delivery (COD)" xml:space="preserve">
+    <value>Thanh toán khi nhận hàng (COD)</value>
+  </data>
+  <data name="Pay with VNPay" xml:space="preserve">
+    <value>Thanh toán bằng VNPay</value>
+  </data>
+  <data name="Payment Options" xml:space="preserve">
+    <value>Tùy chọn thanh toán</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Giá tiền</value>
+  </data>
+  <data name="Proceed To Checkout" xml:space="preserve">
+    <value>Tiến hành thanh toán</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Sản phẩm</value>
+  </data>
   <data name="Products" xml:space="preserve">
     <value>Sản phẩm</value>
   </data>
   <data name="productUrl" xml:space="preserve">
     <value>san-pham</value>
     <comment>index</comment>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Số lượng</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Đăng ký</value>
@@ -207,7 +252,6 @@
   </data>
   <data name="Shopping Cart" xml:space="preserve">
     <value>Giỏ hàng</value>
-    <comment>Layouts</comment>
   </data>
   <data name="Sign in" xml:space="preserve">
     <value>Đăng nhập</value>
@@ -216,5 +260,17 @@
   <data name="Sign up" xml:space="preserve">
     <value>Đăng ký</value>
     <comment>Login</comment>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Tổng cộng</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Tổng tiền</value>
+  </data>
+  <data name="Total Summary" xml:space="preserve">
+    <value>Tổng tóm tắt</value>
+  </data>
+  <data name="View Detail" xml:space="preserve">
+    <value>Xem chi tiết</value>
   </data>
 </root>
