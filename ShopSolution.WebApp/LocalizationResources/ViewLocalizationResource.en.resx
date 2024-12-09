@@ -124,13 +124,25 @@
     <value>Account</value>
     <comment>Login</comment>
   </data>
+  <data name="Add To Cart" xml:space="preserve">
+    <value>Add To Cart</value>
+  </data>
+  <data name="Cart" xml:space="preserve">
+    <value>Cart</value>
+  </data>
   <data name="Checkout" xml:space="preserve">
     <value>Checkout</value>
     <comment>Layouts</comment>
   </data>
+  <data name="Choose your preferred payment method" xml:space="preserve">
+    <value>Choose your preferred payment method</value>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Continue Shopping" xml:space="preserve">
+    <value>Continue Shopping</value>
   </data>
   <data name="Continue with Facebook" xml:space="preserve">
     <value>Continue with Facebook</value>
@@ -139,6 +151,9 @@
   <data name="Continue with Google account" xml:space="preserve">
     <value>Continue with Google</value>
     <comment>Login</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="Don't have an account?" xml:space="preserve">
     <value>Don't have an account?</value>
@@ -150,6 +165,9 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
     <comment>Layouts</comment>
+  </data>
+  <data name="Item" xml:space="preserve">
+    <value>Item</value>
   </data>
   <data name="Log in" xml:space="preserve">
     <value>Log in</value>
@@ -167,6 +185,12 @@
     <value>or</value>
     <comment>Login</comment>
   </data>
+  <data name="Order Summary" xml:space="preserve">
+    <value>Order Summary</value>
+  </data>
+  <data name="Order Total" xml:space="preserve">
+    <value>Order Total</value>
+  </data>
   <data name="Pages" xml:space="preserve">
     <value>Pages</value>
     <comment>Layouts</comment>
@@ -175,12 +199,33 @@
     <value>Password</value>
     <comment>Login</comment>
   </data>
+  <data name="Pay on Delivery (COD)" xml:space="preserve">
+    <value>Pay on Delivery (COD)</value>
+  </data>
+  <data name="Pay with VNPay" xml:space="preserve">
+    <value>Pay with VNPay</value>
+  </data>
+  <data name="Payment Options" xml:space="preserve">
+    <value>Payment Options</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Proceed To Checkout" xml:space="preserve">
+    <value>Proceed To Checkout</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>
   </data>
   <data name="productUrl" xml:space="preserve">
     <value>products</value>
     <comment>index</comment>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
@@ -207,7 +252,6 @@
   </data>
   <data name="Shopping Cart" xml:space="preserve">
     <value>Shopping Cart</value>
-    <comment>Layouts</comment>
   </data>
   <data name="Sign in" xml:space="preserve">
     <value>Sign in</value>
@@ -216,5 +260,17 @@
   <data name="Sign up" xml:space="preserve">
     <value>Sign up</value>
     <comment>Login</comment>
+  </data>
+  <data name="Subtotal" xml:space="preserve">
+    <value>Subtotal</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Total Summary" xml:space="preserve">
+    <value>Total Summary</value>
+  </data>
+  <data name="View Detail" xml:space="preserve">
+    <value>View Detail</value>
   </data>
 </root>

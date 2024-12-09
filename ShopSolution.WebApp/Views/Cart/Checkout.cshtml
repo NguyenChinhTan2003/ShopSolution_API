@@ -13,16 +13,16 @@
         <div class="col-lg-8 mb-5">
             <div class="card border-secondary">
                 <div class="card-header bg-secondary text-white">
-                    <h4 class="font-weight-semi-bold m-0">Order Summary</h4>
+                    <h4 class="font-weight-semi-bold m-0"><localize>Order Summary</localize></h4>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Total</th>
+                                <th><localize>Product</localize></th>
+                                <th><localize>Quantity</localize></th>
+                                <th><localize>Price</localize></th>
+                                <th><localize>Total</localize></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,7 +38,7 @@
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-between mt-3">
-                        <h5 class="font-weight-bold">Order Total</h5>
+                        <h5 class="font-weight-bold"><localize>Order Total</localize></h5>
                         <h5 class="font-weight-bold">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("#,##0 VNĐ")</h5>
                     </div>
                 </div>
@@ -51,30 +51,30 @@
             <!-- Total Summary -->
             <div class="card border-secondary">
                 <div class="card-header bg-secondary text-white">
-                    <h4 class="font-weight-semi-bold m-0">Total Summary</h4>
+                    <h4 class="font-weight-semi-bold m-0"><localize>Total Summary</localize></h4>
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <h5 class="font-weight-medium">Subtotal</h5>
+                        <h5 class="font-weight-medium"><localize>Subtotal</localize></h5>
                         <h5 class="font-weight-medium">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0") VNĐ</h5>
                     </div>
                     <hr>
                     <div class="d-flex justify-content-between">
-                        <h5 class="font-weight-bold">Total</h5>
+                        <h5 class="font-weight-bold"><localize>Total</localize></h5>
                         <h5 class="font-weight-bold">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0") VNĐ</h5>
                     </div>
                 </div>
             </div>
             <div class="card border-secondary mb-4">
                 <div class="card-header bg-secondary text-white">
-                    <h4 class="font-weight-semi-bold m-0">Payment Options</h4>
+                    <h4 class="font-weight-semi-bold m-0"><localize>Payment Options</localize></h4>
                 </div>
                 <div class="card-body">
-                    <p>Choose your preferred payment method:</p>
+                    <p><localize>Choose your preferred payment method</localize></p>
 
                     <!-- COD Payment -->
                     <a class="btn btn-lg btn-block btn-primary mb-3" asp-action="Pay" asp-controller="Cart" type="button">
-                        Pay on Delivery (COD)
+                        <localize>Pay on Delivery (COD)</localize>
                     </a>
 
                     <!-- VNPay Payment -->
@@ -84,7 +84,7 @@
                         <input type="hidden" name="OrderDescription" value="Thanh toán hóa đơn" />
                         <input type="hidden" name="OrderType" value="Order" />
                         <button type="submit" class="btn btn-lg btn-block btn-success">
-                            Pay with VNPay
+                            <localize>Pay with VNPay</localize>
                         </button>
                     </form>
                 </div>
