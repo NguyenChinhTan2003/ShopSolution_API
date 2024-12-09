@@ -1,4 +1,6 @@
-﻿namespace ShopSolution.WebApp.Service
+﻿using ShopSolution.WebApp.Models.VnPay;
+
+namespace ShopSolution.WebApp.Service
 {
     public interface IEmailSender
     {

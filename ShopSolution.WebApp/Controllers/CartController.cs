@@ -10,6 +10,7 @@ using ShopSolution.Data.Enums;
 using ShopSolution.Data.Migrations;
 using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Sales;
+using ShopSolution.ViewModels.System.Languages;
 using ShopSolution.WebApp.Models;
 using ShopSolution.WebApp.Models.VnPay;
 using ShopSolution.WebApp.Service;
@@ -31,6 +32,58 @@ namespace ShopSolution.WebApp.Controllers
             _vnPayService = vnPayService;
             _emailSender = emailSender;
         }
+        private string GenerateOrderDetailsHtml(Order order, List<OrderDetail> orderDetails, List<ProductTranslation> productTranslations, string languageId)
+        {
+            // Nếu phương thức thanh toán chưa được đặt, mặc định là "COD"
+            if (string.IsNullOrEmpty(order.PaymentMethod))
+            {
+                order.PaymentMethod = "COD";
+            }
+
+            var orderDetailsHtml = string.Join("", orderDetails.Select(detail =>
+            {
+                var productTranslation = productTranslations
+                    .FirstOrDefault(pt => pt.ProductId == detail.ProductId && pt.LanguageId == languageId);
+                var productName = productTranslation?.Name ?? "Không xác định";
+
+                return $@"
+                <tr>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{detail.ProductId}</td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{productName}</td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{detail.Quantity}</td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{detail.Price.ToString("N0")} VNĐ</td>
+                    <td style='border: 1px solid #ddd; padding: 8px;'>{(detail.Quantity * detail.Price).ToString("N0")} VNĐ</td>
+                </tr>";
+                            }));
+
+                            var html = $@"
+                <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
+                    <h2 style='color: #4CAF50;'>Cảm ơn bạn đã đặt hàng!</h2>
+                    <p>Chi tiết đơn hàng của bạn như sau:</p>
+                    <table style='width: 100%; border-collapse: collapse; margin-top: 20px;'>
+                        <thead>
+                            <tr style='background-color: #f2f2f2;'>
+                                <th style='border: 1px solid #ddd; padding: 8px;'>Mã sản phẩm</th>
+                                <th style='border: 1px solid #ddd; padding: 8px;'>Tên sản phẩm</th>
+                                <th style='border: 1px solid #ddd; padding: 8px;'>Số lượng</th>
+                                <th style='border: 1px solid #ddd; padding: 8px;'>Đơn giá</th>
+                                <th style='border: 1px solid #ddd; padding: 8px;'>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orderDetailsHtml}
+                        </tbody>
+                    </table>
+                    <h3 style='margin-top: 20px;'>Tổng tiền: {orderDetails.Sum(d => d.Quantity * d.Price).ToString("N0")} VNĐ</h3>
+                    <p><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</p>
+                    <p><strong>Ngày đặt hàng:</strong> {order.OrderDate.ToString("dd/MM/yyyy HH:mm")}</p>
+                </div>";
+
+            return html;
+        }
+
+
+
         public IActionResult Index()
         {
             ViewData["ShowSideComponent"] = false;
@@ -49,7 +102,7 @@ namespace ShopSolution.WebApp.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public async Task<IActionResult> Pay(string PaymentMethod, string PaymentId)
+        public async Task<IActionResult> Pay(string PaymentMethod, string PaymentId, string languageId = "vi")
         {
             ViewData["ShowSideComponent"] = false;
             // Lấy giỏ hàng từ Session
@@ -61,23 +114,17 @@ namespace ShopSolution.WebApp.Controllers
             }
             // Tạo một Order mới
             var orderId = Guid.NewGuid();
-            var orderItem = new Order();
-            orderItem.OrderId = orderId;
-            orderItem.OrderDate = DateTime.Now;
-            orderItem.UserName = User.Identity.Name;
-            if (PaymentMethod != "VnPay")
+            var orderItem = new Order
             {
-                orderItem.PaymentMethod = "COD";
-            }
-            else if (PaymentMethod == "VnPay")
-            {
-                orderItem.PaymentMethod = "VnPay" + " " + PaymentId;
-            }
-            orderItem.Email = "";
-            orderItem.Phone = "";
-            orderItem.Address = "";
-            orderItem.Status = 0; // 0 = Đang xử lý
-
+                OrderId = orderId,
+                OrderDate = DateTime.Now,
+                UserName = User.Identity.Name,
+                PaymentMethod = PaymentMethod == "VnPay" ? $"VnPay {PaymentId}" : "COD",
+                Email = "",
+                Phone = "",
+                Address = "",
+                Status = 0 // 0 = Đang xử lý
+            };
 
 
 
@@ -100,14 +147,17 @@ namespace ShopSolution.WebApp.Controllers
             _shopDBContext.OrderDetails.AddRange(orderDetails);
             _shopDBContext.SaveChanges();
 
+            var productTranslations = _shopDBContext.ProductTranslations.ToList();
             // Xóa giỏ hàng sau khi đặt hàng thành công
             HttpContext.Session.Remove(SystemConstants.CartSession);
 
+            var emailContent = GenerateOrderDetailsHtml(orderItem, orderDetails, productTranslations, languageId);
+
             var receiver = User.Identity.Name;
             var subject = "Đặt đơn hàng thành công!";
-            var message = "Đơn hàng đã được thanh toán, cảm ơn quý khách!";
 
-            await _emailSender.SendEmailAsync(receiver, subject, message);
+            await _emailSender.SendEmailAsync(receiver, subject, emailContent);
+
 
             TempData["success"] = "Đơn hàng đã được tạo thành công!";
             return View(TempData);

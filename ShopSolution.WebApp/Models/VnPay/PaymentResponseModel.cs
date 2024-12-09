@@ -13,4 +13,5 @@
         public string VnPayResponseCode { get; set; }
 
     }
+
 }
