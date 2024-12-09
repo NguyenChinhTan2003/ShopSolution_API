@@ -24,7 +24,7 @@
             <table class="table table-bordered">
                 <tbody>
                     <tr>
-                        <th scope="row" style="width: 30%;">Mã đơn hàng (OrderId)</th>
+                        <th scope="row" style="width: 30%;">Mã đơn hàng</th>
                         <td>@Model.OrderId</td>
                     </tr>
                     <tr>
@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <th scope="row">Tổng tiền</th>
-                        <td>@Model.TotalAmount VNĐ</td>
+                        <td>@Model.TotalAmount.ToString("#,##0 VNĐ")</td>
                     </tr>
                     <tr>
                         <th scope="row">Phương thức thanh toán</th>

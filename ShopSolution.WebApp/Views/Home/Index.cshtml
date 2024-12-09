@@ -72,10 +72,10 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">@item.Name</h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6>@item.Price.ToString("C")</h6>
+                                        <h6>@item.Price.ToString("#,##0 VNĐ")</h6>
                                         @if (item.OriginalPrice > item.Price)
                                         {
-                                            <h6 class="text-muted ml-2"><del>@item.OriginalPrice.ToString("C")</del></h6>
+                                            <h6 class="text-muted ml-2"><del>@item.OriginalPrice.ToString("#,##0 VNĐ") </del></h6>
                                         }
                                     </div>
                                 </div>
