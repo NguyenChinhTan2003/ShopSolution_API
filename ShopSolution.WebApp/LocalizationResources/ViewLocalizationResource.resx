@@ -118,124 +118,103 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="20% off the all order" xml:space="preserve">
-    <value>Giảm giá 20% cho tất cả đơn hàng</value>
+    <value />
   </data>
   <data name="Account" xml:space="preserve">
-    <value>Tài khoản</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Checkout" xml:space="preserve">
-    <value>Thanh toán</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Contact" xml:space="preserve">
-    <value>Liên hệ</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Continue with Facebook" xml:space="preserve">
-    <value>Đăng nhập bằng tài khoản Facebook</value>
-    <comment>Login</comment>
+    <value />
   </data>
-  <data name="Continue with Google account" xml:space="preserve">
-    <value>Đăng nhập bằng tài khoản Google</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Continue with Google account" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="Don't have an account?" xml:space="preserve">
-    <value>Bạn chưa có tài khoản?</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Featured equipment" xml:space="preserve">
-    <value>Thiết bị nổi bật</value>
+    <value />
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Trang chủ</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Log in" xml:space="preserve">
-    <value>Đăng nhập</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Đăng nhập</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Đăng xuất</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="or" xml:space="preserve">
-    <value>Hoặc</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Pages" xml:space="preserve">
-    <value>Trang</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Mật khẩu</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Products" xml:space="preserve">
-    <value>Sản phẩm</value>
+    <value />
   </data>
   <data name="productUrl" xml:space="preserve">
-    <value>san-pham</value>
-    <comment>index</comment>
+    <value />
   </data>
   <data name="Register" xml:space="preserve">
-    <value>Đăng ký</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Remember me" xml:space="preserve">
-    <value>Ghi nhớ</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Search for products" xml:space="preserve">
-    <value>Tìm kiếm sản phẩm</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Shop" xml:space="preserve">
-    <value>Cửa hàng</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Shop Detail" xml:space="preserve">
-    <value>Chi tiết</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Shop Now" xml:space="preserve">
-    <value>Mua ngay</value>
+    <value />
   </data>
   <data name="Shopping Cart" xml:space="preserve">
-    <value>Giỏ hàng</value>
-    <comment>Layouts</comment>
+    <value />
   </data>
   <data name="Sign in" xml:space="preserve">
-    <value>Đăng nhập</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Sign up" xml:space="preserve">
-    <value>Đăng ký</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Continue with Google" xml:space="preserve">
-    <value>Đăng nhập bằng tài khoản Google</value>
-    <comment>Login</comment>
+    <value />
   </data>
   <data name="Featured Products" xml:space="preserve">
-    <value>Sản Phẩm Nổi Bật </value>
+    <value />
   </data>
   <data name="Lasted Products" xml:space="preserve">
-    <value>Sản Phẩm Mới Nhất</value>
+    <value />
   </data>
   <data name="Add To Cart" xml:space="preserve">
-    <value>Thêm Vào Giỏ Hàng</value>
+    <value />
   </data>
   <data name="View Detail" xml:space="preserve">
-    <value>Xem Chi Tiết</value>
+    <value />
   </data>
   <data name="categoryUrl" xml:space="preserve">
-    <value>danh-muc</value>
+    <value />
   </data>
   <data name="Categories" xml:space="preserve">
-    <value>Danh Mục Sản Phẩm</value>
+    <value />
   </data>
 </root>

@@ -13,10 +13,12 @@ namespace ShopSolution.Application.Catalog.Categories
     public class CategoryService : ICategoryService
     {
         private readonly ShopDBContext _context;
+
         public CategoryService(ShopDBContext context)
         {
             _context = context;
         }
+
         public async Task<List<CategoryVm>> GetAll(string languageId)
         {
             var query = from c in _context.Categories
@@ -26,7 +28,8 @@ namespace ShopSolution.Application.Catalog.Categories
             return await query.Select(x => new CategoryVm()
             {
                 Id = x.c.Id,
-                Name = x.ct.Name
+                Name = x.ct.Name,
+                ParentId = x.c.ParentId
             }).ToListAsync();
         }
     }

@@ -137,7 +137,7 @@
     <comment>Login</comment>
   </data>
   <data name="Continue with Google account" xml:space="preserve">
-    <value>Continue with Google</value>
+    <value>Continue with Google account</value>
     <comment>Login</comment>
   </data>
   <data name="Don't have an account?" xml:space="preserve">
@@ -216,5 +216,26 @@
   <data name="Sign up" xml:space="preserve">
     <value>Sign up</value>
     <comment>Login</comment>
+  </data>
+  <data name="Continue with Google" xml:space="preserve">
+    <value>Continue with Google</value>
+  </data>
+  <data name="Featured Products" xml:space="preserve">
+    <value>Featured Products</value>
+  </data>
+  <data name="Lasted Products" xml:space="preserve">
+    <value>Lasted Products</value>
+  </data>
+  <data name="Add To Cart" xml:space="preserve">
+    <value>Add To Cart</value>
+  </data>
+  <data name="View Detail" xml:space="preserve">
+    <value>View Detail</value>
+  </data>
+  <data name="categoryUrl" xml:space="preserve">
+    <value>categories</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Categories</value>
   </data>
 </root>

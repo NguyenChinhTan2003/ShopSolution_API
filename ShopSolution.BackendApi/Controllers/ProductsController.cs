@@ -11,7 +11,6 @@ namespace ShopSolution.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -45,6 +44,14 @@ namespace ShopSolution.BackendApi.Controllers
         public async Task<IActionResult> GetFeaturedProducts(int take, string languageId)
         {
             var products = await _productService.GetFeaturedProducts(languageId, take);
+            return Ok(products);
+        }
+
+        [HttpGet("lasted/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLastedProducts(int take, string languageId)
+        {
+            var products = await _productService.GetLastedProducts(languageId, take);
             return Ok(products);
         }
 
@@ -112,16 +119,17 @@ namespace ShopSolution.BackendApi.Controllers
         public async Task<IActionResult> CreateImage(int productId, [FromForm] ProductImageCreateRequest request)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
+
             var imageId = await _productService.AddImages(productId, request);
             if (imageId == 0)
-                return BadRequest();
+                return BadRequest("Cannot add image");
 
             var image = await _productService.GetImageById(imageId);
 
-            return CreatedAtAction(nameof(GetImageById), new { id = imageId }, image);
+            // Tạo URL cho ảnh vừa thêm
+            var imageUrl = Url.Content($"~/images/products/{image.ImagePath}");
+            return CreatedAtAction(nameof(GetImageById), new { productId, imageId }, new { image.Id, imageUrl });
         }
 
         [HttpPut("{productId}/images/{imageId}")]
@@ -157,8 +165,30 @@ namespace ShopSolution.BackendApi.Controllers
         {
             var image = await _productService.GetImageById(imageId);
             if (image == null)
-                return BadRequest("Cannot find product");
-            return Ok(image);
+                return NotFound("Cannot find image");
+
+            // Trả về URL của ảnh
+            var imageUrl = Url.Content($"~/images/products/{image.ImagePath}");
+            return Ok(new { image.Id, image.ProductId, imageUrl });
+        }
+
+        // API tải ảnh trực tiếp
+        [HttpGet("{productId}/images/{imageId}/download")]
+        public async Task<IActionResult> DownloadImage(int productId, int imageId)
+        {
+            var image = await _productService.GetImageById(imageId);
+            if (image == null || string.IsNullOrEmpty(image.ImagePath))
+                return NotFound("Cannot find image");
+
+            var ImagePath = Path.Combine("wwwroot/user-content", image.ImagePath);
+
+            if (!System.IO.File.Exists(ImagePath))
+                return NotFound("Image file not found");
+
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(ImagePath);
+            var contentType = "application/octet-stream"; // Bạn có thể dùng thư viện để xác định kiểu MIME
+
+            return File(fileBytes, contentType, Path.GetFileName(ImagePath));
         }
 
         [HttpPut("{id}/categories")]

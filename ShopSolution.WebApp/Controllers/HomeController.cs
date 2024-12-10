@@ -32,8 +32,9 @@ namespace ShopSolution.WebApp.Controllers
             var culture = CultureInfo.CurrentCulture.Name;
             var viewModel = new HomeViewModel
             {
-               
-                FeaturedProducts = await _productApiClient.GetFeaturedProducts(culture, SystemConstants.ProductSettings.NumberOfFeaturedProducts)
+                Slides = await _slideApiClient.GetAll(),
+                FeaturedProducts = await _productApiClient.GetFeaturedProducts(culture, SystemConstants.ProductSettings.NumberOfFeaturedProducts),
+                LastedProducts = await _productApiClient.GetLastedProducts(culture, SystemConstants.ProductSettings.NumberOfLastedProducts)
             };
             return View(viewModel);
         }

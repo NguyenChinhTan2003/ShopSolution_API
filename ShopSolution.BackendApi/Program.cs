@@ -156,7 +156,7 @@ app.UseStaticFiles();
 
 // Use CORS if configured
 app.UseCors("AllowAll");
-
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
