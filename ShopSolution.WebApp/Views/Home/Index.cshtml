@@ -73,19 +73,19 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">@item.Name</h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6>@item.Price.ToString("C")</h6>
+                                        <h6>@item.Price.ToString("#,##0 VNĐ")</h6>
                                         @if (item.OriginalPrice > item.Price)
                                         {
-                                            <h6 class="text-muted ml-2"><del>@item.OriginalPrice.ToString("C")</del></h6>
+                                            <h6 class="text-muted ml-2"><del>@item.OriginalPrice.ToString("#,##0 VNĐ") </del></h6>
                                         }
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
                                     <a href="@url" class="btn btn-sm text-dark p-0">
-                                        <i class="fas fa-eye text-primary mr-1"></i>View Detail
+                                        <i class="fas fa-eye text-primary mr-1"></i><localize>View Detail</localize>
                                     </a>
                                     <a href="/" class="btn btn-sm btn-add-cart text-dark p-0" data-id="@item.Id">
-                                        <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                        <i class="fas fa-shopping-cart text-primary mr-1"></i><localize>Add To Cart</localize>
                                     </a>
                                 </div>
                             </div>
@@ -137,10 +137,10 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">@item.Name</h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6>@item.Price.ToString("C")</h6>
+                                        <h6>@item.Price.ToString("#,##0 VNĐ")</h6>
                                         @if (item.OriginalPrice > item.Price)
                                         {
-                                            <h6 class="text-muted ml-2"><del>@item.OriginalPrice.ToString("C")</del></h6>
+                                            <h6 class="text-muted ml-2"><del>@item.OriginalPrice.ToString("#,##0 VNĐ")</del></h6>
                                         }
                                     </div>
                                 </div>

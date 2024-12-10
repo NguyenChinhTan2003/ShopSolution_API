@@ -1,100 +1,95 @@
-﻿
-@model CheckoutViewModel
+﻿@model CheckoutViewModel
 @{
     ViewData["Title"] = "Checkout";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
 @{
     var culture = CultureInfo.CurrentCulture.Name;
 }
-@if (TempData["SuccessMsg"] != null)
-{
-    <span class="alert alert-success">@TempData["SuccessMsg"]</span>
-}
-else
-{
-<div class="container-fluid pt-5">
-    <div class="row px-xl-5">
-        <div class="col-lg-8">
-            <div class="mb-4">
-                <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
-                <div class="row">
-                    <div class="col-md-6 form-group">
-                        <label>E-mail</label>
-                        <input class="form-control" type="text" placeholder="example@email.com">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Mobile No</label>
-                        <input class="form-control" type="text" placeholder="+123 456 789">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Address</label>
-                        <input class="form-control" type="text" placeholder="123 Street">
-                    </div>
-                  
-                </div>
-            </div>
-          
-        </div>
-        <div class="col-lg-4">
-            <div class="card border-secondary mb-5">
-                <div class="card-header bg-secondary border-0">
-                    <h4 class="font-weight-semi-bold m-0">Order Total</h4>
+
+<div class="container pt-5">
+    <div class="row">
+        <!-- Order Summary -->
+        <div class="col-lg-8 mb-5">
+            <div class="card border-secondary">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="font-weight-semi-bold m-0"><localize>Order Summary</localize></h4>
                 </div>
                 <div class="card-body">
-                    <h5 class="font-weight-medium mb-3">Products</h5>
-                        <table class="table table-bordered">
-                            <thead>
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th><localize>Product</localize></th>
+                                <th><localize>Quantity</localize></th>
+                                <th><localize>Price</localize></th>
+                                <th><localize>Total</localize></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CartItems)
+                            {
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Total</th>
+                                    <td>@item.Name</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Price.ToString("N0") VNĐ</td>
+                                    <td>@((item.Quantity * item.Price).ToString("#,##0 VNĐ"))</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.CartItems)
-                                {
-                                    <tr>
-                                        <td>@item.Name</td>
-                                        <td>
-                                            @item.Quantity
-                                        </td>
-                                        <td>@item.Price</td>
-                                        <td>@(item.Quantity * item.Price)</td>
-                                    </tr>
-                                }
-                               
-                            </tbody>
-                        </table>
-                </div>
-                <div class="card-footer border-secondary bg-transparent">
-                    <div class="d-flex justify-content-between mt-2">
-                        <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0")</h5>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-between mt-3">
+                        <h5 class="font-weight-bold"><localize>Order Total</localize></h5>
+                        <h5 class="font-weight-bold">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("#,##0 VNĐ")</h5>
                     </div>
                 </div>
             </div>
-            <div class="card border-secondary mb-5">
-                <div class="card-header bg-secondary border-0">
-                    <h4 class="font-weight-semi-bold m-0">Payment</h4>
+        </div>
+
+        <!-- Payment Options -->
+        <div class="col-lg-4">
+           
+            <!-- Total Summary -->
+            <div class="card border-secondary">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="font-weight-semi-bold m-0"><localize>Total Summary</localize></h4>
                 </div>
                 <div class="card-body">
-                  <div>
-                            <form method="POST" asp-action="CreatePaymentUrlVnpay" asp-controller="Payment">
-                                <input type="hidden" name="Name" value="@User.Identity.Name" />
-                                <input type="hidden" name="Amount" value="@Model.CartItems.Sum(x => x.Quantity * x.Price)"/>
-                                <input type="hidden" name="OrderDescription" value="Thanh toán hóa đơn" />
-                                <input type="hidden" name="OrderType" value="Order" />
-                                <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" type="submit">Pay with VNPay</button>
-                             </form>
-                  </div>
-                  
+                    <div class="d-flex justify-content-between">
+                        <h5 class="font-weight-medium"><localize>Subtotal</localize></h5>
+                        <h5 class="font-weight-medium">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0") VNĐ</h5>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <h5 class="font-weight-bold"><localize>Total</localize></h5>
+                        <h5 class="font-weight-bold">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0") VNĐ</h5>
+                    </div>
                 </div>
-               
             </div>
+            <div class="card border-secondary mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="font-weight-semi-bold m-0"><localize>Payment Options</localize></h4>
+                </div>
+                <div class="card-body">
+                    <p><localize>Choose your preferred payment method</localize></p>
+
+                    <!-- COD Payment -->
+                    <a class="btn btn-lg btn-block btn-primary mb-3" asp-action="Pay" asp-controller="Cart" type="button">
+                        <localize>Pay on Delivery (COD)</localize>
+                    </a>
+
+                    <!-- VNPay Payment -->
+                    <form method="POST" asp-action="CreatePaymentUrlVnpay" asp-controller="Cart">
+                        <input type="hidden" name="Name" value="@User.Identity.Name" />
+                        <input type="hidden" name="Amount" value="@Model.CartItems.Sum(x => x.Quantity * x.Price)" />
+                        <input type="hidden" name="OrderDescription" value="Thanh toán hóa đơn" />
+                        <input type="hidden" name="OrderType" value="Order" />
+                        <button type="submit" class="btn btn-lg btn-block btn-success">
+                            <localize>Pay with VNPay</localize>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-}

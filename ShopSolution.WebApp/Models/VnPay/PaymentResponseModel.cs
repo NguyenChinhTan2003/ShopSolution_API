@@ -4,6 +4,7 @@
     {
         public string OrderDescription { get; set; }
         public string TransactionId { get; set; }
+        public decimal TotalAmount { get; set; }
         public string OrderId { get; set; }
         public string PaymentMethod { get; set; }
         public string PaymentId { get; set; }
@@ -12,4 +13,5 @@
         public string VnPayResponseCode { get; set; }
 
     }
+
 }
