@@ -24,6 +24,8 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using Azure.Core;
 using ShopSolution.WebApp.Service;
+using ShopSolution.Data.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShopSolution.WebApp.Controllers
 {
@@ -34,18 +36,21 @@ namespace ShopSolution.WebApp.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly ShopDBContext _shopDBContext;
 
         string appid = string.Empty;
         string appsecret = string.Empty;
 
         public AccountController(IUserApiClient userApiClient,
-            IConfiguration configuration, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IEmailSender emailSender)
+            IConfiguration configuration, SignInManager<AppUser> signInManager,
+            UserManager<AppUser> userManager, IEmailSender emailSender, ShopDBContext shopDBContext)
         {
             _userApiClient = userApiClient;
             _configuration = configuration;
             _signInManager = signInManager;
             _userManager = userManager;
             _emailSender = emailSender;
+            _shopDBContext = shopDBContext;
 
           
             appid = configuration.GetSection("AppID").Value;
@@ -114,6 +119,53 @@ namespace ShopSolution.WebApp.Controllers
                 ModelState.AddModelError("", "Đăng nhập không đúng.");
                 return View(request);
             }
+        }
+
+        public async Task<IActionResult> History()
+        {
+            ViewData["ShowSideComponent"] = false;
+            if ((bool)!User.Identity?.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            var Orders = await _shopDBContext.Orders
+             .Where(od => od.UserName == userEmail)
+             .OrderByDescending(od => od.OrderId)
+             .ToListAsync();
+
+            ViewBag.UserEmail = userEmail;
+            return View(Orders);
+        }
+
+        public async Task<IActionResult> CancenlOrder(Guid orderId)
+        {
+            if ((bool)!User.Identity?.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            try
+            {
+                var order = await _shopDBContext.Orders.Where(o => o.OrderId == orderId).FirstAsync();
+                order.Status = Data.Enums.OrderStatus.Canceled;
+                _shopDBContext.Update(order);
+                await _shopDBContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+                
+            return RedirectToAction("History","Account");
+        }
+
+        public async Task<IActionResult> ViewOrder(Guid orderId)
+        {
+            ViewData["ShowSideComponent"] = false;
+            var detailOrder = await _shopDBContext.OrderDetails.Include(o => o.Product).Where(o => o.OrderId == orderId).ToListAsync();
+            return View(detailOrder);
         }
 
         [HttpPost]
