@@ -124,6 +124,7 @@ namespace ShopSolution.WebApp.Controllers
                 Phone = "",
                 Address = "",
                 Status = 0 // 0 = Đang xử lý
+                
             };
 
 

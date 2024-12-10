@@ -1,0 +1,54 @@
+﻿@model IEnumerable<OrderDetail>
+
+@{
+    ViewData["Title"] = "Lịch sử mua hàng";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4 text-primary">Chi tiết đơn hàng</h1>
+    <hr />
+
+    <div class="card mb-12 shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Thông tin chi tiết đơn hàng</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.OrderId</td>
+                                <td>@item.ProductId</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price.ToString("#,##0 VNĐ")</td>
+                                <td>@((item.Quantity * item.Price).ToString("#,##0 VNĐ"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+                <div class="h3 text-danger">
+                    <strong>Tổng tiền: </strong>
+                    @Model.Sum(x => x.Quantity * x.Price).ToString("#,##0 VNĐ")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

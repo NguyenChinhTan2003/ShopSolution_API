@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Lịch sử mua hàng" + " " + ViewBag.UserEmail;
+   
+}
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            $('#msgAlert').fadeOut('slow');
+        }, 2000);
+    </script>
+}
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách đơn hàng : </h1>
+    
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+               
+
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                Mã đơn hàng
+                            </th>
+                            <th>
+                                Tên tài khoản
+                            </th>
+                            <th>
+                                Phương thức thanh toán
+                            </th>
+                            <th>
+                                Ngày mua
+                            </th>
+                            <th>
+                                Trạng thái
+                            </th>
+
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PaymentMethod)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderDate)
+                                </td>
+                                <td>
+                                    @if (item.Status == ShopSolution.Data.Enums.OrderStatus.InProgress)
+                                    {
+                                        <span class="text text-success">Đơn hàng mới</span>
+                                    }
+                                    else if (item.Status == ShopSolution.Data.Enums.OrderStatus.Confirmed)
+                                    {
+                                        <span class="text text-success">Đã xác nhận</span>
+                                    }
+                                    else if (item.Status == ShopSolution.Data.Enums.OrderStatus.Success)
+                                    {
+                                        <span class="text text-success">Đã hoàn thành</span>
+                                    }
+                                    else if (item.Status == ShopSolution.Data.Enums.OrderStatus.Canceled)
+                                    {
+                                        <span class="text text-success">Đã hủy</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="ViewOrder" asp-controller="Account" asp-route-orderId="@item.OrderId" type="button">
+                                        <localize>Chi tiết đơn hàng</localize>
+                                    </a>
+                                </td>
+                                <td>
+                                    @if (item.Status == ShopSolution.Data.Enums.OrderStatus.InProgress) {
+                                        <a class="btn btn-lg btn-block btn-primary mb-3" asp-action="CancenlOrder" asp-controller="Account" asp-route-orderId="@item.OrderId" type="button">
+                                            <localize>Hủy đơn hàng</localize>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                       
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+       
+        </div>
+    </div>
+</div>

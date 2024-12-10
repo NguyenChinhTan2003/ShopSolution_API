@@ -162,6 +162,9 @@
   <data name="Featured equipment" xml:space="preserve">
     <value>Thiết bị nổi bật</value>
   </data>
+  <data name="History" xml:space="preserve">
+    <value>Lịch sử mua hàng</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Trang chủ</value>
     <comment>Layouts</comment>

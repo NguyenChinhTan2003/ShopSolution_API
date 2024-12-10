@@ -162,6 +162,9 @@
   <data name="Featured equipment" xml:space="preserve">
     <value>Featured equipment</value>
   </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
     <comment>Layouts</comment>
