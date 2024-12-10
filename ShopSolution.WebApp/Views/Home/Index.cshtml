@@ -35,10 +35,10 @@
     </div>
 </div>
 <!-- Offer End -->
-<!-- Products Start -->
+<!-- Featured Products Start -->
 <div class="container-fluid pt-5">
     <div class="text-center mb-4">
-        <h2 class="section-title px-5"><span class="px-2"><localize>Products</localize></span></h2>
+        <h2 class="section-title px-5"><span class="px-2"><localize>Featured Products</localize></span></h2>
     </div>
     @* Chia sản phẩm thành các nhóm *@
     @{
@@ -64,10 +64,11 @@
                     @foreach (var item in featuredProducts[index])
                     {
                         var url = $"/{culture}/{_loc["productUrl"]}/{item.Id}";
+                        var imageUrl = Url.Content($"{Configuration["BaseAddress"]}/user-content/{item.ThumbnailImage}");
                         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <a href="@url"><img src="@(Configuration["BaseAddress"] + item.ThumbnailImage)" alt="@item.Name"></a>
+                                    <a href="@url"><img class="img-fluid w-100" src="@imageUrl" alt="@item.Name"></a>
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">@item.Name</h6>
@@ -95,7 +96,72 @@
         }
     </div>
 </div>
-<!-- Products End -->
+<!-- Featured Products End -->
+
+
+<!-- Lasted Products Start -->
+<div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2"><localize>Lasted Products</localize></span></h2>
+    </div>
+    @* Chia sản phẩm thành các nhóm *@
+    @{
+        List<List<ProductVm>> lastedProducts = new List<List<ProductVm>>();
+        List<ProductVm> lastedPart = new List<ProductVm>();
+
+        for (int index = 0; index < Model.LastedProducts.Count; index++)
+        {
+            lastedPart.Add(Model.LastedProducts[index]);
+            if (lastedPart.Count == 4 || index == Model.LastedProducts.Count - 1) // Nhóm 4 sản phẩm hoặc hết danh sách
+            {
+                lastedProducts.Add(lastedPart);
+                lastedPart = new List<ProductVm>();
+            }
+        }
+    }
+    <div class="row px-xl-5 pb-3">
+        @* Hiển thị từng nhóm sản phẩm *@
+        @for (int index = 0; index < lastedProducts.Count; index++)
+        {
+            <div class="col-lg-12">
+                <div class="row">
+                    @foreach (var item in lastedProducts[index])
+                    {
+                        var url = $"/{culture}/{_loc["productUrl"]}/{item.Id}";
+                        var imageUrl = Url.Content($"{Configuration["BaseAddress"]}/user-content/{item.ThumbnailImage}");
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="card product-item border-0 mb-4">
+                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                    <a href="@url"><img class="img-fluid w-100" src="@imageUrl" alt="@item.Name"></a>
+                                </div>
+                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                    <h6 class="text-truncate mb-3">@item.Name</h6>
+                                    <div class="d-flex justify-content-center">
+                                        <h6>@item.Price.ToString("#,##0 VNĐ")</h6>
+                                        @if (item.OriginalPrice > item.Price)
+                                        {
+                                            <h6 class="text-muted ml-2"><del>@item.OriginalPrice.ToString("#,##0 VNĐ")</del></h6>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between bg-light border">
+                                    <a href="@url" class="btn btn-sm text-dark p-0">
+                                        <i class="fas fa-eye text-primary mr-1"></i><localize>View Detail</localize>
+                                    </a>
+                                    <a href="/" class="btn btn-sm btn-add-cart text-dark p-0" data-id="@item.Id">
+                                        <i class="fas fa-shopping-cart text-primary mr-1"></i><localize>Add To Cart</localize>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Lasted Products End -->
 
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">

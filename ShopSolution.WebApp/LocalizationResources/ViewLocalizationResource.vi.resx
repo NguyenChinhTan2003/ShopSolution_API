@@ -148,9 +148,8 @@
     <value>Đăng nhập bằng tài khoản Facebook</value>
     <comment>Login</comment>
   </data>
-  <data name="Continue with Google" xml:space="preserve">
+  <data name="Continue with Google account" xml:space="preserve">
     <value>Đăng nhập bằng tài khoản Google</value>
-    <comment>Login</comment>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Mô tả</value>
@@ -272,5 +271,27 @@
   </data>
   <data name="View Detail" xml:space="preserve">
     <value>Xem chi tiết</value>
+  </data>
+  <data name="Continue with Google" xml:space="preserve">
+    <value>Đăng nhập bằng tài khoản Google</value>
+    <comment>Login</comment>
+  </data>
+  <data name="Featured Products" xml:space="preserve">
+    <value>Sản Phẩm Nổi Bật </value>
+  </data>
+  <data name="Lasted Products" xml:space="preserve">
+    <value>Sản Phẩm Mới Nhất</value>
+  </data>
+  <data name="Add To Cart" xml:space="preserve">
+    <value>Thêm Vào Giỏ Hàng</value>
+  </data>
+  <data name="View Detail" xml:space="preserve">
+    <value>Xem Chi Tiết</value>
+  </data>
+  <data name="categoryUrl" xml:space="preserve">
+    <value>danh-muc</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Danh Mục Sản Phẩm</value>
   </data>
 </root>
