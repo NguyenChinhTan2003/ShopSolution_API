@@ -1,4 +1,4 @@
-using LazZiya.ExpressLocalization;
+﻿using LazZiya.ExpressLocalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using ShopSolution.WebApp.Models;
@@ -8,6 +8,7 @@ using ShopSolution.ApiIntegration;
 using ShopSolution.Utilities.Constants;
 using System.Globalization;
 
+
 namespace ShopSolution.WebApp.Controllers
 {
     public class HomeController : Controller
@@ -16,7 +17,6 @@ namespace ShopSolution.WebApp.Controllers
         private readonly ISharedCultureLocalizer _loc;
         private readonly ISlideApiClient _slideApiClient;
         private readonly IProductApiClient _productApiClient;
-
         public HomeController(ILogger<HomeController> logger,
             ISlideApiClient slideApiClient,
             IProductApiClient productApiClient, ISharedCultureLocalizer loc)
@@ -25,7 +25,9 @@ namespace ShopSolution.WebApp.Controllers
             _loc = loc;
             _slideApiClient = slideApiClient;
             _productApiClient = productApiClient;
+         
         }
+
 
         public async Task<IActionResult> Index()
         {
