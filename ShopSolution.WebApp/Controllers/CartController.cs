@@ -135,7 +135,7 @@ namespace ShopSolution.WebApp.Controllers
 
 
             var cartItems = JsonConvert.DeserializeObject<List<CartItemViewModel>>(session);
-
+            
 
             var orderDetails = cartItems.Select(item => new OrderDetail()
             {
@@ -145,7 +145,25 @@ namespace ShopSolution.WebApp.Controllers
                 Price = item.Price,
             }).ToList();
 
+            
+
             _shopDBContext.OrderDetails.AddRange(orderDetails);
+            // Cập nhật giá trị Sold của sản phẩm
+            foreach (var detail in orderDetails)
+            {
+                var product = _shopDBContext.Products.FirstOrDefault(p => p.Id == detail.ProductId);
+                if (product != null)
+                {
+                    if (product.Stock > 0)
+                    {
+                        product.Sold = (product.Sold ?? 0) + detail.Quantity;
+
+                        product.Stock = detail.Quantity - product.Stock;
+                    }
+                    
+                }
+            }
+
             _shopDBContext.SaveChanges();
 
             var productTranslations = _shopDBContext.ProductTranslations.ToList();

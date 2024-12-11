@@ -21,6 +21,7 @@ namespace ShopSolution.WebApp.Controllers
 
         public async Task<IActionResult> Detail(int id, string culture)
         {
+
              ViewData["ShowSideComponent"] = false;
             // Gọi API để lấy thông tin sản phẩm
             var product = await _productApiClient.GetById(id, culture);
