@@ -36,7 +36,8 @@
                         <h4 class="text-muted ml-2"><del>@Model.Product.OriginalPrice.ToString("#,##0 VNĐ") </del></h4>
                     }
                 </div>
-               
+
+                <p>Lượt xem: <span id="viewCount">@Model.Product.ViewCount</span></p>
 
                 <p class="mb-4">Mô tả sản phẩm : @Model.Product.Description</p>
                 <p class="mb-4">Số lượng : @Model.Product.Stock</p>
