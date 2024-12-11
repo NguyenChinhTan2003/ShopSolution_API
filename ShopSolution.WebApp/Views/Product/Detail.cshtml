@@ -28,17 +28,28 @@
 
             <div class="col-lg-7 pb-5">
                 <h3 class="font-weight-semi-bold">@Model.Product.Name</h3>
+                <br />
+                <div>
+                    <h3 class="font-weight-semi-bold mb-4">@Model.Product.Price.ToString("N0") VNĐ</h3>
+                    @if (Model.Product.OriginalPrice > Model.Product.Price)
+                    {
+                        <h4 class="text-muted ml-2"><del>@Model.Product.OriginalPrice.ToString("#,##0 VNĐ") </del></h4>
+                    }
+                </div>
+               
 
-                <h3 class="font-weight-semi-bold mb-4">@Model.Product.Price.ToString("N0") VNĐ</h3>
-                <p class="mb-4">@Model.Product.Description</p>
-
+                <p class="mb-4">Mô tả sản phẩm : @Model.Product.Description</p>
+                <p class="mb-4">Số lượng : @Model.Product.Stock</p>
+                <p class="mb-4">Lượt bán : @Model.Product.Sold</p>
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity mr-3" style="width: 130px;">
                         <div class="input-group-btn">
                             <button class="btn btn-primary btn-minus" data-id="@Model.Product.Id">
                                 <i class="fa fa-minus"></i>
                             </button>
+
                         </div>
+                       
                         <input type="text"
                                id="txt_quantity_@Model.Product.Id"
                                class="form-control bg-secondary text-center"

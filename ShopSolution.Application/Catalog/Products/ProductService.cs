@@ -201,6 +201,7 @@ namespace ShopSolution.Application.Catalog.Products
                 SeoDescription = productTranslation != null ? productTranslation.SeoDescription : null,
                 SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
                 Stock = product.Stock,
+                Sold = product.Sold,
                 ViewCount = product.ViewCount,
                 Categories = categories,
                 ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"

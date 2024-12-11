@@ -156,9 +156,9 @@ namespace ShopSolution.WebApp.Controllers
                 {
                     if (product.Stock > 0)
                     {
-                        product.Sold = (product.Sold ?? 0) + detail.Quantity;
+                        product.Sold = product.Sold + detail.Quantity;
 
-                        product.Stock = detail.Quantity - product.Stock;
+                        product.Stock = product.Stock - detail.Quantity;
                     }
                     
                 }

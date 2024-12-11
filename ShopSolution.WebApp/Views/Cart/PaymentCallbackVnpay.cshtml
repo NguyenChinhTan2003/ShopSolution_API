@@ -1,6 +1,8 @@
 ﻿@model PaymentResponseModel
 @{
     ViewData["Title"] = "Kết quả thông tin giao dịch thanh toán Vnpay thành công";
+    var culture = CultureInfo.CurrentCulture.Name;
+}
 }
 
 <div class="container mt-5">
@@ -54,7 +56,7 @@
             <a href="/" class="btn btn-primary">
                 Quay lại trang chủ
             </a>
-            <a href="/orders/history" class="btn btn-outline-success">
+            <a href="/@culture/Account/History" localize-content class="btn btn-outline-success">
                 Xem lịch sử đơn hàng
             </a>
         </div>
