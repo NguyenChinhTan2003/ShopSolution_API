@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Thông báo đơn hàng";
+    var culture = CultureInfo.CurrentCulture.Name;
 }
+
 @if (TempData["success"] != null)
 {
     <span class="alert alert-success">@TempData["success"]</span>
@@ -9,3 +11,11 @@ else
 {
     <span class="alert alert-success">@TempData["error"]</span>
 }
+<div class="card-footer text-center">
+    <a href="/" class="btn btn-primary">
+        Quay lại trang chủ
+    </a>
+    <a href="/@culture/Account/History" localize-content class="btn btn-outline-success">
+        Xem lịch sử đơn hàng
+    </a>
+</div>
