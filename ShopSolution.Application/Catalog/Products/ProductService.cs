@@ -204,12 +204,9 @@ namespace ShopSolution.Application.Catalog.Products
                 ViewCount = product.ViewCount,
                 Categories = categories,
                 ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
-
             };
             return productViewModel;
         }
-
-
 
         public async Task<int> Update(ProductUpdateRequest request)
         {
@@ -353,11 +350,12 @@ namespace ShopSolution.Application.Catalog.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
-                        where pt.LanguageId == languageId
-                        select new { p, pt, pic };
+                        join pi in _context.ProductImages on p.Id equals pi.ProductId into ppi
+                        from pi in ppi.DefaultIfEmpty()
+                        where pt.LanguageId == languageId && (pi == null || pi.IsDefault == true)
+                        select new { p, pt, pic, c, pi };
 
             //2. Filter
-
             if (request.CategoryId.HasValue && request.CategoryId.Value > 0)
             {
                 query = query.Where(p => p.pic.CategoryId == request.CategoryId);
@@ -382,6 +380,7 @@ namespace ShopSolution.Application.Catalog.Products
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
                     ViewCount = x.p.ViewCount,
+                    ThumbnailImage = x.pi.ImagePath
                 }).ToListAsync();
 
             //4. Select and projection
