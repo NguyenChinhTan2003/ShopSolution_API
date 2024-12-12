@@ -1,0 +1,149 @@
+﻿@model ProductCategoryViewModel
+@using ShopSolution.ViewModels.Catalog.Products;
+@inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{
+    var culture = CultureInfo.CurrentCulture.Name;
+}
+@{
+    ViewData["Title"] = Model.Category.Name + (Model.Products.PageIndex == 1 ? "" : " - " + _loc["page"] + " " + Model.Products.PageIndex);
+    ViewData["Description"] = Model.Category.Name + " - " + _loc["page"] + " " + Model.Products.PageIndex;
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">@Model.Category.Name</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="/">@_loc["Home"]</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">@Model.Category.Name</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Shop Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <!-- Shop Product Start -->
+        <div class="col-lg-12 col-md-12">
+            <div class="row pb-3">
+                @foreach (var item in Model.Products.Items)
+                {
+                    var url = $"/{culture}/{_loc["productUrl"]}/{item.Id}";
+                    var imageUrl = Url.Content($"{Configuration["BaseAddress"]}/user-content/{item.ThumbnailImage}");
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <div class="card product-item border-0 mb-4 h-100">
+                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <a href="@url"><img class="img-fluid w-100" src="@imageUrl" alt="@item.Name"></a>
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-3">@item.Name</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6>@item.Price.ToString("#,##0 VNĐ")</h6>
+                                    @if (item.OriginalPrice > item.Price)
+                                    {
+                                        <h6 class="text-muted ml-2"><del>@item.OriginalPrice.ToString("#,##0 VNĐ")</del></h6>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between bg-light border">
+                                <a href="@url" class="btn btn-sm text-dark p-0">
+                                    <i class="fas fa-eye text-primary mr-1"></i><localize>View Detail</localize>
+                                </a>
+                                @if (item.Stock > 0)
+                                {
+                                    <button class="btn btn-sm btn-add-cart text-dark p-0" data-id="@item.Id">
+                                        <i class="fas fa-shopping-cart text-primary mr-1"></i><localize>Add To Cart</localize>
+                                    </button>
+                                }
+                                else
+                                {
+
+                                    <button class="btn btn-sm text-dark p-0" disabled>
+                                        <i class="fas fa-shopping-cart text-primary mr-1"></i><localize>Hết hàng</localize>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-12 pb-1">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mb-3">
+                            @if (Model.Products.PageIndex > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Category" asp-route-id="@Model.Category.Id" asp-route-page="@(Model.Products.PageIndex - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </li>
+                            }
+                            @for (int i = Model.Products.PageIndex - 2; i <= Model.Products.PageIndex + 2; i++)
+                            {
+                                if (i >= 1 && i <= Model.Products.PageCount)
+                                {
+                                    if (i == Model.Products.PageIndex)
+                                    {
+                                        <li class="page-item active"><a class="page-link" href="#">@i</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" asp-action="Category" asp-route-id="@Model.Category.Id" asp-route-page="@i">@i</a></li>
+                                    }
+                                }
+                            }
+                            @if (Model.Products.PageIndex < Model.Products.PageCount)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Category" asp-route-id="@Model.Category.Id" asp-route-page="@(Model.Products.PageIndex + 1)" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Shop Product End -->
+    </div>
+</div>
+<!-- Shop End -->
+<style>
+/* Tùy chỉnh product item */
+.product-item .card-footer {
+    justify-content: space-around; /* Canh đều các nút */
+}
+.product-item .card-footer a, .product-item .card-footer button{
+    width: 45%; /* Giảm kích thước button */
+    border-radius: 0; /* Vuông góc các button */
+}
+
+/* Tùy chỉnh phân trang */
+.pagination .page-item.active .page-link {
+    background-color: #D19C97;
+    border-color: #D19C97;
+}
+
+.pagination .page-link {
+    color: #D19C97;
+    border-radius: 0; /* Vuông góc các nút phân trang */
+}
+</style>
