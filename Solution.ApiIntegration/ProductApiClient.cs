@@ -116,7 +116,7 @@ namespace ShopSolution.ApiIntegration
         public async Task<PagedResult<ProductVm>> GetPagings(GetManageProductPagingRequest request)
         {
             var data = await GetAsync<PagedResult<ProductVm>>(
-                $"/api/products/paging?pageIndex={request.PageIndex}" +
+                $"/api/products/pagings?pageIndex={request.PageIndex}" +
                 $"&pageSize={request.PageSize}" +
                $"&keyword={request.Keyword}&languageId={request.LanguageId}&categoryId={request.CategoryId}");
 
