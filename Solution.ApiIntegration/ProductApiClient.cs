@@ -126,16 +126,6 @@ namespace ShopSolution.ApiIntegration
         public async Task<PagedResult<ProductVm>> GetCategoryPagings(GetManageProductPagingRequest request)
         {
             var data = await GetAsync<PagedResult<ProductVm>>(
-                $"/api/products/pagings?pageIndex={request.PageIndex}" +
-                $"&pageSize={request.PageSize}" +
-               $"&keyword={request.Keyword}&languageId={request.LanguageId}&categoryId={request.CategoryId}");
-
-            return data;
-        }
-
-        public async Task<PagedResult<ProductVm>> GetCategoryPagings(GetManageProductPagingRequest request)
-        {
-            var data = await GetAsync<PagedResult<ProductVm>>(
                 $"/api/products/pagingCategory?pageIndex={request.PageIndex}" +
                 $"&pageSize={request.PageSize}" +
                $"&keyword={request.Keyword}&languageId={request.LanguageId}&categoryId={request.CategoryId}");
