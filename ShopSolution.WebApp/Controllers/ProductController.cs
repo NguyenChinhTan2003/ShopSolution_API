@@ -8,6 +8,7 @@ using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Catalog.Products;
 using ShopSolution.WebApp.Models;
 using System.Globalization;
+using System.Security.AccessControl;
 using System.Text.RegularExpressions;
 
 namespace ShopSolution.WebApp.Controllers
@@ -31,7 +32,7 @@ namespace ShopSolution.WebApp.Controllers
         {
             ViewData["ShowSideComponent"] = false;
             // Gọi API để lấy thông tin sản phẩm
-            var product = await _productApiClient.GetPagings(new GetManageProductPagingRequest()
+            var product = await _productApiClient.GetCategoryPagings(new GetManageProductPagingRequest()
             {
                 CategoryId = id,
                 PageIndex = page,

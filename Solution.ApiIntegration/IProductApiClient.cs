@@ -7,6 +7,8 @@ namespace ShopSolution.ApiIntegration
     {
         Task<PagedResult<ProductVm>> GetPagings(GetManageProductPagingRequest request);
 
+        Task<PagedResult<ProductVm>> GetCategoryPagings(GetManageProductPagingRequest request);
+
         Task<bool> CreateProduct(ProductCreateRequest request);
 
         Task<bool> UpdateProduct(ProductUpdateRequest request);
