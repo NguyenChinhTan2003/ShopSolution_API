@@ -82,7 +82,9 @@ namespace ShopSolution.Application.Catalog.Products
                 Stock = request.Stock,
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
-                ProductTranslations = translations
+                ProductTranslations = translations,
+                IsFeatured = request.IsFeatured,
+                Sold = 0 // Thêm dòng này để gán giá trị mặc định cho Sold
             };
             //Save image
             if (request.ThumbnailImage != null)
