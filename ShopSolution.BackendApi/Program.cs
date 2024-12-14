@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +17,10 @@ using ShopSolution.Application.System.Roles;
 using ShopSolution.Application.System.Languages;
 using ShopSolution.Application.Catalog.Categories;
 using ShopSolution.Application.Utilities.Slide;
+using Hangfire;
+using ShopSolution.BackendApi;
+using Hangfire.MemoryStorage;
+using ShopSolution.BackendApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +28,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddMvcOptions(options =>
     {
-        // T?t AutoValidateAntiforgeryToken n?u b?n kh�ng c?n
+        // T?t AutoValidateAntiforgeryToken n?u b?n không c?n
         options.Filters.Clear();
     });
 
@@ -33,7 +37,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 //builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
 //builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
 
-// Th�m CORS n?u c?n
+// Thêm CORS n?u c?n
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -137,7 +141,62 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+
+// Đọc thông tin đăng nhập từ configuration
+var dashboardUsername = builder.Configuration["Hangfire:DashboardUsername"];
+var dashboardPassword = builder.Configuration["Hangfire:DashboardPassword"];
+
+// Cấu hình Hangfire với MemoryStorage
+builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseMemoryStorage());
+
+builder.Services.AddHangfireServer();
+
+// Đăng ký service
+builder.Services.AddScoped<IJobService, JobService>();
+
+
 var app = builder.Build();
+
+
+// Cấu hình Hangfire Dashboard với Basic Authentication
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[]
+    {
+        new HangfireDashboardAuthorizationFilter(
+            dashboardUsername ?? "admin",
+            dashboardPassword ?? "Admin1@34"
+        )
+    }
+});
+
+
+using (var serviceProvider = app.Services.CreateScope())
+{
+    var jobService = serviceProvider.ServiceProvider.GetRequiredService<IJobService>();
+
+    RecurringJob.AddOrUpdate(
+        "SendEmail",
+        () => jobService.SendEmail(),
+        "*/5 * * * *");
+
+    RecurringJob.AddOrUpdate(
+        "SendEmail2",
+        () => jobService.SendEmail(),
+        "*/5 * * * *");
+
+    RecurringJob.AddOrUpdate(
+        "UpdateIsFeatured",
+        () => jobService.UpdateIsFeatured(),
+        "*/1 * * * *");
+
+
+}
 
 // Configure middleware pipeline
 if (app.Environment.IsDevelopment())

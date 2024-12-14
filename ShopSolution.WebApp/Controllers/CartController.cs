@@ -84,9 +84,10 @@ namespace ShopSolution.WebApp.Controllers
 
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int id,string languageId)
         {
             ViewData["ShowSideComponent"] = false;
+
             return View();
         }
 
