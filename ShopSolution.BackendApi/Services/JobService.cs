@@ -25,15 +25,14 @@ namespace ShopSolution.BackendApi.Services
         {
             // Lấy danh sách sản phẩm cần đặt IsFeatured = true
             var productsToFeature = await _context.Products
-                .Where(p => (p.Sold > 100 || p.ViewCount > 100) && p.IsFeatured != true)
+                .Where(p => (p.Sold >= 100 || p.ViewCount >= 100) && p.IsFeatured != true)
                 .ToListAsync();
 
             // Lấy danh sách sản phẩm cần đặt IsFeatured = false
             var productsToUnfeature = await _context.Products
-                .Where(p => p.Sold <= 100 && p.IsFeatured == true)
+                .Where(p => (p.Sold < 100 && p.ViewCount < 100) &&  p.IsFeatured == true)
                 .ToListAsync();
 
-            // Cập nhật trạng thái IsFeatured = true
             if (productsToFeature.Any())
             {
                 foreach (var product in productsToFeature)
@@ -42,7 +41,6 @@ namespace ShopSolution.BackendApi.Services
                 }
             }
 
-            // Cập nhật trạng thái IsFeatured = false
             if (productsToUnfeature.Any())
             {
                 foreach (var product in productsToUnfeature)
@@ -51,7 +49,6 @@ namespace ShopSolution.BackendApi.Services
                 }
             }
 
-            // Lưu thay đổi vào database nếu có cập nhật
             if (productsToFeature.Any() || productsToUnfeature.Any())
             {
                 await _context.SaveChangesAsync();
