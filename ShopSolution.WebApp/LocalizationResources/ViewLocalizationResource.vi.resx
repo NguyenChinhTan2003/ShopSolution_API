@@ -125,7 +125,7 @@
     <comment>Login</comment>
   </data>
   <data name="Add To Cart" xml:space="preserve">
-    <value>Thêm vào giỏ </value>
+    <value>Thêm Vào Giỏ Hàng</value>
   </data>
   <data name="Cart" xml:space="preserve">
     <value>Chi tiết</value>
@@ -270,10 +270,10 @@
     <value>Tổng tiền</value>
   </data>
   <data name="Total Summary" xml:space="preserve">
-    <value>Tổng tóm tắt</value>
+    <value>Tổng Tóm Tắt</value>
   </data>
   <data name="View Detail" xml:space="preserve">
-    <value>Xem chi tiết</value>
+    <value>Xem Chi Tiết</value>
   </data>
   <data name="Continue with Google" xml:space="preserve">
     <value>Đăng nhập bằng tài khoản Google</value>
@@ -285,16 +285,25 @@
   <data name="Lasted Products" xml:space="preserve">
     <value>Sản Phẩm Mới Nhất</value>
   </data>
-  <data name="Add To Cart" xml:space="preserve">
-    <value>Thêm Vào Giỏ Hàng</value>
-  </data>
-  <data name="View Detail" xml:space="preserve">
-    <value>Xem Chi Tiết</value>
-  </data>
   <data name="categoryUrl" xml:space="preserve">
     <value>danh-muc</value>
   </data>
   <data name="Categories" xml:space="preserve">
     <value>Danh Mục Sản Phẩm</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Thông tin</value>
+  </data>
+  <data name="Out Of Stock" xml:space="preserve">
+    <value>Hết hàng</value>
+  </data>
+  <data name="Product Description" xml:space="preserve">
+    <value>Mô tả sản phẩm</value>
+  </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Đánh giá</value>
+  </data>
+  <data name="You May Also Like" xml:space="preserve">
+    <value>Bạn Cũng Có Thể Thích</value>
   </data>
 </root>

@@ -285,16 +285,25 @@
   <data name="Lasted Products" xml:space="preserve">
     <value>Lasted Products</value>
   </data>
-  <data name="Add To Cart" xml:space="preserve">
-    <value>Add To Cart</value>
-  </data>
-  <data name="View Detail" xml:space="preserve">
-    <value>View Detail</value>
-  </data>
   <data name="categoryUrl" xml:space="preserve">
     <value>categories</value>
   </data>
   <data name="Categories" xml:space="preserve">
     <value>Categories</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Out Of Stock" xml:space="preserve">
+    <value>Out Of Stock</value>
+  </data>
+  <data name="Product Description" xml:space="preserve">
+    <value>Product Description</value>
+  </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Reviews</value>
+  </data>
+  <data name="You May Also Like" xml:space="preserve">
+    <value>You May Also Like</value>
   </data>
 </root>
