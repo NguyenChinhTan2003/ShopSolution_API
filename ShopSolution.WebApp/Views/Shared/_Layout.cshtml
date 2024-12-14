@@ -29,53 +29,64 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet">
 </head>
+<style>
+    .topbar-fixed {
+        position: sticky;
+        top: 0;
+        z-index: 1030; /* Giữ topbar luôn ở trên các thành phần khác */
+        background-color: #f8f9fa; /* Nền màu tùy chỉnh để tương thích */
+    }
+
+    .topbar-placeholder {
+        height: 70px; /* Căn chỉnh theo chiều cao của Topbar */
+    }
+</style>
 
 <body>
     <input type="hidden" id="hidCulture" value="@culture" />
     <input type="hidden" id="hidBaseAddress" value="@Configuration["BaseAddress"]" />
+
     <!-- Topbar Start -->
-    <div class="container-fluid">
+    <div class="container-fluid topbar-fixed">
         <div class="row bg-secondary py-2 px-xl-5">
             <div class="col-lg-6 text-center text-lg-right">
             </div>
         </div>
-    </div>
-    <div class="row align-items-center py-3 px-xl-5">
-        <div class="col-lg-3 d-none d-lg-block">
-            <a href="/" class="text-decoration-none">
-                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1"></span>Shopp</h1>
-            </a>
-        </div>
-        <div class="col-lg-4 col-4 text-left">
-            <form action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
-                    <div class="input-group-append">
-                        <span class="input-group-text bg-transparent text-primary">
-                            <i class="fa fa-search"></i>
-                        </span>
+        <div class="row align-items-center py-3 px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a href="/" class="text-decoration-none">
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1"></span>Shopp</h1>
+                </a>
+            </div>
+            <div class="col-lg-4 col-4 text-left">
+                <form action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for products">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent text-primary">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-lg-1 col-2 text-right">
-            <language-nav language-label="NativeName"
-                          cookie-handler-url="@(Url.Action("SetCultureCookie", "Home", new { area= "", cltr="{0}", returnUrl="{1}" }))">
-            </language-nav>
-        </div>
-        <div class="col-lg-3 col-6 text-right">
-
-            <a href="" class="btn border">
-                <i class="fas fa-heart text-primary"></i>
-                <span class="badge">0</span>
-            </a>
-            <a href="/@culture/cart" class="btn border">
-                <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge" id="lbl_number_items_header">0</span>
-            </a>
+                </form>
+            </div>
+            <div class="col-lg-1 col-2 text-right">
+                <language-nav language-label="NativeName"
+                              cookie-handler-url="@(Url.Action("SetCultureCookie", "Home", new { area= "", cltr="{0}", returnUrl="{1}" }))">
+                </language-nav>
+            </div>
+            <div class="col-lg-3 col-6 text-right">
+                <a href="" class="btn border">
+                    <i class="fas fa-heart text-primary"></i>
+                    <span class="badge">0</span>
+                </a>
+                <a href="/@culture/cart" class="btn border">
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                    <span class="badge" id="lbl_number_items_header">0</span>
+                </a>
+            </div>
         </div>
     </div>
-
     <!-- Topbar End -->
     <!-- Navbar Start -->
     <div class="container-fluid mb-5">

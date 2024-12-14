@@ -57,6 +57,12 @@ namespace ShopSolution.WebApp.Controllers
                 return NotFound(); // Nếu không tìm thấy sản phẩm
             }
 
+            // Lấy danh sách FeaturedProducts
+            var featuredProducts = await _productApiClient.GetFeaturedProducts(
+                culture,
+                SystemConstants.ProductSettings.NumberOfFeaturedProducts
+            );
+
             products.ViewCount++;
             _shopDBContext.Products.Update(products);
             await _shopDBContext.SaveChangesAsync();
@@ -65,6 +71,7 @@ namespace ShopSolution.WebApp.Controllers
             return View(new ProductDetailViewModel()
             {
                 Product = product,
+                FeaturedProducts = featuredProducts
             });
         }
     }
