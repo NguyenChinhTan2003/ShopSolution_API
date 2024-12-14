@@ -142,24 +142,59 @@ namespace ShopSolution.WebApp.Controllers
 
         public async Task<IActionResult> CancenlOrder(Guid orderId)
         {
-            if ((bool)!User.Identity?.IsAuthenticated)
+            if (!(User.Identity?.IsAuthenticated ?? false))
             {
                 return RedirectToAction("Login", "Account");
             }
+
             try
             {
-                var order = await _shopDBContext.Orders.Where(o => o.OrderId == orderId).FirstAsync();
+                // Tìm đơn hàng theo orderId
+                var order = await _shopDBContext.Orders
+                    .Where(o => o.OrderId == orderId)
+                    .FirstOrDefaultAsync();
+
+                if (order == null)
+                {
+                    return NotFound("Order not found.");
+                }
+
+                // Cập nhật trạng thái đơn hàng
                 order.Status = Data.Enums.OrderStatus.Canceled;
                 _shopDBContext.Update(order);
+
+                // Lấy danh sách OrderDetails tương ứng với đơn hàng
+                var orderDetails = await _shopDBContext.OrderDetails
+                    .Where(od => od.OrderId == orderId)
+                    .ToListAsync();
+
+                foreach (var detail in orderDetails)
+                {
+                    // Tìm sản phẩm trong bảng Product
+                    var product = await _shopDBContext.Products
+                        .Where(p => p.Id == detail.ProductId)
+                        .FirstOrDefaultAsync();
+
+                    if (product != null)
+                    {
+                        // Cộng lại số lượng vào Stock
+                        product.Stock += detail.Quantity;
+                        product.Sold -= detail.Quantity;
+                        _shopDBContext.Update(product);
+                    }
+                }
+
+                // Lưu thay đổi vào database
                 await _shopDBContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-                
-            return RedirectToAction("History","Account");
+
+            return RedirectToAction("History", "Account");
         }
+
 
         public async Task<IActionResult> ViewOrder(Guid orderId)
         {
