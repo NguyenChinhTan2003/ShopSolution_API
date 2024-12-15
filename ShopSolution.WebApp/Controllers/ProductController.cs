@@ -31,6 +31,8 @@ namespace ShopSolution.WebApp.Controllers
         public async Task<IActionResult> Category(int id, string culture, int page = 1)
         {
             ViewData["ShowSideComponent"] = false;
+            ViewData["ShowSideBar"] = false;
+
             // Gọi API để lấy thông tin sản phẩm
             var product = await _productApiClient.GetCategoryPagings(new GetManageProductPagingRequest()
             {
@@ -49,6 +51,8 @@ namespace ShopSolution.WebApp.Controllers
         public async Task<IActionResult> Detail(int id, string culture)
         {
             ViewData["ShowSideComponent"] = false;
+            ViewData["ShowSideBar"] = false;
+
             // Gọi API để lấy thông tin sản phẩm
             var product = await _productApiClient.GetById(id, culture);
             var products = await _shopDBContext.Products.FirstOrDefaultAsync(p => p.Id == id);

@@ -87,13 +87,15 @@ namespace ShopSolution.WebApp.Controllers
         public async Task<IActionResult> Index(int id,string languageId)
         {
             ViewData["ShowSideComponent"] = false;
-
+            ViewData["ShowSideBar"] = false;
             return View();
         }
 
         public IActionResult Checkout()
         {
             ViewData["ShowSideComponent"] = false;
+            ViewData["ShowSideBar"] = false;
+
             if (User.Identity.IsAuthenticated)
             {
                 return View(GetCheckoutViewModel());
@@ -106,6 +108,8 @@ namespace ShopSolution.WebApp.Controllers
         public async Task<IActionResult> Pay(string PaymentMethod, string PaymentId, string languageId = "vi")
         {
             ViewData["ShowSideComponent"] = false;
+            ViewData["ShowSideBar"] = false;
+
             // Lấy giỏ hàng từ Session
             var session = HttpContext.Session.GetString(SystemConstants.CartSession);
             if (session == null)
@@ -193,6 +197,8 @@ namespace ShopSolution.WebApp.Controllers
         public async Task<IActionResult> PaymentCallbackVnpay()
         {
             ViewData["ShowSideComponent"] = false;
+            ViewData["ShowSideBar"] = false;
+
             var response = _vnPayService.PaymentExecute(Request.Query);
             if (response.VnPayResponseCode == "00")
             {

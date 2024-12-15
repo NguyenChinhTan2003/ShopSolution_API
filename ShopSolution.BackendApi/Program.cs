@@ -183,12 +183,12 @@ using (var serviceProvider = app.Services.CreateScope())
     RecurringJob.AddOrUpdate(
         "SendEmail",
         () => jobService.SendEmail(),
-        "*/5 * * * *");
+        "* 9 * * 1");
 
     RecurringJob.AddOrUpdate(
         "SendEmail2",
         () => jobService.SendEmail(),
-        "*/5 * * * *");
+        "0 9 1 * *");
 
     RecurringJob.AddOrUpdate(
         "UpdateIsFeatured",

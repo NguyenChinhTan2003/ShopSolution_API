@@ -124,6 +124,8 @@ namespace ShopSolution.WebApp.Controllers
         public async Task<IActionResult> History()
         {
             ViewData["ShowSideComponent"] = false;
+            ViewData["ShowSideBar"] = false;
+
             if ((bool)!User.Identity?.IsAuthenticated)
             {
                 return RedirectToAction("Login", "Account");
@@ -199,6 +201,8 @@ namespace ShopSolution.WebApp.Controllers
         public async Task<IActionResult> ViewOrder(Guid orderId)
         {
             ViewData["ShowSideComponent"] = false;
+            ViewData["ShowSideBar"] = false;
+
             var detailOrder = await _shopDBContext.OrderDetails.Include(o => o.Product).Where(o => o.OrderId == orderId).ToListAsync();
             return View(detailOrder);
         }
