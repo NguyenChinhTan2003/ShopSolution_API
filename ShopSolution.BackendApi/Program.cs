@@ -181,14 +181,17 @@ using (var serviceProvider = app.Services.CreateScope())
     var jobService = serviceProvider.ServiceProvider.GetRequiredService<IJobService>();
 
     RecurringJob.AddOrUpdate(
-        "SendEmail",
-        () => jobService.SendEmail(),
-        "* 9 * * 1");
+        "SendDailyReport",
+        () => jobService.ProcessAndSendDailyReportAsync(DateTime.Now.Date.AddDays(-1), "nguyenchinhtan2003@gmail.com"),
+        "0 1 * * *");
+
 
     RecurringJob.AddOrUpdate(
-        "SendEmail2",
-        () => jobService.SendEmail(),
-        "0 9 1 * *");
+      "SendMonthlyReport",
+      () => jobService.ProcessAndSendMonthlyReportAsync(DateTime.Now.AddMonths(-1).Month, DateTime.Now.AddMonths(-1).Year, "nguyenchinhtan2003@gmail.com"),
+      "0 1 1 * *"); 
+
+
 
     RecurringJob.AddOrUpdate(
         "UpdateIsFeatured",
