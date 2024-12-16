@@ -186,6 +186,10 @@ namespace ShopSolution.WebApp.Controllers
                     }
                 }
 
+                var receiver = User.Identity.Name;
+                var subject = "Hủy đơn hàng thành công!";
+                var message = "Đã hủy thành công đơn hàng "+ " : " + orderId;
+                await _emailSender.SendEmailAsync(receiver, subject, message);
                 // Lưu thay đổi vào database
                 await _shopDBContext.SaveChangesAsync();
             }

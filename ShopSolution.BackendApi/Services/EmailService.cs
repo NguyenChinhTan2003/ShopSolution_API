@@ -1,11 +1,11 @@
 ﻿using System.Net.Mail;
 using System.Net;
 
-namespace ShopSolution.WebApp.Service
+namespace ShopSolution.BackendApi.Services
 {
     public class EmailSender : IEmailSender
     {
-      private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         public EmailSender(IConfiguration configuration)
         {

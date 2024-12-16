@@ -54,9 +54,9 @@ namespace ShopSolution.WebApp.Controllers
                     <td style='border: 1px solid #ddd; padding: 8px;'>{detail.Price.ToString("N0")} VNĐ</td>
                     <td style='border: 1px solid #ddd; padding: 8px;'>{(detail.Quantity * detail.Price).ToString("N0")} VNĐ</td>
                 </tr>";
-                            }));
+                }));
 
-                            var html = $@"
+                var html = $@"
                 <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
                     <h2 style='color: #4CAF50;'>Cảm ơn bạn đã đặt hàng!</h2>
                     <p>Chi tiết đơn hàng của bạn như sau:</p>
