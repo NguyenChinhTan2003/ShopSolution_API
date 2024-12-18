@@ -79,5 +79,6 @@ namespace ShopSolution.Data.EF
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Slide> Slides { get; set; }
         public DbSet<Vnpay> Vnpays { get; set; } 
+        public DbSet<Shipping> Shippings { get; set; }
     }
 }

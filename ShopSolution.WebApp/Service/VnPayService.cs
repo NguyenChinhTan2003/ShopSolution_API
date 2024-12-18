@@ -33,7 +33,7 @@ namespace ShopSolution.ApiIntegration.VnPay
             pay.AddRequestData("vnp_CurrCode", _configuration["Vnpay:CurrCode"]);
             pay.AddRequestData("vnp_IpAddr", pay.GetIpAddress(context));
             pay.AddRequestData("vnp_Locale", _configuration["Vnpay:Locale"]);
-            pay.AddRequestData("vnp_OrderInfo", $"{model.Name} {model.OrderDescription}");
+            pay.AddRequestData("vnp_OrderInfo", $"{model.Name} {model.OrderDescription} - {model.Address} - Email: {model.Email} - SĐT: {model.Phone}");
             pay.AddRequestData("vnp_OrderType", model.OrderType);
             pay.AddRequestData("vnp_ReturnUrl", urlCallBack);
             pay.AddRequestData("vnp_TxnRef", tick);
@@ -49,6 +49,36 @@ namespace ShopSolution.ApiIntegration.VnPay
         {
             var pay = new VnPayLibrary();
             var response = pay.GetFullResponseData(collections, _configuration["Vnpay:HashSecret"]);
+
+            var orderInfo = response.OrderDescription;
+
+            // Khởi tạo các biến
+            string address = "";
+            string email = "";
+            string phone = "";
+
+            // Tách thông tin bằng dấu "- "
+            var parts = orderInfo?.Split(" - ");
+
+            if (parts?.Length > 0)
+            {
+                // Lấy địa chỉ từ phần tử thứ hai đến cuối (trước email và sdt nếu có)
+                address = string.Join(" - ", parts.Skip(1).Take(parts.Length - 3)).Trim();
+
+                // Lấy email
+                var emailPart = parts.LastOrDefault(p => p.StartsWith("Email: "));
+                email = emailPart?.Replace("Email: ", "").Trim() ?? "";
+
+
+                // Lấy số điện thoại
+                var phonePart = parts.LastOrDefault(p => p.StartsWith("SĐT: "));
+                phone = phonePart?.Replace("SĐT: ", "").Trim() ?? "";
+            }
+
+            response.Address = address;
+            response.Email = email;
+            response.Phone = phone;
+
 
             return response;
         }

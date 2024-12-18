@@ -41,6 +41,39 @@
                         <h5 class="font-weight-bold"><localize>Order Total</localize></h5>
                         <h5 class="font-weight-bold">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("#,##0 VNĐ")</h5>
                     </div>
+                    <div>
+                        <h4 class="font-weight-semi-bold m-0"><localize>Địa chỉ</localize></h4>
+                        <div class="form-group">
+                            <label>Chọn</label>
+                            <select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
+                                <option value="0">Tỉnh Thành</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Chọn</label>
+                            <select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
+                                <option value="0">Quận Huyện</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Chọn</label>
+                            <select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
+                                <option value="0">Phường Xã</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressDetail">Địa chỉ</label>
+                            <input type="text" class="form-control" id="addressDetail" name="addressDetail" placeholder="Nhập số nhà, đường,..." />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email của bạn">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại của bạn">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,6 +98,7 @@
                     </div>
                 </div>
             </div>
+            
             <div class="card border-secondary mb-4">
                 <div class="card-header bg-secondary text-white">
                     <h4 class="font-weight-semi-bold m-0"><localize>Payment Options</localize></h4>
@@ -73,16 +107,22 @@
                     <p><localize>Choose your preferred payment method</localize></p>
                     
                     <!-- COD Payment -->
-                    <a class="btn btn-lg btn-block btn-primary mb-3" asp-action="Pay" asp-controller="Cart" type="button">
-                        <localize>Pay on Delivery (COD)</localize>
-                    </a>
+                    <form id="codForm" method="POST" asp-action="Pay" asp-controller="Cart">
+                        <input type="hidden" name="Address" id="codAddress" />
+                        <button type="submit" class="btn btn-lg btn-block btn-primary mb-3">
+                            <localize>Pay on Delivery (COD)</localize>
+                        </button>
+                    </form>
 
                     <!-- VNPay Payment -->
-                    <form method="POST" asp-action="CreatePaymentUrlVnpay" asp-controller="Cart">
+                    <form id="vnpayForm" method="POST" asp-action="CreatePaymentUrlVnpay" asp-controller="Cart">
                         <input type="hidden" name="Name" value="@User.Identity.Name" />
                         <input type="hidden" name="Amount" value="@Model.CartItems.Sum(x => x.Quantity * x.Price)" />
                         <input type="hidden" name="OrderDescription" value="Thanh toán hóa đơn" />
                         <input type="hidden" name="OrderType" value="Order" />
+                        <!-- địa chỉ -->
+                        <input type="hidden" id="vnpayAddress" name="Address" />
+
                         <button type="submit" class="btn btn-lg btn-block btn-success">
                             <localize>Pay with VNPay</localize>
                         </button>
@@ -93,3 +133,129 @@
         </div>
     </div>
 </div>
+<script src="https://esgoo.net/scripts/jquery.js"></script>
+<style type="text/css">
+    .css_select_div{ text-align: center;}
+    .css_select{ display: inline-table; width: 25%; padding: 5px; margin: 5px 2%; border: solid 1px #686868; border-radius: 5px;}
+</style>
+<script>
+    $(document).ready(function () {
+        // Khai báo các biến lưu trữ
+        var selectedTinh = { id: 0, name: "" };
+        var selectedQuan = { id: 0, name: "" };
+        var selectedPhuong = { id: 0, name: "" };
+
+
+        // Lấy tỉnh thành
+        $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+            if (data_tinh.error == 0) {
+                $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                    $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                });
+
+                $("#tinh").change(function (e) {
+                    var idtinh = $(this).val();
+                    selectedTinh.id = idtinh;
+                    selectedTinh.name = $("#tinh option:selected").text();
+
+                    //Lấy quận huyện
+                    $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                        if (data_quan.error == 0) {
+                            $("#quan").html('<option value="0">Quận Huyện</option>');
+                            $("#phuong").html('<option value="0">Phường Xã</option>');
+                            $.each(data_quan.data, function (key_quan, val_quan) {
+                                $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                            });
+                        }
+                        updateCombinedAddress();
+                    });
+                });
+            }
+        });
+
+        // Lấy Quận/Huyện
+        $("#quan").change(function (e) {
+            var idquan = $(this).val();
+            selectedQuan.id = idquan;
+            selectedQuan.name = $("#quan option:selected").text();
+
+            $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                if (data_phuong.error == 0) {
+                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                    $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                        $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                    });
+                }
+                updateCombinedAddress();
+            });
+        });
+
+        //Lấy Phường/Xã
+        $("#phuong").change(function (e) {
+            selectedPhuong.id = $(this).val();
+            selectedPhuong.name = $("#phuong option:selected").text();
+            updateCombinedAddress();
+        });
+
+        $('#addressDetail').on('input', function () {
+            updateCombinedAddress();
+        });
+
+        // Hàm cập nhật giá trị input ẩn (địa chỉ gộp)
+        function updateCombinedAddress() {
+            var combinedAddress = "";
+
+            // Lấy địa chỉ chi tiết
+            var addressDetail = $('#addressDetail').val();
+       
+            if (addressDetail) {
+                combinedAddress = addressDetail.trim();
+            }
+
+            //Thêm xã vào
+            if (selectedPhuong.name) {
+                if (combinedAddress)
+                    combinedAddress += ", ";
+                combinedAddress += selectedPhuong.name;
+            }
+            //Thêm huyện vào
+            if (selectedQuan.name) {
+                if (combinedAddress)
+                    combinedAddress += ", ";
+                combinedAddress += selectedQuan.name;
+            }
+
+            //Thêm tỉnh vào
+            if (selectedTinh.name) {
+                if (combinedAddress)
+                    combinedAddress += ", ";
+                combinedAddress += selectedTinh.name;
+            }
+
+            $('#codAddress').val(combinedAddress.trim(', '));
+            $('#vnpayAddress').val(combinedAddress.trim(', '));
+        }
+
+        // Lắng nghe sự kiện submit của form COD
+        $('#codForm').submit(function (event) {
+            // Lấy giá trị từ input email và phone
+            var email = $('#email').val();
+            var phone = $('#phone').val();
+
+            // Thêm email và phone vào form COD
+            $(this).append('<input type="hidden" name="email" value="' + email + '">');
+            $(this).append('<input type="hidden" name="phone" value="' + phone + '">');
+        });
+
+        // Lắng nghe sự kiện submit của form VNPay
+        $('#vnpayForm').submit(function (event) {
+            // Lấy giá trị từ input email và phone
+            var email = $('#email').val();
+            var phone = $('#phone').val();
+
+            // Thêm email và phone vào form VNPay
+            $(this).append('<input type="hidden" name="email" value="' + email + '">');
+            $(this).append('<input type="hidden" name="phone" value="' + phone + '">');
+        });
+    });
+</script>
