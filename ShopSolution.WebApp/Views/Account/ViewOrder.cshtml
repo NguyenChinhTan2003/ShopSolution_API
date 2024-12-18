@@ -30,7 +30,11 @@
                         {
                             <tr>
                                 <td>@item.OrderId</td>
-                                <td>@item.ProductId</td>
+                                <td>
+                                    @(item.Product?.ProductTranslations
+                                        .FirstOrDefault(pt => pt.LanguageId == "vi")?.Name)
+                                </td>
+
                                 <td>@item.Quantity</td>
                                 <td>@item.Price.ToString("#,##0 VNĐ")</td>
                                 <td>@((item.Quantity * item.Price).ToString("#,##0 VNĐ"))</td>
