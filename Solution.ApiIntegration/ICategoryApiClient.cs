@@ -17,6 +17,6 @@ namespace ShopSolution.ApiIntegration
 
         Task<bool> UpdateCategory(CategoryUpdateRequest request);
 
-        Task<int> DeleteCategory(int id);
+        Task<ApiResult<bool>> DeleteCategory(int id);
     }
 }

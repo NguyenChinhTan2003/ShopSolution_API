@@ -82,7 +82,7 @@ namespace ShopSolution.Application.Catalog.Categories
             var category = new Category()
             {
                 IsShowOnHome = true,
-                ParentId = request.ParentId,
+                //ParentId = request.ParentId,
                 Status = Data.Enums.Status.Active, // Giả sử bạn có enum Status
                 SortOrder = 1, // Hoặc giá trị mặc định khác
                 CategoryTranslations = translations,

@@ -39,6 +39,7 @@ namespace ShopSolution.BackendApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Consumes("multipart/form-data")]
         [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, [FromForm] CategoryUpdateRequest request) // Sửa [FromBody] thành [FromForm]
         {

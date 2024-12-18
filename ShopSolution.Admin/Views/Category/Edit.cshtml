@@ -1,15 +1,28 @@
-﻿@model ShopSolution.ViewModels.Catalog.Categories.CategoryCreateRequest
-
+﻿@model ShopSolution.ViewModels.Catalog.Categories.CategoryUpdateRequest
 @{
-    ViewData["Title"] = "Tạo mới danh mục";
+    ViewData["Title"] = "Cập nhật danh mục";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/21.0.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#txt_details'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+}
 <div class="container-fluid">
-    <h1 class="mt-4">Tạo mới danh mục</h1>
+    <h1 class="mt-4">Cập nhật danh mục </h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Tạo mới danh mục</li>
+        <li class="breadcrumb-item active">Cập nhật danh mục </li>
     </ol>
     <div class="card mb-4">
         <div class="card-header">
@@ -17,14 +30,14 @@
         </div>
         <div class="card-body">
             <div class="col-md-8">
-                <form asp-action="Create" asp-controller="Category" method="post">
+                <form asp-action="Edit" enctype="multipart/form-data" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
                     <div class="form-group">
                         <label asp-for="Name" class="control-label"></label>
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-                   
                     <div class="form-group">
                         <label asp-for="SeoDescription" class="control-label"></label>
                         <textarea asp-for="SeoDescription" rows="3" class="form-control"></textarea>
@@ -44,7 +57,7 @@
                         <input type="hidden" asp-for="LanguageId" value="@ViewBag.LanguageId" />
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Tạo mới" class="btn btn-primary" />
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
                     </div>
                 </form>
             </div>
