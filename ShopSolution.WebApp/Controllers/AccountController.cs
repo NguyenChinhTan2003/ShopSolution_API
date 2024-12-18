@@ -26,6 +26,7 @@ using Azure.Core;
 using ShopSolution.WebApp.Service;
 using ShopSolution.Data.EF;
 using Microsoft.EntityFrameworkCore;
+using ShopSolution.ViewModels.System.Languages;
 
 namespace ShopSolution.WebApp.Controllers
 {
@@ -202,12 +203,19 @@ namespace ShopSolution.WebApp.Controllers
         }
 
 
-        public async Task<IActionResult> ViewOrder(Guid orderId)
+        public async Task<IActionResult> ViewOrder(Guid orderId, string languageId= "vi")
         {
             ViewData["ShowSideComponent"] = false;
             ViewData["ShowSideBar"] = false;
 
-            var detailOrder = await _shopDBContext.OrderDetails.Include(o => o.Product).Where(o => o.OrderId == orderId).ToListAsync();
+            var detailOrder = await _shopDBContext.OrderDetails.Include(o => o.Product).ThenInclude(p => p.ProductTranslations).Where(o => o.OrderId == orderId).ToListAsync();
+
+            // Lấy tên sản phẩm theo LanguageId chính xác
+            var productNames = detailOrder.Select(o => o.Product?.ProductTranslations.Where(pt => pt.LanguageId == languageId) // Lọc trước theo languageId
+                    .Select(pt => pt.Name)                   // Lấy tên
+                    .FirstOrDefault())                       // Chỉ lấy 1 kết quả
+                .ToList();
+
             return View(detailOrder);
         }
 
