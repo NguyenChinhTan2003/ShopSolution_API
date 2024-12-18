@@ -76,6 +76,8 @@ namespace ShopSolution.WebApp.Controllers
                     </table>
                     <h3 style='margin-top: 20px;'>Tổng tiền: {orderDetails.Sum(d => d.Quantity * d.Price).ToString("N0")} VNĐ</h3>
                     <p><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</p>
+                    <p><strong>Địa chỉ nhận hàng:</strong> {order.Address}</p>
+                    <p><strong>Số điện thoại người nhận :</strong> {order.Phone}</p>
                     <p><strong>Ngày đặt hàng:</strong> {order.OrderDate.ToString("dd/MM/yyyy HH:mm")}</p>
                 </div>";
 
@@ -105,7 +107,8 @@ namespace ShopSolution.WebApp.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public async Task<IActionResult> Pay(string PaymentMethod, string PaymentId, string languageId = "vi")
+        public async Task<IActionResult> Pay(string PaymentMethod, string PaymentId, string Address, string email,
+            string phone , string languageId = "vi")
         {
             ViewData["ShowSideComponent"] = false;
             ViewData["ShowSideBar"] = false;
@@ -125,9 +128,9 @@ namespace ShopSolution.WebApp.Controllers
                 OrderDate = DateTime.Now,
                 UserName = User.Identity.Name,
                 PaymentMethod = PaymentMethod == "VnPay" ? $"VnPay {PaymentId}" : "COD",
-                Email = "",
-                Phone = "",
-                Address = "",
+                Email = email,
+                Phone = phone,
+                Address = Address,
                 Status = 0 // 0 = Đang xử lý
                 
             };
@@ -177,7 +180,7 @@ namespace ShopSolution.WebApp.Controllers
 
             var emailContent = GenerateOrderDetailsHtml(orderItem, orderDetails, productTranslations, languageId);
 
-            var receiver = User.Identity.Name;
+            var receiver = email;
             var subject = "Đặt đơn hàng thành công!";
 
             await _emailSender.SendEmailAsync(receiver, subject, emailContent);
@@ -187,8 +190,11 @@ namespace ShopSolution.WebApp.Controllers
             return View(TempData);
         }
 
-        public IActionResult CreatePaymentUrlVnpay(PaymentInformationModel model)
+        public IActionResult CreatePaymentUrlVnpay(PaymentInformationModel model, string Address, string email, string phone)
         {
+            model.Address = Address;
+            model.Email = email;
+            model.Phone = phone;
             var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 
             return Redirect(url);
@@ -217,8 +223,11 @@ namespace ShopSolution.WebApp.Controllers
 
                 var PaymentMethod = response.PaymentMethod;
                 var PaymentId = response.PaymentId;
+                var Address = response.Address;
+                var email = response.Email;
+                var phone = response.Phone;
 
-                await Pay(PaymentMethod, PaymentId);
+                await Pay(PaymentMethod, PaymentId, Address, email, phone);
             }
             return View(response);
         }
