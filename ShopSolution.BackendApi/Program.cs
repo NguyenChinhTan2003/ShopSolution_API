@@ -21,6 +21,7 @@ using Hangfire;
 using ShopSolution.BackendApi;
 using Hangfire.MemoryStorage;
 using ShopSolution.BackendApi.Services;
+using ShopSolution.Application.Catalog.Order;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +72,7 @@ builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<ILanguageService, LanguageService>();
 builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<ISlideService, SlideService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 
 // JWT Configuration
 string? issuer = builder.Configuration["Tokens:Issuer"];

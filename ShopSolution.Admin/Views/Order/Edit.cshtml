@@ -1,0 +1,41 @@
+﻿@using ShopSolution.ViewModels.Catalog.Orders;
+@model OrderEditVm
+
+@{
+    ViewData["Title"] = "Cập nhật trạng thái đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">@ViewData["Title"]</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Order">Về danh sách đơn hàng</a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="OrderId" />
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label"></label>
+                            <select asp-for="Status" class="form-control">
+                                <option value="0">Chờ xác nhận</option>
+                                <option value="1">Đang xử lý</option>
+                                <option value="2">Đang giao</option>
+                                <option value="3">Đã giao</option>
+                                <option value="4">Đã hủy</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
