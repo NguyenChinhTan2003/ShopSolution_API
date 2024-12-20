@@ -9,7 +9,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-
 <!-- Featured Products Start -->
 <div class="container-fluid pt-5">
     <div class="text-center mb-4">
@@ -64,7 +63,7 @@
                                             <i class="fas fa-shopping-cart text-primary mr-1"></i><localize>Add To Cart</localize>
                                         </a>
                                     }else {
-                                    
+
                                         <a href="" class="btn btn-sm btn-add-cart text-dark p-0">
                                             <i class="fas fa-shopping-cart text-primary mr-1"></i><localize>Hết hàng</localize>
                                         </a>
@@ -80,7 +79,6 @@
 </div>
 <!-- Featured Products End -->
 <div id="cart_error_message" class="text-danger" style="display: none;"></div>
-
 
 <!-- Lasted Products Start -->
 <div class="container-fluid pt-5">
@@ -128,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="@url" class="btn btn-sm text-dark p-0" >
+                                    <a href="@url" class="btn btn-sm text-dark p-0">
                                         <i class="fas fa-eye text-primary mr-1"></i><localize>View Detail</localize>
                                     </a>
                                     @if (item.Stock > 0)
@@ -186,12 +184,9 @@
 </div>
 <!-- Footer End -->
 
-
-
 <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-  intent="WELCOME"
-  chat-title="Chăm sóc khách hàng 24/7"
-  agent-id="7ca7407c-954a-40e9-9419-15dcdc45cc12"
-  language-code="vi"
-></df-messenger>
+<df-messenger intent="WELCOME"
+              chat-title="Chăm sóc khách hàng 24/7"
+              agent-id="7ca7407c-954a-40e9-9419-15dcdc45cc12"
+              language-code="vi">
+</df-messenger>

@@ -37,37 +37,31 @@ namespace ShopSolution.ApiIntegration
             client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
-            // Serialize request object to JSON
-            var json = JsonConvert.SerializeObject(request);
-            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var requestContent = new MultipartFormDataContent();
+            requestContent.Add(new StringContent(languageId), "LanguageId");
+            requestContent.Add(new StringContent(request.Name), "Name");
+            requestContent.Add(new StringContent(request.SeoDescription ?? ""), "SeoDescription");
+            requestContent.Add(new StringContent(request.SeoAlias ?? ""), "SeoAlias");
+            requestContent.Add(new StringContent(request.SeoTitle ?? ""), "SeoTitle");
+            requestContent.Add(new StringContent(request.ParentId.ToString() ?? ""), "ParentId");
 
-            var response = await client.PostAsync($"/api/categories/", httpContent);
+            var response = await client.PostAsync($"/api/categories", requestContent);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                // Xử lý lỗi
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error creating category: {response.StatusCode} - {errorContent}"); // Log lỗi
-                return false;
-            }
+            return response.IsSuccessStatusCode;
         }
 
-        public async Task<int> DeleteCategory(int id)
+        public async Task<ApiResult<bool>> DeleteCategory(int id)
         {
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var response = await client.DeleteAsync($"/api/categories/{id}");
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
-                return JsonConvert.DeserializeObject<int>(body);
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
 
-            return 0; // Hoặc throw exception nếu bạn muốn xử lý lỗi
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
         }
 
         public async Task<List<CategoryVm>> GetAll(string languageId)
@@ -130,12 +124,12 @@ namespace ShopSolution.ApiIntegration
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var requestContent = new MultipartFormDataContent();
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? "" : request.Name.ToString()), "name");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoDescription) ? "" : request.SeoDescription.ToString()), "seoDescription");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoTitle) ? "" : request.SeoTitle.ToString()), "seoTitle");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.SeoAlias) ? "" : request.SeoAlias.ToString()), "seoAlias");
-            requestContent.Add(new StringContent(request.LanguageId.ToString()), "languageId");
-            requestContent.Add(new StringContent(request.ParentId.HasValue ? request.ParentId.ToString() : "null"), "parentId");
+            requestContent.Add(new StringContent(languageId), "LanguageId");
+            requestContent.Add(new StringContent(request.Name), "Name");
+            requestContent.Add(new StringContent(request.SeoDescription ?? ""), "SeoDescription");
+            requestContent.Add(new StringContent(request.SeoAlias ?? ""), "SeoAlias");
+            requestContent.Add(new StringContent(request.SeoTitle ?? ""), "SeoTitle");
+            requestContent.Add(new StringContent(request.ParentId.ToString() ?? ""), "ParentId");
             var response = await client.PutAsync($"/api/categories/{request.Id}", requestContent);
             return response.IsSuccessStatusCode;
         }

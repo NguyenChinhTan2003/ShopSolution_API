@@ -72,7 +72,7 @@ namespace ShopSolution.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CategoryCreateRequest request)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
                 return View(request);
 
             try
@@ -122,7 +122,7 @@ namespace ShopSolution.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CategoryUpdateRequest request)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
                 return View(request);
 
             var result = await _categoryApiClient.UpdateCategory(request);
@@ -152,7 +152,7 @@ namespace ShopSolution.Admin.Controllers
                 return View();
 
             var result = await _categoryApiClient.DeleteCategory(request.Id);
-            if (result > 0)
+            if (result == null)
             {
                 TempData["result"] = "Xóa danh mục thành công";
                 return RedirectToAction("Index");

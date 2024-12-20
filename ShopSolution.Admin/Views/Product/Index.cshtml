@@ -1,4 +1,4 @@
-﻿﻿@using ShopSolution.ViewModels.Common;
+﻿@using ShopSolution.ViewModels.Common;
 @model PagedResult<ShopSolution.ViewModels.Catalog.Products.ProductVm>
 
 @{
@@ -12,97 +12,112 @@
         }, 2000);
     </script>
 }
-<div class="container-fluid">
-    <h1 class="mt-4">Danh sách sản phẩm</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Danh sách sản phẩm</li>
-    </ol>
-    <div class="card mb-12">
-        <div class="card-header">
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="fas fa-boxes me-2"></i>
+            Danh sách sản phẩm
+        </h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" class="text-decoration-none">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Danh sách sản phẩm</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
             <div class="row">
-                <div class="col-md-6 col-xs-12">
-                    <a class="btn btn-success" asp-action="Create" asp-controller="Product">Tạo mới</a>
+                <div class="col-md-6">
+                    <a class="btn btn-success btn-lg" asp-action="Create" asp-controller="Product">
+                        <i class="fas fa-plus me-2"></i>
+                        Tạo mới
+                    </a>
                 </div>
-                <div class="col-md-6 col-xs-12">
-                    <form asp-action="Index" method="get">
-                        <div class="row align-items-center">
-                            <div class="col-md-4">
-                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+                <div class="col-md-6">
+                    <form asp-action="Index" method="get" class="mt-2 mt-md-0">
+                        <div class="row">
+                            <div class="col-md-5 mb-2 mb-md-0">
+                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control form-control-lg" placeholder="Từ khóa..." />
                             </div>
-                            <div class="col-md-4">
-                                <select name="categoryId" onchange="this.form.submit()" asp-items="@ViewBag.Categories" class="form-control">
-                                    <option>--Chọn danh mục--</option>
+                            <div class="col-md-4 mb-2 mb-md-0">
+                                <select name="categoryId" onchange="this.form.submit()" asp-items="@ViewBag.Categories" class="form-select form-select-lg">
+                                    <option value="">--Chọn danh mục--</option>
                                 </select>
                             </div>
                             <div class="col-md-3 d-flex">
-                                <button type="submit" class="btn btn-primary me-2">Tìm</button>
-                                <button type="button" onclick="window.location.href='/Product/Index'" class="btn btn-dark">Reset</button>
+                                <button type="submit" class="btn btn-primary btn-lg me-2">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button type="button" onclick="window.location.href='/Product/Index'" class="btn btn-secondary btn-lg">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
 
         <div class="card-body">
-            <div class="row">
-                @if (ViewBag.SuccessMsg != null)
-                {
-                    <div id="msgAlert" class="alert alert-success" role="alert">
-                        @ViewBag.SuccessMsg
-                    </div>
-                }
-            </div>
+            @if (ViewBag.SuccessMsg != null)
+            {
+                <div id="msgAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    @ViewBag.SuccessMsg
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
             <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-dark">
                         <tr>
-                            <th>
-                                Mã SP
-                            </th>
-                            <th>
-                                Tên
-                            </th>
-                            <th>
-                                Giá nhập
-                            </th>
-                            <th>
-                                Giá bán
-                            </th>
-                            <th>
-                                Số lượng tồn
-                            </th>
-
-                            <th></th>
+                            <th class="text-center">Mã SP</th>
+                            <th>Tên</th>
+                            <th class="text-center">Hình ảnh</th>
+                            <th class="text-end">Giá nhập</th>
+                            <th class="text-end">Giá bán</th>
+                            <th class="text-center">Tồn kho</th>
+                            <th style="width: 200px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.Items)
                         {
                             <tr>
-                                <td>
+                                <td class="text-center">
                                     @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
+                                    <img src="@item.ThumbnailImage" alt="@item.Name" class="img-thumbnail" width="100" />
+                                </td>
+                                <td class="text-end">
                                     @Html.DisplayFor(modelItem => item.OriginalPrice)
                                 </td>
-                                <td>
+                                <td class="text-end">
                                     @Html.DisplayFor(modelItem => item.Price)
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     @Html.DisplayFor(modelItem => item.Stock)
                                 </td>
-
                                 <td>
-                                    @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
-                                    @Html.ActionLink("Xem", "Details", new { id = item.Id }) |
-                                    @Html.ActionLink("Xóa", "Delete", new { id = item.Id }) |
-                                    @Html.ActionLink("Gán danh mục", "CategoryAssign", new { id = item.Id }) |
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <a class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-outline-info btn-sm" asp-action="Details" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Chi tiết">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a class="btn btn-outline-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                        <a class="btn btn-outline-secondary btn-sm" asp-action="CategoryAssign" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Gán danh mục">
+                                            <i class="fas fa-tags"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -113,3 +128,54 @@
         </div>
     </div>
 </div>
+<style>
+    .card {
+        border-radius: 0.5rem;
+    }
+
+    .table thead th {
+        font-weight: 600;
+    }
+
+    .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.3rem;
+    }
+
+    .gap-2 {
+        gap: 0.5rem;
+    }
+
+    .text-primary {
+        color: #0d6efd !important;
+    }
+
+    .breadcrumb-item a {
+        color: #6c757d;
+    }
+
+    .breadcrumb-item.active {
+        color: #495057;
+    }
+
+    .form-control-lg {
+        border-radius: 0.3rem;
+    }
+    .form-select-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.3rem;
+    }
+</style>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
