@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Host", "3. Host", "{45FB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. Solution Item", "0. Solution Item", "{D9840E25-5955-4DFB-865A-75EA7194AE95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopSolution.ApiIntegration", "Solution.ApiIntegration\ShopSolution.ApiIntegration.csproj", "{CC0613F7-C626-4C63-BBEB-55FF983A9FED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopSolution.ApiIntegration", "Solution.ApiIntegration\ShopSolution.ApiIntegration.csproj", "{CC0613F7-C626-4C63-BBEB-55FF983A9FED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

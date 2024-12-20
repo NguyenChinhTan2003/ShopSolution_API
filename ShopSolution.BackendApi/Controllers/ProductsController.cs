@@ -29,7 +29,7 @@ namespace ShopSolution.BackendApi.Controllers
             return Ok(products);
         }
 
-        [HttpGet("pagings")]
+        [HttpGet("pagingCategory")]
         public async Task<IActionResult> GetProductById([FromQuery] GetManageProductPagingRequest request)
         {
             var products = await _productService.GetAllByCategoryId(request.LanguageId, new GetPublicProductPagingRequest
