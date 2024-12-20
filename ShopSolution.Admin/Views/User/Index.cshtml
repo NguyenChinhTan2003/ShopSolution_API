@@ -14,26 +14,39 @@
     </script>
 }
 
-<div class="container">
-    <h1 class="my-4">Danh sách người dùng</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Danh sách người dùng</li>
-    </ol>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="fas fa-users me-2"></i>
+            Danh sách người dùng
+        </h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Danh sách người dùng</li>
+            </ol>
+        </nav>
+    </div>
+
     <div class="card shadow-sm mb-4">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-6 col-xs-12">
-                    <a class="btn btn-success" asp-action="Create" asp-controller="User">Tạo mới</a>
+        <div class="card-header bg-white">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <a class="btn btn-success btn-lg" asp-action="Create" asp-controller="User">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Tạo người dùng mới
+                    </a>
                 </div>
-                <div class="col-md-6 col-xs-12">
+                <div class="col-md-6">
                     <form asp-action="Index" method="get">
                         <div class="input-group">
-                            <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" placeholder="Tìm kiếm..." />
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Tìm</button>
-                                <button class="btn btn-dark" type="button" onclick="window.location.href='/User/Index'">Reset</button>
-                            </div>
+                            <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control form-control-lg" placeholder="Tìm kiếm..." />
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-secondary btn-lg" type="button" onclick="window.location.href='/User/Index'">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -41,41 +54,50 @@
         </div>
 
         <div class="card-body">
-            <div class="row">
-                @if (ViewBag.SuccessMsg != null)
-                {
-                    <div id="msgAlert" class="alert alert-success" role="alert">
-                        @ViewBag.SuccessMsg
-                    </div>
-                }
-            </div>
+            @if (ViewBag.SuccessMsg != null)
+            {
+                <div id="msgAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    @ViewBag.SuccessMsg
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="thead-light">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-dark">
                         <tr>
-                            <th>Tên</th>
                             <th>Họ</th>
+                            <th>Tên</th>
                             <th>Số điện thoại</th>
                             <th>Tài khoản</th>
                             <th>Email</th>
-                            <th>Hành động</th>
+                            <th style="width: 150px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.Items)
                         {
                             <tr>
-                                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                                 <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
                                 <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
                                 <td>@Html.DisplayFor(modelItem => item.UserName)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                                <td class="text-nowrap">
-                                    
-                                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Sửa</a>
-                                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">Xem chi tiết</a>
-                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-                                    <a class="btn btn-dark btn-sm" asp-action="RoleAssign" asp-route-id="@item.Id">Gán quyền</a>
+                                <td>
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <a class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-outline-info btn-sm" asp-action="Details" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Chi tiết">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a class="btn btn-outline-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                        <a class="btn btn-outline-secondary btn-sm" asp-action="RoleAssign" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="Gán quyền">
+                                            <i class="fas fa-user-tag"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -88,38 +110,52 @@
 </div>
 
 <style>
-    .thead-light th {
-        background-color: #f8f9fa;
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-
     .card {
-        border-radius: 10px;
+        border-radius: 0.5rem;
     }
 
-    .breadcrumb {
-        background-color: #f8f9fa;
+    .table thead th {
+        font-weight: 600;
     }
 
-    .container {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    .table td {
+        vertical-align: middle;
     }
 
-    .btn-success, .btn-primary, .btn-dark {
-        margin-bottom: 10px;
+    .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
     }
 
-    .text-nowrap {
-        white-space: nowrap;
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.3rem;
     }
 
-    .input-group-append .btn {
-        margin-left: 5px;
+    .gap-2 {
+        gap: 0.5rem;
+    }
+
+    .text-primary {
+        color: #0d6efd !important;
+    }
+
+    .breadcrumb-item a {
+        color: #6c757d;
+    }
+
+    .breadcrumb-item.active {
+        color: #495057;
+    }
+
+    .form-control-lg {
+        border-radius: 0.3rem;
     }
 </style>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>

@@ -5,66 +5,98 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <h1 class="my-4">Tạo mới người dùng</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Tạo mới người dùng</li>
-    </ol>
-    <div class="card shadow-sm mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Tạo mới người dùng</span>
-            <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="User">Về danh sách</a>
-        </div>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="fas fa-user-plus me-2"></i>
+            Tạo mới người dùng
+        </h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" class="text-decoration-none">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a asp-action="Index" asp-controller="User" class="text-decoration-none">Danh sách người dùng</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tạo mới</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0 fw-bold">
+                            <i class="fas fa-pencil-alt me-2"></i>
+                            Thông tin người dùng
+                        </h5>
+                        <a class="btn btn-outline-secondary" asp-action="Index" asp-controller="User">
+                            <i class="fas fa-arrow-left me-1"></i>
+                            Quay lại
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" class="needs-validation" novalidate>
+                        <div asp-validation-summary="All" class="alert alert-danger"></div>
 
-        <div class="card-body">
-            <div class="col-md-8 offset-md-2">
-                <form asp-action="Create" class="needs-validation" novalidate>
-                    <div asp-validation-summary="All" class="alert alert-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="FirstName" class="form-label"></label>
-                        <input asp-for="FirstName" class="form-control" placeholder="Nhập tên" required />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LastName" class="form-label"></label>
-                        <input asp-for="LastName" class="form-control" placeholder="Nhập họ" required />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Dob" class="form-label"></label>
-                        <input asp-for="Dob" type="date" class="form-control" required />
-                        <span asp-validation-for="Dob" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" type="email" class="form-control" placeholder="Nhập email" required />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber" class="form-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại" required />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="UserName" class="form-label"></label>
-                        <input asp-for="UserName" class="form-control" placeholder="Nhập tên đăng nhập" required />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu" required />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword" class="form-label"></label>
-                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Nhập lại mật khẩu" required />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                    <div class="form-group text-center">
-                        <input type="submit" value="Lưu lại" class="btn btn-primary mt-3" />
-                    </div>
-                </form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label">Tên</label>
+                                <input asp-for="FirstName" class="form-control" placeholder="Nhập tên" required />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label">Họ</label>
+                                <input asp-for="LastName" class="form-control" placeholder="Nhập họ" required />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Dob" class="form-label">Ngày sinh</label>
+                                <input asp-for="Dob" type="date" class="form-control" required />
+                                <span asp-validation-for="Dob" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="PhoneNumber" class="form-label">Số điện thoại</label>
+                                <input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại" required />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Nhập email" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label">Tên đăng nhập</label>
+                            <input asp-for="UserName" class="form-control" placeholder="Nhập tên đăng nhập" required />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Password" class="form-label">Mật khẩu</label>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu" required />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ConfirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Nhập lại mật khẩu" required />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>
+                                Lưu lại
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -72,25 +104,23 @@
 
 <style>
     .form-label {
-        font-weight: bold;
-    }
-
-    .form-control:focus {
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        font-weight: 600;
     }
 
     .card {
-        border-radius: 10px;
+        border-radius: 0.5rem;
     }
 
-    .breadcrumb {
-        background-color: #f8f9fa;
+    .breadcrumb-item a {
+        color: #6c757d;
+        text-decoration: none;
     }
 
-    .container {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    .breadcrumb-item.active {
+        color: #495057;
+    }
+
+    .text-primary {
+        color: #0d6efd !important;
     }
 </style>
