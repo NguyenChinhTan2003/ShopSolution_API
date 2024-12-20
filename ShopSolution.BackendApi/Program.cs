@@ -23,6 +23,7 @@ using Hangfire.MemoryStorage;
 using ShopSolution.BackendApi.Services;
 using ShopSolution.Application.Catalog.Order;
 using ShopSolution.Application.Utilities;
+using ShopSolution.Application.Catalog.Order;
 
 var builder = WebApplication.CreateBuilder(args);
 

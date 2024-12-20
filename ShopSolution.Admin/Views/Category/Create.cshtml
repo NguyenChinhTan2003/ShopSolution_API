@@ -24,13 +24,6 @@
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-
-                        <label asp-for="ParentId" class="control-label"></label>
-                        <select asp-for="ParentId" asp-items="@ViewBag.Categories" class="form-control">
-                            <option value="">-- Chọn danh mục cha --</option>
-                        </select>
-                        <span asp-validation-for="ParentId" class="text-danger"></span>
-                    </div>
                     <div class="form-group">
                         <label asp-for="SeoDescription" class="control-label"></label>
                         <textarea asp-for="SeoDescription" rows="3" class="form-control"></textarea>
