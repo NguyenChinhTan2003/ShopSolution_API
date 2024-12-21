@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopSolution.Data.Entities
+namespace ShopSolution.ViewModels.Utilities
 {
-    public class Shipping
+    public class ShippingRequest
     {
-        public int Id { get; set; }
-        public decimal? Price { get; set; }
+        public decimal? Price { get; set; } 
         public string Ward { get; set; }
         public string District { get; set; }
         public string City { get; set; }

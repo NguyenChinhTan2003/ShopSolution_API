@@ -65,6 +65,8 @@
                             <label for="addressDetail">Địa chỉ</label>
                             <input type="text" class="form-control" id="addressDetail" name="addressDetail" placeholder="Nhập số nhà, đường,..." />
                         </div>
+                       <button id="calculateShipping" type="button" class="btn btn-secondary mb-3"><localize>Tính phí vận chuyển</localize></button>
+                       <div id="shippingCostDisplay" class="mt-2"></div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email của bạn">
@@ -91,6 +93,7 @@
                         <h5 class="font-weight-medium"><localize>Subtotal</localize></h5>
                         <h5 class="font-weight-medium">@Model.CartItems.Sum(x => x.Quantity * x.Price).ToString("N0") VNĐ</h5>
                     </div>
+                    <div id="shippingCostDisplay" class="mt-2"></div>
                     <hr>
                     <div class="d-flex justify-content-between">
                         <h5 class="font-weight-bold"><localize>Total</localize></h5>
@@ -109,6 +112,7 @@
                     <!-- COD Payment -->
                     <form id="codForm" method="POST" asp-action="Pay" asp-controller="Cart">
                         <input type="hidden" name="Address" id="codAddress" />
+                        <input type="hidden" id="codeShippingCost" name="ShippingCost" />
                         <button type="submit" class="btn btn-lg btn-block btn-primary mb-3">
                             <localize>Pay on Delivery (COD)</localize>
                         </button>
@@ -117,9 +121,10 @@
                     <!-- VNPay Payment -->
                     <form id="vnpayForm" method="POST" asp-action="CreatePaymentUrlVnpay" asp-controller="Cart">
                         <input type="hidden" name="Name" value="@User.Identity.Name" />
-                        <input type="hidden" name="Amount" value="@Model.CartItems.Sum(x => x.Quantity * x.Price)" />
+                        <input type="hidden" name="Amount" id="vnpayAmount" value="@Model.CartItems.Sum(x => x.Quantity * x.Price)" />
                         <input type="hidden" name="OrderDescription" value="Thanh toán hóa đơn" />
                         <input type="hidden" name="OrderType" value="Order" />
+                        <input type="hidden" id="vnpayShippingCost" name="ShippingCost" />
                         <!-- địa chỉ -->
                         <input type="hidden" id="vnpayAddress" name="Address" />
 
@@ -144,7 +149,12 @@
         var selectedTinh = { id: 0, name: "" };
         var selectedQuan = { id: 0, name: "" };
         var selectedPhuong = { id: 0, name: "" };
+        var shippingCost = 0; //Biến lưu trữ phí ship
+        let cartTotal = parseFloat($('#vnpayAmount').val()); //Tổng tiền ban đầu
 
+        // Vô hiệu hóa nút tính phí ship ban đầu
+        $('#calculateShipping').prop('disabled', true);
+        updateTotalDisplay();
 
         // Lấy tỉnh thành
         $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
@@ -167,7 +177,7 @@
                                 $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
                             });
                         }
-                        updateCombinedAddress();
+                        checkAndEnableShippingButton();
                     });
                 });
             }
@@ -186,7 +196,7 @@
                         $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
                     });
                 }
-                updateCombinedAddress();
+                checkAndEnableShippingButton();
             });
         });
 
@@ -194,20 +204,17 @@
         $("#phuong").change(function (e) {
             selectedPhuong.id = $(this).val();
             selectedPhuong.name = $("#phuong option:selected").text();
-            updateCombinedAddress();
+            checkAndEnableShippingButton();
         });
 
         $('#addressDetail').on('input', function () {
             updateCombinedAddress();
         });
-
         // Hàm cập nhật giá trị input ẩn (địa chỉ gộp)
         function updateCombinedAddress() {
             var combinedAddress = "";
-
             // Lấy địa chỉ chi tiết
             var addressDetail = $('#addressDetail').val();
-       
             if (addressDetail) {
                 combinedAddress = addressDetail.trim();
             }
@@ -224,17 +231,79 @@
                     combinedAddress += ", ";
                 combinedAddress += selectedQuan.name;
             }
-
             //Thêm tỉnh vào
             if (selectedTinh.name) {
                 if (combinedAddress)
                     combinedAddress += ", ";
                 combinedAddress += selectedTinh.name;
             }
-
             $('#codAddress').val(combinedAddress.trim(', '));
             $('#vnpayAddress').val(combinedAddress.trim(', '));
         }
+        // Hàm kiểm tra các dropdown và active nút
+        function checkAndEnableShippingButton() {
+            if (selectedTinh.name && selectedQuan.name && selectedPhuong.name) {
+                $('#calculateShipping').prop('disabled', false);
+            } else {
+                $('#calculateShipping').prop('disabled', true);
+            }
+        }
+        // Hàm lấy và hiển thị phí ship
+        function calculateShipping() {
+            var city = selectedTinh.name;
+            var district = selectedQuan.name;
+            var ward = selectedPhuong.name;
+
+            // Kiểm tra xem địa chỉ đã được chọn hay chưa
+            if (!city || !district || !ward) {
+                $('#shippingCostDisplay').text("Vui lòng chọn đầy đủ địa chỉ trước khi tính phí!");
+                shippingCost = 0;
+                updateTotalDisplay();
+                return;
+            }
+            // Gửi request lên controller
+            $.ajax({
+                type: "POST",
+                url: "/vi/Cart/CalculateShippingCost",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ city: city, district: district, ward: ward }),
+                success: function (response) {
+                    if (response && response.success) {
+                        // Lưu phí ship
+                        shippingCost = response.price;
+                        //Hiển thị phí ship
+                        $('#shippingCostDisplay').text("Phí vận chuyển: " + response.price.toLocaleString('vi-VN') + " VNĐ");
+                        updateTotalDisplay();
+                        // Cập nhật lại giá trị của input ShippingCost
+                        $('#vnpayShippingCost').val(shippingCost);
+                        $('#codeShippingCost').val(shippingCost);
+                    } else {
+                        // Show error message nếu server trả về lỗi hoặc response không đúng định dạng
+                        $('#shippingCostDisplay').text("Không thể tính phí ship. Vui lòng thử lại!");
+                        shippingCost = 0;
+                        updateTotalDisplay();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error Response:", xhr, status, error);
+                    $('#shippingCostDisplay').text("Đã có lỗi xảy ra. Vui lòng thử lại!");
+                    shippingCost = 0;
+                    updateTotalDisplay();
+                }
+            });
+        }
+        // Hàm cập nhật tổng tiền
+        function updateTotalDisplay() {
+            const totalDisplay = $('.font-weight-bold:last');
+            const formattedTotal = ((cartTotal + shippingCost).toLocaleString('vi-VN') + " VNĐ");
+            totalDisplay.text(formattedTotal);
+        }
+
+        // Bắt sự kiện khi click vào nút tính phí ship
+        $('#calculateShipping').click(function (e) {
+            calculateShipping();
+            updateCombinedAddress();
+        });
 
         // Lắng nghe sự kiện submit của form COD
         $('#codForm').submit(function (event) {
@@ -245,6 +314,13 @@
             // Thêm email và phone vào form COD
             $(this).append('<input type="hidden" name="email" value="' + email + '">');
             $(this).append('<input type="hidden" name="phone" value="' + phone + '">');
+
+            // Kiểm tra phí ship có được lấy hay chưa
+            if (shippingCost == 0) {
+                $('#shippingCostDisplay').text("Vui lòng chọn đầy đủ địa chỉ và tính phí ship trước khi thanh toán!");
+                event.preventDefault();
+                return;
+            }
         });
 
         // Lắng nghe sự kiện submit của form VNPay
@@ -256,6 +332,16 @@
             // Thêm email và phone vào form VNPay
             $(this).append('<input type="hidden" name="email" value="' + email + '">');
             $(this).append('<input type="hidden" name="phone" value="' + phone + '">');
+
+            // Kiểm tra phí ship có được lấy hay chưa
+            if (shippingCost == 0) {
+                $('#shippingCostDisplay').text("Vui lòng chọn đầy đủ địa chỉ và tính phí ship trước khi thanh toán!");
+                event.preventDefault();
+                return;
+            }
+            // Cập nhật lại giá trị của input Amount
+            const totalAmount = cartTotal + shippingCost;
+            $('#vnpayAmount').val(totalAmount);
         });
     });
 </script>

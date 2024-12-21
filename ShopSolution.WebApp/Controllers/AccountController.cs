@@ -131,15 +131,14 @@ namespace ShopSolution.WebApp.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            var userName = User.Identity?.Name;
 
             var Orders = await _shopDBContext.Orders
-             .Where(od => od.UserName == userEmail)
+             .Where(od => od.UserName == userName)
              .OrderByDescending(od => od.OrderId)
              .ToListAsync();
 
-            ViewBag.UserEmail = userEmail;
+            ViewBag.UserEmail = userName;
             return View(Orders);
         }
 
@@ -161,7 +160,7 @@ namespace ShopSolution.WebApp.Controllers
                 {
                     return NotFound("Order not found.");
                 }
-
+                var email = order.Email;
                 // Cập nhật trạng thái đơn hàng
                 order.Status = Data.Enums.OrderStatus.Canceled;
                 _shopDBContext.Update(order);
@@ -187,7 +186,9 @@ namespace ShopSolution.WebApp.Controllers
                     }
                 }
 
-                var receiver = User.Identity.Name;
+               
+
+                var receiver =email;
                 var subject = "Hủy đơn hàng thành công!";
                 var message = "Đã hủy thành công đơn hàng "+ " : " + orderId;
                 await _emailSender.SendEmailAsync(receiver, subject, message);
@@ -203,21 +204,48 @@ namespace ShopSolution.WebApp.Controllers
         }
 
 
-        public async Task<IActionResult> ViewOrder(Guid orderId, string languageId= "vi")
+        public async Task<IActionResult> ViewOrder(Guid orderId, string languageId = "vi")
         {
             ViewData["ShowSideComponent"] = false;
             ViewData["ShowSideBar"] = false;
 
-            var detailOrder = await _shopDBContext.OrderDetails.Include(o => o.Product).ThenInclude(p => p.ProductTranslations).Where(o => o.OrderId == orderId).ToListAsync();
+            // Lấy đơn hàng và các chi tiết liên quan
+            var order = await _shopDBContext.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .ThenInclude(p => p.ProductTranslations)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
-            // Lấy tên sản phẩm theo LanguageId chính xác
-            var productNames = detailOrder.Select(o => o.Product?.ProductTranslations.Where(pt => pt.LanguageId == languageId) // Lọc trước theo languageId
-                    .Select(pt => pt.Name)                   // Lấy tên
-                    .FirstOrDefault())                       // Chỉ lấy 1 kết quả
+            if (order == null)
+            {
+                return NotFound("Order not found.");
+            }
+
+            // Lấy danh sách chi tiết đơn hàng
+            var detailOrder = order.OrderDetails;
+
+            // Lấy tên sản phẩm theo ngôn ngữ
+            var productNames = detailOrder
+                .Select(d => d.Product?.ProductTranslations
+                    .FirstOrDefault(pt => pt.LanguageId == languageId)?.Name ?? "N/A")
                 .ToList();
 
+            // Tính tổng tiền chi tiết đơn hàng
+            var detailTotal = detailOrder.Sum(d => d.Quantity * d.Price);
+
+            // Tính tổng cộng bao gồm phí vận chuyển
+            var totalWithShipping = detailTotal + (order.shippingCost ?? 0);
+
+            // Gán thông tin vào ViewBag để hiển thị
+            ViewBag.OrderId = orderId;
+            ViewBag.ProductNames = productNames;
+            ViewBag.ShippingCost = order.shippingCost ?? 0;
+            ViewBag.TotalWithShipping = totalWithShipping;
+
+            // Truyền danh sách chi tiết đơn hàng sang View
             return View(detailOrder);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Logout()

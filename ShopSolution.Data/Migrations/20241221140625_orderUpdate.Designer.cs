@@ -12,8 +12,8 @@ using ShopSolution.Data.EF;
 namespace ShopSolution.Data.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    [Migration("20241218141411_ship")]
-    partial class ship
+    [Migration("20241221140625_orderUpdate")]
+    partial class orderUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -513,6 +513,9 @@ namespace ShopSolution.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("shippingCost")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("OrderId");
 
                     b.HasIndex("AppUserId");
@@ -585,7 +588,7 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 12, 18, 21, 14, 10, 909, DateTimeKind.Local).AddTicks(6780),
+                            DateCreated = new DateTime(2024, 12, 21, 21, 6, 25, 322, DateTimeKind.Local).AddTicks(4882),
                             IsFeatured = false,
                             OriginalPrice = 100000m,
                             Price = 200000m,

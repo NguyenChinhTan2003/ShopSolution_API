@@ -1,22 +1,21 @@
 ﻿@model IEnumerable<OrderDetail>
 
 @{
-    ViewData["Title"] = "Lịch sử mua hàng";
+    ViewData["Title"] = "Chi tiết đơn hàng";
 }
 
-<div class="container-fluid">
-    <h1 class="mt-4 text-primary">Chi tiết đơn hàng</h1>
-    <hr />
+<div class="container my-5">
+    <h2 class="text-primary mb-4">Chi tiết đơn hàng</h2>
 
-    <div class="card mb-12 shadow">
+    <div class="card shadow-lg border-0">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Thông tin chi tiết đơn hàng</h5>
         </div>
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-hover text-center">
-                    <thead class="thead-dark">
+                <table class="table table-bordered text-center">
+                    <thead class="bg-light text-dark">
                         <tr>
                             <th>Mã đơn hàng</th>
                             <th>Tên sản phẩm</th>
@@ -32,9 +31,8 @@
                                 <td>@item.OrderId</td>
                                 <td>
                                     @(item.Product?.ProductTranslations
-                                        .FirstOrDefault(pt => pt.LanguageId == "vi")?.Name)
+                                        .FirstOrDefault(pt => pt.LanguageId == "vi")?.Name ?? "N/A")
                                 </td>
-
                                 <td>@item.Quantity</td>
                                 <td>@item.Price.ToString("#,##0 VNĐ")</td>
                                 <td>@((item.Quantity * item.Price).ToString("#,##0 VNĐ"))</td>
@@ -44,14 +42,32 @@
                 </table>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <a href="javascript:history.back()" class="btn btn-secondary">
+            <div class="mt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="h5 text-danger">
+                        <strong>Tổng tiền sản phẩm: </strong>
+                        @Model.Sum(x => x.Quantity * x.Price).ToString("#,##0 VNĐ")
+                    </div>
+                    <div class="h5 text-danger">
+                        <strong>Phí vận chuyển: </strong>
+                        @ViewBag.ShippingCost.ToString("#,##0 VNĐ")
+                    </div>
+                </div>
+                <div class="mt-3 text-end">
+                    <h4 class="text-danger">
+                        <strong>Tổng cộng: </strong>
+                        @ViewBag.TotalWithShipping.ToString("#,##0 VNĐ")
+                    </h4>
+                </div>
+            </div>
+
+            <div class="mt-5 d-flex justify-content-between">
+                <a href="javascript:history.back()" class="btn btn-secondary btn-lg">
                     <i class="fas fa-arrow-left"></i> Quay lại
                 </a>
-                <div class="h3 text-danger">
-                    <strong>Tổng tiền: </strong>
-                    @Model.Sum(x => x.Quantity * x.Price).ToString("#,##0 VNĐ")
-                </div>
+               @*   <button class="btn btn-primary btn-lg" onclick="alert('Chức năng đang phát triển!')">
+                     <i class="fas fa-print"></i> In hóa đơn
+                 </button> *@
             </div>
         </div>
     </div>
