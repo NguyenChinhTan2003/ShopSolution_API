@@ -56,7 +56,7 @@ namespace ShopSolution.Application.Catalog.Products
                         Details = request.Details ?? string.Empty,
                         SeoDescription = request.SeoDescription ?? string.Empty,
                         SeoAlias = request.SeoAlias ?? string.Empty,
-                        SeoTitle = request.SeoTitle ?? "Default Title",
+                        SeoTitle = request.SeoTitle ?? "Default Title", 
                         LanguageId = request.LanguageId
                     });
                 }
