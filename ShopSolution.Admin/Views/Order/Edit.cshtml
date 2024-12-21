@@ -6,32 +6,161 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
-    <h1 class="mt-4">@ViewData["Title"]</h1>
+<style>
+    /* Màu sắc */
+    :root {
+        --primary-color: #1976d2; /* Màu xanh lam nhạt hơn */
+        --secondary-color: #6c757d; /* Màu xám */
+        --light-gray: #f8f9fa;
+    }
 
-    <div class="card mb-4">
-        <div class="card-header">
-            <a class="btn btn-success" asp-action="Index" asp-controller="Order">Về danh sách đơn hàng</a>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
+    /* Font chữ */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 600;
+    }
+
+    /* Khoảng cách */
+    .mb-4 {
+        margin-bottom: 1.5rem !important; /* Tăng margin bottom */
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem !important;
+    }
+
+    .mt-3 {
+        margin-top: 1rem !important;
+    }
+
+    .pt-4 {
+        padding-top: 2rem !important; /* Tăng padding top */
+    }
+
+    .pb-5 {
+        padding-bottom: 2rem !important;
+    }
+
+    .px-md-5 {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+    }
+
+    /* Card */
+    .card-header {
+        background-color: var(--light-gray) !important;
+        border-bottom: none !important;
+    }
+
+    .card-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .card-header .fa-edit {
+        font-size: 1rem; /* Giảm kích thước icon */
+    }
+
+    /* Form */
+    .form-floating > .form-select {
+        padding-top: 1.625rem;
+        padding-bottom: 0.625rem;
+    }
+
+    .form-floating > label {
+        font-size: 0.9rem;
+    }
+
+    .form-select option {
+        padding: 0.5rem 1rem;
+    }
+
+    /* Nút bấm */
+    .btn-primary {
+        background-color: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+    }
+
+    .btn-primary:hover {
+        background-color: #1565c0 !important; /* Màu xanh đậm hơn khi hover */
+        border-color: #1565c0 !important;
+    }
+
+    .btn-outline-secondary {
+        color: var(--secondary-color) !important;
+        border-color: var(--secondary-color) !important;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: var(--secondary-color) !important;
+        color: white !important;
+    }
+
+    .rounded-pill {
+        border-radius: 50rem !important; /* Bo tròn nút bấm */
+    }
+
+    .btn-lg {
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb a {
+        text-decoration: none !important;
+    }
+
+    /* Hiệu ứng hover */
+    .btn {
+        transition: all 0.2s ease-in-out; /* Thêm transition */
+    }
+</style>
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4 text-primary">@ViewData["Title"]</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home" class="text-decoration-none">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Order" class="text-decoration-none">Danh sách đơn hàng</a></li>
+        <li class="breadcrumb-item active">Cập nhật trạng thái</li>
+    </ol>
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-3">
+                <div class="card-header bg-light">
+                    <h3 class="text-center font-weight-normal my-2">
+                        <i class="fas fa-edit me-2 text-secondary"></i>
+                        Cập nhật trạng thái: <span class="text-primary">#@Model.OrderId</span>
+                    </h3>
+                </div>
+                <div class="card-body pt-4 pb-5 px-md-5">
                     <form asp-action="Edit">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="OrderId" />
-                        <div class="form-group">
-                            <label asp-for="Status" class="control-label"></label>
-                            <select asp-for="Status" class="form-control">
+
+                        <div class="form-floating mb-4">
+                            <select asp-for="Status" class="form-select" id="statusSelect">
                                 <option value="0">Chờ xác nhận</option>
-                                <option value="1">Đang xử lý</option>
-                                <option value="2">Đang giao</option>
+                                <option value="1">Đã xác nhận</option>
                                 <option value="3">Đã giao</option>
                                 <option value="4">Đã hủy</option>
                             </select>
+                            <label asp-for="Status" class="control-label fw-bold text-secondary">Trạng thái</label>
                             <span asp-validation-for="Status" class="text-danger"></span>
                         </div>
-                        <div class="form-group mt-3">
-                            <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+
+                        <div class="row mb-0">
+                            <div class="col-md-6 offset-md-3">
+                                <div class="d-grid gap-3">
+                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill">
+                                        <i class="fas fa-save me-2"></i>Lưu Thay Đổi
+                                    </button>
+                                    <a class="btn btn-outline-secondary btn-lg rounded-pill" asp-action="Index" asp-controller="Order">
+                                        <i class="fas fa-times me-2"></i>Hủy Bỏ
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -39,3 +168,16 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+        <script>
+            $(document).ready(function () {
+                // Thêm hiệu ứng hover cho các nút
+                $('.btn').hover(function () {
+                    $(this).addClass('shadow-sm');
+                }, function () {
+                    $(this).removeClass('shadow-sm');
+                });
+            });
+        </script>
+}

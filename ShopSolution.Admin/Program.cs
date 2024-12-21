@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ShopSolution.Admin.Services;
 using ShopSolution.ApiIntegration;
 
 using ShopSolution.ApiIntegration;
@@ -23,7 +24,7 @@ builder.Services.AddTransient<IProductApiClient, ProductApiClient>();
 builder.Services.AddTransient<ICategoryApiClient, CategoryApiClient>();
 builder.Services.AddTransient<IOrderApiClient, OrderApiClient>();
 builder.Services.AddTransient<IRoleApiClient, RoleApiClient>();
-
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 var mvcBuilder = builder.Services.AddRazorPages();
 
 #if DEBUG
