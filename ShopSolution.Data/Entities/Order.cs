@@ -15,7 +15,7 @@ namespace ShopSolution.Data.Entities
         public String UserName { set; get; }
         public string? Email { set; get; }
         public string? Address {  set; get; }
-
+        public decimal? shippingCost { set; get; }
         public string? Phone { set; get; }
         public string? PaymentMethod { set; get; }
         public List<OrderDetail>? OrderDetails { get; set; }

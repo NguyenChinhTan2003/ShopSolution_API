@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopSolution.Data.EF;
 
@@ -11,9 +12,11 @@ using ShopSolution.Data.EF;
 namespace ShopSolution.Data.Migrations
 {
     [DbContext(typeof(ShopDBContext))]
-    partial class ShopDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241221092414_shipping")]
+    partial class shipping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -510,9 +513,6 @@ namespace ShopSolution.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("shippingCost")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("OrderId");
 
                     b.HasIndex("AppUserId");
@@ -585,7 +585,7 @@ namespace ShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 12, 21, 21, 6, 25, 322, DateTimeKind.Local).AddTicks(4882),
+                            DateCreated = new DateTime(2024, 12, 21, 16, 24, 13, 590, DateTimeKind.Local).AddTicks(7408),
                             IsFeatured = false,
                             OriginalPrice = 100000m,
                             Price = 200000m,

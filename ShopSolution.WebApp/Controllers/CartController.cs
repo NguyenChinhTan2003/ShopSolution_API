@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ShopSolution.ApiIntegration;
 using ShopSolution.ApiIntegration.VnPay;
@@ -11,6 +12,7 @@ using ShopSolution.Data.Migrations;
 using ShopSolution.Utilities.Constants;
 using ShopSolution.ViewModels.Sales;
 using ShopSolution.ViewModels.System.Languages;
+using ShopSolution.ViewModels.Utilities;
 using ShopSolution.WebApp.Models;
 using ShopSolution.WebApp.Models.VnPay;
 using ShopSolution.WebApp.Service;
@@ -40,6 +42,15 @@ namespace ShopSolution.WebApp.Controllers
                 order.PaymentMethod = "COD";
             }
 
+            // Tính tổng tiền sản phẩm
+            var totalProductCost = orderDetails.Sum(d => d.Quantity * d.Price);
+
+            // Lấy phí vận chuyển (nếu không có thì mặc định là 0)
+            var shippingCost = order.shippingCost ?? 0;
+
+            // Tính tổng tiền bao gồm phí vận chuyển
+            var totalWithShipping = totalProductCost + shippingCost;
+
             var orderDetailsHtml = string.Join("", orderDetails.Select(detail =>
             {
                 var productTranslation = productTranslations
@@ -47,39 +58,41 @@ namespace ShopSolution.WebApp.Controllers
                 var productName = productTranslation?.Name ?? "Không xác định";
 
                 return $@"
-                <tr>
-                    <td style='border: 1px solid #ddd; padding: 8px;'>{detail.ProductId}</td>
-                    <td style='border: 1px solid #ddd; padding: 8px;'>{productName}</td>
-                    <td style='border: 1px solid #ddd; padding: 8px;'>{detail.Quantity}</td>
-                    <td style='border: 1px solid #ddd; padding: 8px;'>{detail.Price.ToString("N0")} VNĐ</td>
-                    <td style='border: 1px solid #ddd; padding: 8px;'>{(detail.Quantity * detail.Price).ToString("N0")} VNĐ</td>
-                </tr>";
-                }));
+        <tr>
+            <td style='border: 1px solid #ddd; padding: 8px;'>{detail.ProductId}</td>
+            <td style='border: 1px solid #ddd; padding: 8px;'>{productName}</td>
+            <td style='border: 1px solid #ddd; padding: 8px;'>{detail.Quantity}</td>
+            <td style='border: 1px solid #ddd; padding: 8px;'>{detail.Price.ToString("N0")} VNĐ</td>
+            <td style='border: 1px solid #ddd; padding: 8px;'>{(detail.Quantity * detail.Price).ToString("N0")} VNĐ</td>
+        </tr>";
+            }));
 
-                var html = $@"
-                <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
-                    <h2 style='color: #4CAF50;'>Cảm ơn bạn đã đặt hàng!</h2>
-                    <p>Chi tiết đơn hàng của bạn như sau:</p>
-                    <table style='width: 100%; border-collapse: collapse; margin-top: 20px;'>
-                        <thead>
-                            <tr style='background-color: #f2f2f2;'>
-                                <th style='border: 1px solid #ddd; padding: 8px;'>Mã sản phẩm</th>
-                                <th style='border: 1px solid #ddd; padding: 8px;'>Tên sản phẩm</th>
-                                <th style='border: 1px solid #ddd; padding: 8px;'>Số lượng</th>
-                                <th style='border: 1px solid #ddd; padding: 8px;'>Đơn giá</th>
-                                <th style='border: 1px solid #ddd; padding: 8px;'>Thành tiền</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orderDetailsHtml}
-                        </tbody>
-                    </table>
-                    <h3 style='margin-top: 20px;'>Tổng tiền: {orderDetails.Sum(d => d.Quantity * d.Price).ToString("N0")} VNĐ</h3>
-                    <p><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</p>
-                    <p><strong>Địa chỉ nhận hàng:</strong> {order.Address}</p>
-                    <p><strong>Số điện thoại người nhận :</strong> {order.Phone}</p>
-                    <p><strong>Ngày đặt hàng:</strong> {order.OrderDate.ToString("dd/MM/yyyy HH:mm")}</p>
-                </div>";
+            var html = $@"
+    <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
+        <h2 style='color: #4CAF50;'>Cảm ơn bạn đã đặt hàng!</h2>
+        <p>Chi tiết đơn hàng của bạn như sau:</p>
+        <table style='width: 100%; border-collapse: collapse; margin-top: 20px;'>
+            <thead>
+                <tr style='background-color: #f2f2f2;'>
+                    <th style='border: 1px solid #ddd; padding: 8px;'>Mã sản phẩm</th>
+                    <th style='border: 1px solid #ddd; padding: 8px;'>Tên sản phẩm</th>
+                    <th style='border: 1px solid #ddd; padding: 8px;'>Số lượng</th>
+                    <th style='border: 1px solid #ddd; padding: 8px;'>Đơn giá</th>
+                    <th style='border: 1px solid #ddd; padding: 8px;'>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {orderDetailsHtml}
+            </tbody>
+        </table>
+        <h3 style='margin-top: 20px;'>Tổng tiền sản phẩm: {totalProductCost.ToString("N0")} VNĐ</h3>
+        <h3 style='margin-top: 10px;'>Phí vận chuyển: {shippingCost.ToString("N0")} VNĐ</h3>
+        <h2 style='margin-top: 20px; color: #FF5722;'>Tổng cộng: {totalWithShipping.ToString("N0")} VNĐ</h2>
+        <p><strong>Phương thức thanh toán:</strong> {order.PaymentMethod}</p>
+        <p><strong>Địa chỉ nhận hàng:</strong> {order.Address}</p>
+        <p><strong>Số điện thoại người nhận:</strong> {order.Phone}</p>
+        <p><strong>Ngày đặt hàng:</strong> {order.OrderDate.ToString("dd/MM/yyyy HH:mm")}</p>
+    </div>";
 
             return html;
         }
@@ -107,8 +120,44 @@ namespace ShopSolution.WebApp.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CalculateShippingCost([FromBody] ShippingRequest addressRequest)
+        {
+            try
+            {
+                // Kiểm tra các giá trị đầu vào
+                if (addressRequest == null || string.IsNullOrEmpty(addressRequest.City))
+                {
+                    return Json(new { success = false, message = "Địa chỉ không hợp lệ" });
+                }
+
+                decimal? shippingCost = null;
+                if (!string.IsNullOrEmpty(addressRequest.Ward) && !string.IsNullOrEmpty(addressRequest.District))
+                {
+                    shippingCost = await _shopDBContext.Shippings
+                         .Where(s => s.City == addressRequest.City &&
+                                    s.District == addressRequest.District &&
+                                    s.Ward == addressRequest.Ward)
+                        .Select(s => (decimal?)s.Price)
+                        .FirstOrDefaultAsync();
+                    if (shippingCost.HasValue)
+                    {
+                        return Json(new { success = true, price = shippingCost.Value });
+                    }
+                }
+                return Json(new { success = false, message = "Không tìm thấy phí vận chuyển" });
+            }
+            catch (Exception ex)
+            {
+                // Log exception
+                Console.Error.WriteLine($"Error: {ex.Message}");
+                //Trả về lỗi
+                return Json(new { success = false, message = "Đã xảy ra lỗi khi tính phí vận chuyển" });
+            }
+        }
+
         public async Task<IActionResult> Pay(string PaymentMethod, string PaymentId, string Address, string email,
-            string phone , string languageId = "vi")
+            string phone, decimal shippingCost, string languageId = "vi")
         {
             ViewData["ShowSideComponent"] = false;
             ViewData["ShowSideBar"] = false;
@@ -131,6 +180,7 @@ namespace ShopSolution.WebApp.Controllers
                 Email = email,
                 Phone = phone,
                 Address = Address,
+                shippingCost = shippingCost,
                 Status = 0 // 0 = Đang xử lý
                 
             };
@@ -190,11 +240,12 @@ namespace ShopSolution.WebApp.Controllers
             return View(TempData);
         }
 
-        public IActionResult CreatePaymentUrlVnpay(PaymentInformationModel model, string Address, string email, string phone)
+        public IActionResult CreatePaymentUrlVnpay(PaymentInformationModel model, string Address, string email, string phone, decimal shippingCost)
         {
             model.Address = Address;
             model.Email = email;
             model.Phone = phone;
+            model.ShippingCost = shippingCost;
             var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 
             return Redirect(url);
@@ -226,8 +277,9 @@ namespace ShopSolution.WebApp.Controllers
                 var Address = response.Address;
                 var email = response.Email;
                 var phone = response.Phone;
+                var shippingCost = response.ShippingCost;
 
-                await Pay(PaymentMethod, PaymentId, Address, email, phone);
+                await Pay(PaymentMethod, PaymentId, Address, email, phone,shippingCost);
             }
             return View(response);
         }
