@@ -27,7 +27,6 @@ namespace ShopSolution.BackendApi.Services
                 Credentials = new NetworkCredential(senderEmail, senderPassword)
             };
 
-
             var mailMessage = new MailMessage
             {
                 From = new MailAddress(senderEmail),
