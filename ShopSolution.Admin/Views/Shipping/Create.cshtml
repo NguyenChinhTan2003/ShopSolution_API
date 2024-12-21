@@ -1,0 +1,135 @@
+﻿@using ShopSolution.ViewModels.Utilities
+@model ShippingRequest
+
+@{
+    ViewData["Title"] = "Create Shipping Request";
+}
+
+<h2 class="text-center my-4">Tạo Phí Vận Chuyển</h2>
+
+<div class="container">
+    <form asp-action="Create" method="post" id="shippingForm" class="shadow p-4 rounded bg-light">
+        <div class="mb-3">
+            <label for="price" class="form-label">Giá</label>
+            <input type="number" asp-for="Price" class="form-control" id="price" placeholder="Nhập giá vận chuyển" required>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="address" class="form-label">Địa chỉ</label>
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <select class="form-select" id="tinh" title="Chọn Tỉnh Thành" required>
+                        <option value="0">Chọn Tỉnh</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <select class="form-select" id="quan" title="Chọn Quận Huyện" required>
+                        <option value="0">Chọn Quận Huyện</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <select class="form-select" id="phuong" title="Chọn Phường Xã" required>
+                        <option value="0">Chọn Phường Xã</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden fields to store selected city, district, and ward -->
+        <input type="hidden" asp-for="City" id="hiddenCity" />
+        <input type="hidden" asp-for="District" id="hiddenDistrict" />
+        <input type="hidden" asp-for="Ward" id="hiddenWard" />
+
+        <button type="submit" class="btn btn-primary w-100">Lưu</button>
+    </form>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-4 text-center">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mt-4 text-center">@TempData["ErrorMessage"]</div>
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Lấy danh sách tỉnh/thành
+        $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+            if (data_tinh.error == 0) {
+                $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                    $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                });
+
+                $("#tinh").change(function () {
+                    var idtinh = $(this).val();
+                    var selectedCity = $("#tinh option:selected").text();
+                    $("#hiddenCity").val(selectedCity);
+
+                    // Lấy danh sách quận/huyện
+                    $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                        if (data_quan.error == 0) {
+                            $("#quan").html('<option value="0">Chọn Quận Huyện</option>');
+                            $("#phuong").html('<option value="0">Chọn Phường Xã</option>');
+                            $.each(data_quan.data, function (key_quan, val_quan) {
+                                $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                            });
+
+                            $("#quan").change(function () {
+                                var idquan = $(this).val();
+                                var selectedDistrict = $("#quan option:selected").text();
+                                $("#hiddenDistrict").val(selectedDistrict);
+
+                                // Lấy danh sách phường/xã
+                                $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                    if (data_phuong.error == 0) {
+                                        $("#phuong").html('<option value="0">Chọn Phường Xã</option>');
+                                        $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                            $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                        });
+
+                                        $("#phuong").change(function () {
+                                            var selectedWard = $("#phuong option:selected").text();
+                                            $("#hiddenWard").val(selectedWard);
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+</script>
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        color: #007bff;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .alert {
+        font-size: 1.1rem;
+    }
+</style>

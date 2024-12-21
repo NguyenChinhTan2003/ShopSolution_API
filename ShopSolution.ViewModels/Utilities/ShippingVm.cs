@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopSolution.Data.Entities
+namespace ShopSolution.ViewModels.Utilities
 {
-    public class Shipping
+    public class ShippingVm
     {
         public int Id { get; set; }
         public decimal? Price { get; set; }
