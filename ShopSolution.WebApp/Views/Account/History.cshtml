@@ -80,6 +80,10 @@
                                     {
                                         <span class="text text-success">Đã xác nhận</span>
                                     }
+                                    else if (item.Status == ShopSolution.Data.Enums.OrderStatus.Shipping)
+                                    {
+                                        <span class="text text-success">Đang vận chuyển</span>
+                                    }
                                     else if (item.Status == ShopSolution.Data.Enums.OrderStatus.Success)
                                     {
                                         <span class="text text-success">Đã hoàn thành</span>
