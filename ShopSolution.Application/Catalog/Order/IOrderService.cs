@@ -12,7 +12,5 @@ namespace ShopSolution.Application.Catalog.Order
     public interface IOrderService
     {
         Task<List<OrderVm>> GetAll();
-
-        Task<DashboardViewModel> GetDashboardData();
     }
 }

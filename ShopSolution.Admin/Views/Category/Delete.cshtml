@@ -1,87 +1,141 @@
 ﻿@model ShopSolution.ViewModels.Catalog.Categories.CategoryDeleteRequest
 
 @{
-    ViewData["Title"] = "Xóa danh mục ";
+    ViewData["Title"] = "Xóa danh mục";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <h1 class="my-4">Xóa sản phẩm</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Xóa danh mục </li>
-    </ol>
-    <div class="card shadow-sm mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Xóa sản phẩm</span>
-            <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Category">Về danh sách</a>
-        </div>
-
-        <div class="card-body">
-            <div class="col-md-8 offset-md-2">
-                <dl class="row">
-                    <dt class="col-sm-4">
-                        @Html.DisplayNameFor(model => model.Id)
-                    </dt>
-                    <dd class="col-sm-8">
-                        @Html.DisplayFor(model => model.Id)
-                    </dd>
-                </dl>
-
-                <form asp-action="Delete" class="needs-validation" novalidate>
-                    <input asp-for="Id" type="hidden" />
-                    <div class="alert alert-warning" role="alert">
-                        Bạn có chắc chắn muốn xóa sản phẩm này không? Hành động này không thể hoàn tác.
-                    </div>
-                    <div class="form-group text-center">
-                        <input type="submit" value="Xóa" class="btn btn-danger" />
-                        <a class="btn btn-secondary" asp-action="Index" asp-controller="Product">Hủy bỏ</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
-    .breadcrumb {
-        background-color: #f8f9fa;
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa; /* Màu nền xám nhạt cho body */
     }
 
     .container {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        max-width: 900px; /* Độ rộng tối đa của form */
+    }
+
+    .page-header {
+        color: #007bff; /* Màu xanh dương đậm cho tiêu đề */
+        font-weight: 600;
     }
 
     .card {
-        border-radius: 10px;
+        border-radius: 8px;
+        border: none; /* Loại bỏ border của card */
+        background-color: #fff;
     }
 
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .btn-outline-secondary {
+        color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+    /* Nút "Xóa" */
     .btn-danger {
         background-color: #dc3545;
         border-color: #dc3545;
+        border-radius: 8px; /* Bo tròn góc nút */
     }
 
+        .btn-danger:hover {
+            background-color: #c82333; /* Màu đỏ đậm hơn khi hover */
+            border-color: #bd2130;
+        }
+    /* Nút hủy */
     .btn-secondary {
         background-color: #6c757d;
         border-color: #6c757d;
+        border-radius: 8px;
     }
 
-    .btn-danger:hover {
-        background-color: #c82333;
-        border-color: #bd2130;
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    /* Icon */
+    .form-label i {
+        font-size: 1.2rem; /* Tăng kích thước icon */
+        margin-right: 0.5rem;
+        color: #007bff;
     }
 
-    .btn-secondary:hover {
-        background-color: #5a6268;
-        border-color: #545b62;
+    .form-label {
+        font-weight: 600;
     }
 
+    /* Thông báo validate */
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.9rem;
+    }
+
+    /* Thông báo xác nhận xóa */
     .alert-warning {
         background-color: #fff3cd;
         border-color: #ffeeba;
         color: #856404;
+        border-radius: 8px;
     }
 </style>
+
+<div class="container mt-5">
+    <h1 class="display-4 mb-4 page-header">Xóa danh mục</h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Xóa danh mục</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <span>Xóa danh mục</span>
+            <a class="btn btn-outline-secondary btn-sm" asp-action="Index" asp-controller="Category">
+                <i class="fas fa-arrow-left"></i> Về danh sách
+            </a>
+        </div>
+
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <dl class="row">
+                        <dt class="col-sm-4">
+                            @Html.DisplayNameFor(model => model.Id)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Id)
+                        </dd>
+                    </dl>
+
+                    <form asp-action="Delete" class="needs-validation" novalidate>
+                        <input asp-for="Id" type="hidden" />
+                        <div class="alert alert-warning" role="alert">
+                            Bạn có chắc chắn muốn xóa danh mục này không? Hành động này không thể hoàn tác.
+                        </div>
+                        <div class="d-grid gap-2 d-md-block">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Xóa
+                            </button>
+                            <a class="btn btn-secondary" asp-action="Index" asp-controller="Category">
+                                <i class="fas fa-times"></i> Hủy bỏ
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
