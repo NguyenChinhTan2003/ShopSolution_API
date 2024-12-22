@@ -190,3 +190,20 @@
               agent-id="7ca7407c-954a-40e9-9419-15dcdc45cc12"
               language-code="vi">
 </df-messenger>
+<style>
+    df-messenger {
+        --df-messenger-bot-message: #f1f1f1; /* Màu tin nhắn bot */
+        --df-messenger-button-titlebar-color: #007bff; /* Màu tiêu đề */
+        --df-messenger-chat-background-color: #ffffff; /* Nền cửa sổ chat */
+        position: fixed;
+        bottom: 20px; /* Khoảng cách so với đáy */
+        right: 20px; /* Khoảng cách so với cạnh phải */
+        z-index: 1050; /* Đảm bảo widget luôn nằm trên các thành phần khác */
+    }
+
+    .SideBar {
+        z-index: 1000; /* Đảm bảo thanh bên không che widget */
+    }
+
+</style>
+
