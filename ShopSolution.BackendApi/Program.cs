@@ -24,6 +24,8 @@ using ShopSolution.BackendApi.Services;
 using ShopSolution.Application.Catalog.Order;
 using ShopSolution.Application.Utilities;
 using ShopSolution.Application.Catalog.Order;
+using ShopSolution.ApiIntegration;
+using ShopSolution.Application.Statistics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +79,7 @@ builder.Services.AddTransient<ISlideService, SlideService>();
 builder.Services.AddTransient<IShippingService, ShippingService>();
 
 builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<IDashboardService, DashboardService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // JWT Configuration

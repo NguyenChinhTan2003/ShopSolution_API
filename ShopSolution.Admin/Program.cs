@@ -26,6 +26,7 @@ builder.Services.AddTransient<IOrderApiClient, OrderApiClient>();
 builder.Services.AddTransient<IRoleApiClient, RoleApiClient>();
 builder.Services.AddTransient<IShippingApiClient, ShippingApiClient>();
 
+builder.Services.AddTransient<IDashboardApiClient, DashboardApiClient>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 var mvcBuilder = builder.Services.AddRazorPages();
 
