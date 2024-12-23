@@ -115,7 +115,7 @@
                                                         <td class="text-center">@orderDetail.ProductId</td>
                                                         <td class="text-center">@orderDetail.Quantity</td>
                                                         <td class="text-end">@orderDetail.Price.ToString("N0") đ</td>
-                                                        <td class="text-end">@((orderDetail.Quantity * orderDetail.Price).ToString("N0")) đ</td>
+                                                        <td class="text-end">@(((orderDetail.Quantity * orderDetail.Price) + orderDetail.shippingCost).ToString("N0")) đ</td>
                                                     </tr>
                                                 }
                                             </tbody>

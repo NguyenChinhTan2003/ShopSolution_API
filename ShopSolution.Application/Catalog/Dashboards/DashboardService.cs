@@ -28,11 +28,11 @@ namespace ShopSolution.Application.Statistics
 
             var revenueToday = await _context.OrderDetails
                 .Where(od => od.Order.OrderDate.Date == today)
-                .SumAsync(od => od.Quantity * od.Price);
+                .SumAsync(od => od.Quantity * od.Price + (decimal)od.Order.shippingCost);
 
             var revenueThisMonth = await _context.OrderDetails
                 .Where(od => od.Order.OrderDate >= thisMonth)
-                .SumAsync(od => od.Quantity * od.Price);
+                .SumAsync(od => od.Quantity * od.Price + (decimal)od.Order.shippingCost);
 
             // Lấy doanh thu theo ngày trong 7 ngày gần nhất
             var revenueData = new List<decimal>();
@@ -42,7 +42,7 @@ namespace ShopSolution.Application.Statistics
                 var date = DateTime.Today.AddDays(-i);
                 var revenue = await _context.OrderDetails
                     .Where(od => od.Order.OrderDate.Date == date)
-                    .SumAsync(od => od.Quantity * od.Price);
+                    .SumAsync(od => od.Quantity * od.Price );
                 revenueData.Add(revenue);
                 revenueLabels.Add(date.ToString("dd/MM"));
             }

@@ -17,6 +17,7 @@ namespace ShopSolution.ViewModels.Catalog.Orders
         public string? Phone { set; get; }
         public string? PaymentMethod { set; get; }
         public int Status { set; get; }
+
         public List<OrderDetailVm> OrderDetails { get; set; } = new List<OrderDetailVm>();
     }
 
@@ -26,5 +27,6 @@ namespace ShopSolution.ViewModels.Catalog.Orders
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public decimal shippingCost { set; get; }
     }
 }
