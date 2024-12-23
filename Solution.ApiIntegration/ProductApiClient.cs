@@ -29,45 +29,51 @@ namespace ShopSolution.ApiIntegration
 
         public async Task<bool> CreateProduct(ProductCreateRequest request)
         {
-            var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
-            var languageId = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
-
-            var requestContent = new MultipartFormDataContent();
-
-            // Xử lý ảnh và thêm vào request
-            if (request.ThumbnailImage != null)
+            try
             {
-                byte[] data;
-                using (var br = new BinaryReader(request.ThumbnailImage.OpenReadStream()))
+                var sessions = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+                var languageId = _httpContextAccessor.HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+                var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+                var requestContent = new MultipartFormDataContent();;
+                // Xử lý ảnh và thêm vào request
+                if (request.ThumbnailImage != null)
                 {
-                    data = br.ReadBytes((int)request.ThumbnailImage.Length);
+                    byte[] data;
+                    using (var br = new BinaryReader(request.ThumbnailImage.OpenReadStream()))
+                    {
+                        data = br.ReadBytes((int)request.ThumbnailImage.Length);
+                    }
+                    ByteArrayContent bytes = new ByteArrayContent(data);
+                    bytes.Headers.ContentType = MediaTypeHeaderValue.Parse(request.ThumbnailImage.ContentType);
+
+                    // Tên file ảnh (kèm extension)
+                    requestContent.Add(bytes, "ThumbnailImage", request.ThumbnailImage.FileName);
                 }
-                ByteArrayContent bytes = new ByteArrayContent(data);
-                bytes.Headers.ContentType = MediaTypeHeaderValue.Parse(request.ThumbnailImage.ContentType);
 
-                // Tên file ảnh (kèm extension)
-                requestContent.Add(bytes, "ThumbnailImage", request.ThumbnailImage.FileName);
+                // Thêm các trường khác vào request
+                requestContent.Add(new StringContent(request.Price.ToString()), "Price");
+                requestContent.Add(new StringContent(request.OriginalPrice.ToString()), "OriginalPrice");
+                requestContent.Add(new StringContent(request.Stock.ToString()), "Stock");
+                requestContent.Add(new StringContent(request.Name), "Name");
+                requestContent.Add(new StringContent(request.Description ?? ""), "Description");
+                requestContent.Add(new StringContent(request.Details ?? ""), "Details");
+                requestContent.Add(new StringContent(request.SeoDescription ?? ""), "SeoDescription");
+                requestContent.Add(new StringContent(request.SeoTitle ?? ""), "SeoTitle");
+                requestContent.Add(new StringContent(request.SeoAlias ?? ""), "SeoAlias");
+                requestContent.Add(new StringContent(languageId), "LanguageId");
+
+                // Gửi request lên API
+                var response = await client.PostAsync($"/api/products", requestContent);
+
+                return response.IsSuccessStatusCode;
             }
-
-            // Thêm các trường khác vào request
-            requestContent.Add(new StringContent(request.Price.ToString()), "Price");
-            requestContent.Add(new StringContent(request.OriginalPrice.ToString()), "OriginalPrice");
-            requestContent.Add(new StringContent(request.Stock.ToString()), "Stock");
-            requestContent.Add(new StringContent(request.Name), "Name");
-            requestContent.Add(new StringContent(request.Description ?? ""), "Description");
-            requestContent.Add(new StringContent(request.Details ?? ""), "Details");
-            requestContent.Add(new StringContent(request.SeoDescription ?? ""), "SeoDescription");
-            requestContent.Add(new StringContent(request.SeoTitle ?? ""), "SeoTitle");
-            requestContent.Add(new StringContent(request.SeoAlias ?? ""), "SeoAlias");
-            requestContent.Add(new StringContent(languageId), "LanguageId");
-
-            // Gửi request lên API
-            var response = await client.PostAsync($"/api/products", requestContent);
-
-            return response.IsSuccessStatusCode;
+            catch(Exception ex)
+            {
+                return false;
+            }
+            
         }
 
         public async Task<bool> UpdateProduct(ProductUpdateRequest request)

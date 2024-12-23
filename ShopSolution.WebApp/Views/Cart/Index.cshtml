@@ -7,7 +7,7 @@
     var culture = CultureInfo.CurrentCulture.Name;
 }
 @section scripts {
-    <script src="~/js/cart.js"></script>
+    <script src="~/js/cart.js?1"></script>
     <script>
         var cartController = new CartController();
         cartController.initialize();
@@ -28,7 +28,7 @@
                     <tr>
                         <th><localize>Product</localize></th>
                         <th><localize>Description</localize></th>
-                        <th><localize>Quantity</localize></th>
+                        <th style="min-width: 200px;"><localize>Quantity</localize></th>
                         <th><localize>Price</localize></th>
                         <th><localize>Total</localize></th>
                     </tr>

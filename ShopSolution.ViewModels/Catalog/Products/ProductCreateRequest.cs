@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShopSolution.ViewModels.Catalog.Products
 {
-    public class ProductCreateRequest
+    public class ProductCreateRequest: IValidatableObject
     {
         public decimal Price { set; get; } = 0;
         public decimal OriginalPrice { set; get; } = 0;
@@ -26,8 +26,23 @@ namespace ShopSolution.ViewModels.Catalog.Products
         [Required(ErrorMessage = "Ngôn ngữ sản phẩm là bắt buộc")]
         public required string LanguageId { set; get; }
         public bool? IsFeatured { get; set; }
-
         public IFormFile? ThumbnailImage { set; get; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (ThumbnailImage != null)
+            {
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+                var extension = Path.GetExtension(ThumbnailImage.FileName).ToLowerInvariant();
+
+                if (!allowedExtensions.Contains(extension))
+                {
+                    yield return new ValidationResult(
+                        "Chỉ hỗ trợ các định dạng ảnh JPG, JPEG, PNG",
+                        new[] { nameof(ThumbnailImage) }
+                    );
+                }
+            }
+        }
     }
 
 }

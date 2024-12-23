@@ -56,7 +56,7 @@ namespace ShopSolution.Application.Catalog.Products
                         Details = request.Details ?? string.Empty,
                         SeoDescription = request.SeoDescription ?? string.Empty,
                         SeoAlias = request.SeoAlias ?? string.Empty,
-                        SeoTitle = request.SeoTitle ?? "Default Title",
+                        SeoTitle = request.SeoTitle ?? "Default Title", 
                         LanguageId = request.LanguageId
                     });
                 }
@@ -83,7 +83,7 @@ namespace ShopSolution.Application.Catalog.Products
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
                 ProductTranslations = translations,
-                IsFeatured = (bool)request.IsFeatured,
+                IsFeatured = request.IsFeatured.GetValueOrDefault(),
                 Sold = 0 // Thêm dòng này để gán giá trị mặc định cho Sold
             };
             //Save image
