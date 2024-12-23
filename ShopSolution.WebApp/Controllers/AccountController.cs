@@ -26,7 +26,6 @@ using Azure.Core;
 using ShopSolution.WebApp.Service;
 using ShopSolution.Data.EF;
 using Microsoft.EntityFrameworkCore;
-using ShopSolution.ViewModels.System.Languages;
 
 namespace ShopSolution.WebApp.Controllers
 {
@@ -414,55 +413,68 @@ namespace ShopSolution.WebApp.Controllers
             {
                 Schemes = await _signInManager.GetExternalAuthenticationSchemesAsync()
             };
-
-            if (!string.IsNullOrEmpty(remoteError))
+            try
             {
-                ModelState.AddModelError("", $"Error from external login provider: {remoteError}");
-                return View(loginRequest);
-            }
-
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                ModelState.AddModelError("", "Error loading external login information.");
-                return View(loginRequest);
-            }
-
-            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-
-           
-
-            if (user == null)
-            {
-
-                user = new AppUser
+                if (!string.IsNullOrEmpty(remoteError))
                 {
-                    UserName = info.ProviderKey,
-                   
-                    Dob = DateTime.Now,
-                    FirstName = info.Principal.Identity.Name.Split(' ')[0],
-                    LastName = info.Principal.Identity.Name.Split(' ')[1]
-                };
+                    ModelState.AddModelError("", $"Error from external login provider: {remoteError}");
+                    return View(loginRequest);
+                }
 
-             
-                await _userManager.CreateAsync(user);
-                await _userManager.AddLoginAsync(user, info);
-            }
-            var claims = new List<Claim>
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    ModelState.AddModelError("", "Error loading external login information.");
+                    return View(loginRequest);
+                }
+
+
+                var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+
+
+
+                if (user == null)
+                {
+
+                    user = new AppUser
+                    {
+                        UserName = info.ProviderKey,
+
+                        Dob = DateTime.Now,
+                        FirstName = info.Principal.Identity.Name.Split(' ')[0],
+                        LastName = info.Principal.Identity.Name.Split(' ')[1]
+                    };
+
+
+                    await _userManager.CreateAsync(user);
+                    await _userManager.AddLoginAsync(user, info);
+                }
+                var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim("FirstName", user.FirstName ?? ""),
                         new Claim("LastName", user.LastName ?? "")
                     };
-            var token = await _userApiClient.Authenticate(loginRequest);
-            if (!string.IsNullOrEmpty(token.ResultObj))
-            {
-                HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
-            }
+                var tokenRequest = new LoginRequest
+                {
+                    UserName = user.UserName,
+                    Password = string.Empty // Password không cần thiết với login external
+                };
+                var token = await _userApiClient.Authenticate(tokenRequest);
+                if (!string.IsNullOrEmpty(token.ResultObj))
+                {
+                    HttpContext.Session.SetString(SystemConstants.AppSettings.Token, token.ResultObj);
+                }
 
-            await _signInManager.SignInWithClaimsAsync(user, isPersistent: false,claims);
-            return RedirectToAction("Index", "Home");
+                await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
+                return RedirectToAction("Index", "Home");
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", $"Error from external login provider: {remoteError}");
+                return View(loginRequest);
+            }
         }
 
 
