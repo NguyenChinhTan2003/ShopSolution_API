@@ -42,7 +42,8 @@ namespace ShopSolution.Application.Catalog.Order
                     Id = od.Id,
                     ProductId = od.ProductId,
                     Quantity = od.Quantity,
-                    Price = od.Price
+                    Price = od.Price,
+                    shippingCost = (decimal)order.shippingCost,
                 }).ToList()
             }).ToList();
 

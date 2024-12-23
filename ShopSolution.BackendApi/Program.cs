@@ -23,6 +23,9 @@ using Hangfire.MemoryStorage;
 using ShopSolution.BackendApi.Services;
 using ShopSolution.Application.Catalog.Order;
 using ShopSolution.Application.Utilities;
+using ShopSolution.Application.Catalog.Order;
+using ShopSolution.ApiIntegration;
+using ShopSolution.Application.Statistics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +79,8 @@ builder.Services.AddTransient<ISlideService, SlideService>();
 builder.Services.AddTransient<IShippingService, ShippingService>();
 
 builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<IDashboardService, DashboardService>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // JWT Configuration
 string? issuer = builder.Configuration["Tokens:Issuer"];
@@ -146,8 +151,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
-
 // Đọc thông tin đăng nhập từ configuration
 var dashboardUsername = builder.Configuration["Hangfire:DashboardUsername"];
 var dashboardPassword = builder.Configuration["Hangfire:DashboardPassword"];
@@ -164,9 +167,7 @@ builder.Services.AddHangfireServer();
 // Đăng ký service
 builder.Services.AddScoped<IJobService, JobService>();
 
-
 var app = builder.Build();
-
 
 // Cấu hình Hangfire Dashboard với Basic Authentication
 app.UseHangfireDashboard("/hangfire", new DashboardOptions
@@ -180,7 +181,6 @@ app.UseHangfireDashboard("/hangfire", new DashboardOptions
     }
 });
 
-
 using (var serviceProvider = app.Services.CreateScope())
 {
     var jobService = serviceProvider.ServiceProvider.GetRequiredService<IJobService>();
@@ -190,20 +190,15 @@ using (var serviceProvider = app.Services.CreateScope())
         () => jobService.ProcessAndSendDailyReportAsync(DateTime.Now.Date.AddDays(-1), "nguyenchinhtan2003@gmail.com"),
         "0 1 * * *");
 
-
     RecurringJob.AddOrUpdate(
       "SendMonthlyReport",
       () => jobService.ProcessAndSendMonthlyReportAsync(DateTime.Now.AddMonths(-1).Month, DateTime.Now.AddMonths(-1).Year, "nguyenchinhtan2003@gmail.com"),
-      "0 1 1 * *"); 
-
-
+      "0 1 1 * *");
 
     RecurringJob.AddOrUpdate(
         "UpdateIsFeatured",
         () => jobService.UpdateIsFeatured(),
         "*/1 * * * *");
-
-
 }
 
 // Configure middleware pipeline

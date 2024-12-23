@@ -1,5 +1,6 @@
 ﻿using ShopSolution.ViewModels.Catalog.Categories;
 using ShopSolution.ViewModels.Catalog.Orders;
+using ShopSolution.ViewModels.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
