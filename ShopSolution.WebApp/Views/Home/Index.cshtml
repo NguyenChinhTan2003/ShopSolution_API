@@ -42,8 +42,11 @@
                         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <a href="@url"><img class="img-fluid w-100" src="@imageUrl" alt="@item.Name"></a>
+                                    <a href="@url">
+                                        <img class="img-fluid" src="@imageUrl" alt="@item.Name">
+                                    </a>
                                 </div>
+
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">@item.Name</h6>
                                     <div class="d-flex justify-content-center">
@@ -113,8 +116,11 @@
                         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <a href="@url"><img class="img-fluid w-100" src="@imageUrl" alt="@item.Name"></a>
+                                    <a href="@url">
+                                        <img class="img-fluid" src="@imageUrl" alt="@item.Name">
+                                    </a>
                                 </div>
+
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">@item.Name</h6>
                                     <div class="d-flex justify-content-center">
@@ -187,7 +193,7 @@
 <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 <df-messenger intent="WELCOME"
               chat-title="Chăm sóc khách hàng 24/7"
-              agent-id=""
+              agent-id="7ca7407c-954a-40e9-9419-15dcdc45cc12"
               language-code="vi">
 </df-messenger>
 <style>
@@ -204,4 +210,11 @@
     .SideBar {
         z-index: 1000; /* Đảm bảo thanh bên không che widget */
     }
+
+    .product-img img {
+        width: 100%;
+        height: 250px; /* Chiều cao tùy chỉnh */
+        object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+    }
+
 </style>

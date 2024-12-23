@@ -21,7 +21,7 @@ namespace ShopSolution.Utilities.Constants
         public class ProductSettings
         {
             public const int NumberOfFeaturedProducts = 8;
-            public const int NumberOfLastedProducts = 8;
+            public const int NumberOfLastedProducts = 20;
         }
 
         public class ProductConstants
